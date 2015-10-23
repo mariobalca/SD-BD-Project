@@ -1,7 +1,4 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 class Connection extends Thread{
@@ -26,6 +23,8 @@ class Connection extends Thread{
                 String data = inputStream.readUTF();
                 System.out.println("Recebeu " + data);
                 String resposta = data.replaceAll("a","o");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+                reader.readLine();
                 outputStream.writeUTF(resposta);
             }
         }catch(EOFException e){System.out.println("EOF:" + e);
