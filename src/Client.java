@@ -2,14 +2,19 @@ import java.io.*;
 import java.net.Socket;
 
 public class Client {
+    static String primaryServerIP = "localhost";
+    static int primaryServerPort = 8001;
+
+    static String secondaryServerIP = "localhost";
+    static int secondaryServerPort = 8002;
 
     public static void main(String[] args) {
         try{
-            Socket socket = new Socket("localhost" , 8001);
+            Socket socket = new Socket(primaryServerIP, primaryServerPort);
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             DataInputStream in = new DataInputStream(socket.getInputStream());
-            String input ="";
+            String input = "";
             while (true){
 
                 try {
@@ -19,7 +24,7 @@ public class Client {
                 }
                 out.writeUTF(input);
                 String data = in.readUTF();
-                System.out.printf(data);
+                System.out.println(data);
             }
         }catch (IOException e){
             e.printStackTrace();
