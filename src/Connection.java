@@ -24,7 +24,6 @@ class Connection extends Thread{
                 System.out.println("Recebeu " + data);
                 String resposta = data.replaceAll("a","o");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                reader.readLine();
                 outputStream.writeUTF(resposta);
             }
         }catch(EOFException e){System.out.println("EOF:" + e);
