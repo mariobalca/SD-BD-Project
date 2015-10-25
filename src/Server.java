@@ -6,11 +6,11 @@ import java.net.Socket;
  * Created by pedrocb on 20-10-2015.
  */
 public class Server{
-    static int serverPort = 8002;
+    static int serverPort = 8001;
 
-    static int udpPort = 8011;
+    static int udpPort = 8012;
     static String secondServerIP = "localhost";
-    static int secondServerPort = 8012;
+    static int secondServerPort = 8011;
 
     public static void main(String args[]){
         Listener listener = new Listener(serverPort);
