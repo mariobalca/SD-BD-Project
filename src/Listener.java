@@ -30,4 +30,8 @@ public class Listener extends Thread {
         }
     }
 
+    public int getServerPort(){
+        return serverPort;
+    }
+
 }

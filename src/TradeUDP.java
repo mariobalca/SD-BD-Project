@@ -11,9 +11,9 @@ public class TradeUDP extends Thread{
     private int serverPort;
     private int port;
     private DatagramSocket socket;
-    private Thread listener;
+    private Listener listener;
 
-    public TradeUDP(String serverHost, int serverPort,int port,Thread thread){
+    public TradeUDP(String serverHost, int serverPort,int port,Listener thread){
         this.serverHost = serverHost;
         this.serverPort = serverPort;
         this.port = port;
@@ -36,7 +36,7 @@ public class TradeUDP extends Thread{
             try {
                 socket.send(new DatagramPacket(out, 1, InetAddress.getByName(serverHost), serverPort));
             } catch (IOException e) {
-                System.out.println("ERRO");
+                e.printStackTrace();
             }
             try {
                 socket.receive(new DatagramPacket(in,1));
@@ -46,12 +46,22 @@ public class TradeUDP extends Thread{
                     synchronized (listener) {
                         if (listener.isAlive()) {
                             try {
-                                System.out.println("Not listening!");
+                                System.out.println("Not listening on "+listener.getServerPort() +"!");
                                 listener.wait();
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
                         }
+                    }
+                }
+                else{
+                    if(listener.getState() == State.WAITING){
+                        synchronized (listener) {
+                            listener.notify();
+                        }
+                    }
+                    else if(listener.getState() == State.NEW){
+                        listener.start();
                     }
                 }
             } catch (IOException e) {

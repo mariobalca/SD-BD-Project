@@ -6,21 +6,21 @@ import java.net.Socket;
  * Created by pedrocb on 20-10-2015.
  */
 public class Server{
-    static int serverPort = 8002;
+    static int serverPort = 8001;
 
     static int udpPort = 8011;
     static String secondServerIP = "localhost";
     static int secondServerPort = 8012;
 
-    public static void main(String args[]){
-        Listener listener = new Listener(serverPort);
-        new TradeUDP(secondServerIP,secondServerPort,udpPort,listener);
-        synchronized (listener) {
-            try {
-                listener.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    public Server(int port, int udpPort,String secondServerIP,int secondServerUdpPort){
+        Listener listener = new Listener(port);
+        new TradeUDP(secondServerIP,secondServerUdpPort,udpPort,listener);
+
     }
+
+    public static void main(String args[]){
+        new Server(serverPort,udpPort,secondServerIP,secondServerPort);
+        new Server(8002,8012,"localhost",8011);
+    }
+
 }
