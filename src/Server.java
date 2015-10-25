@@ -8,9 +8,9 @@ import java.net.Socket;
 public class Server{
     static int serverPort = 8001;
 
-    static int udpPort = 8011;
+    static int udpPort = 8012;
     static String secondServerIP = "localhost";
-    static int secondServerPort = 8012;
+    static int secondServerPort = 8011;
 
     public Server(int port, int udpPort,String secondServerIP,int secondServerUdpPort){
         Listener listener = new Listener(port);

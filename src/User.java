@@ -4,14 +4,16 @@ import java.io.Serializable;
  * Created by mariobalca on 24-10-2015.
  */
 public class User implements Serializable {
+    private int id;
     private String Username;
     private String Password;
     private double Balance;
 
-    public User(String u, String p, double b){
-        this.setUsername(u);
-        this.setPassword(p);
-        this.setBalance(b);
+    public User(int id, String u, String p, double b){
+        this.id = id;
+        this.Username = u;
+        this.Password = p;
+        this.Balance = b;
     }
 
     public double getBalance() {

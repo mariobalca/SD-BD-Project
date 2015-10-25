@@ -25,7 +25,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ArrayList<User> users = new ArrayList<User>();
         while(result.next())
         {
-            users.add(new User(result.getString(1), result.getString(2), result.getDouble(3)));
+            users.add(new User(result.getInt(0), result.getString(1), result.getString(2), result.getDouble(3)));
         }
         System.out.println("Get users executed");
         return users;
