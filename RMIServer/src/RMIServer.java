@@ -13,8 +13,7 @@ public class RMIServer{
 
     public RMIServer(){
         try {
-            String path=this.getClass().getResource("/Database/db.db").getPath();
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:" + path);
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:RMIServer/src/Database/db.db");
 
             RMIImpl rmiServer = new RMIImpl(connection);
             Registry r = LocateRegistry.createRegistry(7000);

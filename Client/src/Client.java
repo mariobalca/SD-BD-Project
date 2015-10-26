@@ -45,7 +45,6 @@ public class Client {
                     System.out.println(data);
                 }
             }catch (IOException e){
-                System.out.println(currentServer);
                 currentServer = ((currentServer==1)?0:1);
             }
         }
