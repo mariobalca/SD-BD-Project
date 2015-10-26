@@ -10,9 +10,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class RMIServer{
-    public static void main(String args[]) throws SQLException {
+
+    public RMIServer(){
         try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:RMIServer/src/Database/db.db");
+            String path=this.getClass().getResource("/Database/db.db").getPath();
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:" + path);
 
             RMIImpl rmiServer = new RMIImpl(connection);
             Registry r = LocateRegistry.createRegistry(7000);
@@ -20,7 +22,13 @@ public class RMIServer{
             System.out.println("Hello Server ready.");
         } catch (RemoteException re) {
             System.out.println("Exception in RMIServer.main: " + re);
+        } catch (SQLException e){
+            e.printStackTrace();
         }
+    }
+
+    public static void main(String args[]) {
+        new RMIServer();
     }
 
 }
