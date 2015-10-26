@@ -7,7 +7,7 @@ import java.net.Socket;
 public class Client {
 
     static String[] hosts= {
-        "localhost",
+        "10.42.0.21",
         "localhost"
     };
 
@@ -17,9 +17,9 @@ public class Client {
 
     public static void main(String[] args) {
         int currentServer = 0;
+        Socket socket = new Socket();
         while(true){
             try{
-                Socket socket = new Socket();
                 socket.connect(new InetSocketAddress(hosts[currentServer],ports[currentServer]), 3000);
                 socket.setKeepAlive(true);
                 socket.setSoTimeout(5000);
@@ -45,6 +45,11 @@ public class Client {
                     System.out.println(data);
                 }
             }catch (IOException e){
+                try {
+                    socket.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 currentServer = ((currentServer==1)?0:1);
             }
         }
