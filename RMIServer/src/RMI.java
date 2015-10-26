@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public interface RMI extends Remote, Serializable{
     public ArrayList<User> getUsers() throws java.rmi.RemoteException, SQLException;
-    public ArrayList<User> getAdmins(Project project) throws java.rmi.RemoteException, SQLException;
+    /*public ArrayList<User> getAdmins(Project project) throws java.rmi.RemoteException, SQLException;
     public ArrayList<Project> getProjects() throws java.rmi.RemoteException, SQLException;
     public ArrayList<Project> getOlderProjects() throws java.rmi.RemoteException, SQLException;
     public ArrayList<Project> getUserProjects(User user) throws java.rmi.RemoteException, SQLException;
@@ -45,5 +45,5 @@ public interface RMI extends Remote, Serializable{
     public boolean addExtraReward() throws java.rmi.RemoteException, SQLException;
     public boolean removeExtraReward(Extra extra) throws java.rmi.RemoteException, SQLException;
     public boolean winExtraReward(Extra extra, User user) throws java.rmi.RemoteException, SQLException;
-
+*/
 }

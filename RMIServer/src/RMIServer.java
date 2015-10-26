@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class RMIServer{
     public static void main(String args[]) throws SQLException {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:src/Database/db.db");
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:RMIServer/src/Database/db.db");
 
             RMIImpl rmiServer = new RMIImpl(connection);
             Registry r = LocateRegistry.createRegistry(7000);
