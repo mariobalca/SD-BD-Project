@@ -17,9 +17,10 @@ public class Client {
 
     public static void main(String[] args) {
         int currentServer = 0;
-        Socket socket = new Socket();
+        Socket socket = null;
         while(true){
             try{
+                socket = new Socket();
                 socket.connect(new InetSocketAddress(hosts[currentServer],ports[currentServer]), 3000);
                 socket.setKeepAlive(true);
                 socket.setSoTimeout(5000);

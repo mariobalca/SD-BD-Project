@@ -23,7 +23,7 @@ public class Request{
 
     Request(String tipo){
         this.tipo = tipo;
-        switch (this.tipo) {
+        /*switch (this.tipo) {
             case("LOGIN"):
                 new Login();
                 break;
@@ -83,7 +83,7 @@ public class Request{
                 break;
             case COMMENT_PROJ:
                 break;
-        }
+        }*/
     }
 
 

@@ -48,7 +48,7 @@ public class Server{
         byte[] in = new byte[1];
 
 
-        while(pingsfailed<3 && new String(in).equals("o")){
+        while(pingsfailed<3 && new String(in).equals("i")){
             try {
                 udpSocket.send(new DatagramPacket(out,1,InetAddress.getByName(secondServerIP),secondServerPort));
             } catch (IOException e) {
