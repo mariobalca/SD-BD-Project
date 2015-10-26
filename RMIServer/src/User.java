@@ -1,46 +1,87 @@
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by mariobalca on 24-10-2015.
  */
 public class User implements Serializable {
     private int id;
-    private String Username;
-    private String Password;
-    private double Balance;
+    private String username;
+    private String password;
+    private double balance;
+    private ArrayList<Project> myProjects;
+    private ArrayList<Project> myAdminProjects;
+    private ArrayList<Reward> myRewards;
+    private ArrayList<Extra> myExtras;
 
     public User(int id, String u, String p, double b){
         this.id = id;
-        this.Username = u;
-        this.Password = p;
-        this.Balance = b;
+        this.username = u;
+        this.password = p;
+        this.balance = b;
     }
 
     public double getBalance() {
-        return Balance;
+        return balance;
     }
 
     public void setBalance(double balance) {
-        Balance = balance;
+        balance = balance;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        password = password;
     }
 
     public String getUsername() {
-        return Username;
+        return username;
     }
 
     public void setUsername(String username) {
-        Username = username;
+        username = username;
     }
 
     public String toString(){
-        return "Username: " + this.getUsername() + " Password: " + this.getPassword() + " Balance: " + this.getBalance();
+        return this.getUsername() + " | " + this.getPassword() + " | " + this.getBalance();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public ArrayList<Project> getMyProjects() {
+        return myProjects;
+    }
+
+    public void setMyProjects(ArrayList<Project> myProjects) {
+        this.myProjects = myProjects;
+    }
+
+    public ArrayList<Project> getMyAdminProjects() {
+        return myAdminProjects;
+    }
+
+    public void setMyAdminProjects(ArrayList<Project> myAdminProjects) {
+        this.myAdminProjects = myAdminProjects;
+    }
+
+    public ArrayList<Reward> getMyRewards() {
+        return myRewards;
+    }
+
+    public void setMyRewards(ArrayList<Reward> myRewards) {
+        this.myRewards = myRewards;
+    }
+
+    public ArrayList<Extra> getMyExtras() {
+        return myExtras;
+    }
+
+    public void setMyExtras(ArrayList<Extra> myExtras) {
+        this.myExtras = myExtras;
     }
 }

@@ -8,16 +8,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface RMI extends Remote, Serializable{
-    public ArrayList<User> getUsers() throws java.rmi.RemoteException, SQLException;
-    /*public ArrayList<User> getAdmins(Project project) throws java.rmi.RemoteException, SQLException;
-    public ArrayList<Project> getProjects() throws java.rmi.RemoteException, SQLException;
-    public ArrayList<Project> getOlderProjects() throws java.rmi.RemoteException, SQLException;
-    public ArrayList<Project> getUserProjects(User user) throws java.rmi.RemoteException, SQLException;
-    public ArrayList<Reward> getRewards(User user) throws java.rmi.RemoteException, SQLException;
-    public ArrayList<Extra> getExtraRewards(User user) throws java.rmi.RemoteException, SQLException;
-    public ArrayList<Message> getMessages(Project project) throws java.rmi.RemoteException, SQLException;
+    ArrayList<User> getUsers() throws java.rmi.RemoteException, SQLException;
+    ArrayList<User> getAdmins(Project project) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Project> getProjects() throws java.rmi.RemoteException, SQLException;
+    ArrayList<Project> getOlderProjects() throws java.rmi.RemoteException, SQLException;
+    ArrayList<Project> getUserProjects(User user) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Reward> getRewards(User user) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Extra> getExtraRewards(User user) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Message> getMessages(Project project) throws java.rmi.RemoteException, SQLException;
 
-
+    /*
     public boolean createProject() throws java.rmi.RemoteException, SQLException;
 //  public boolean editProject(Project project) throws java.rmi.RemoteException, SQLException;
     public boolean removeProject(Project project) throws java.rmi.RemoteException, SQLException;

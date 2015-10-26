@@ -37,7 +37,7 @@ public class Server{
         byte[] in = new byte[1];
 
 
-        while(pingsfailed<3 || new String(in).equals("o")){
+        while(pingsfailed<3 && new String(in).equals("o")){
             try {
                 udpSocket.send(new DatagramPacket(out,1,InetAddress.getByName(secondServerIP),secondServerPort));
             } catch (IOException e) {
@@ -86,7 +86,7 @@ public class Server{
     public static void main(String args[]) throws InterruptedException {
         int udpPort = 8011;
         int serverPort = 8001;
-        String secondServerIP = "localhost";
+        String secondServerIP = "10.42.0.1";
         int secondServerPort = 8012;
 
         new Server(serverPort,udpPort,secondServerIP,secondServerPort);
