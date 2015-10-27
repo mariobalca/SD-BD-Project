@@ -39,7 +39,7 @@ public class Server{
         } catch (SocketException e) {
             e.printStackTrace();
         }
-        listener = new Listener(serverPort,state);
+        listener = new Listener(serverPort);
         tradeUdp();
     }
 
@@ -112,7 +112,7 @@ public class Server{
     public static void main(String args[]) throws InterruptedException {
         int udpPort = 8011;
         int serverPort = 8001;
-        String secondServerIP = "10.42.0.21";
+        String secondServerIP = "localhost";
         int secondServerPort = 8012;
 
         new Server(serverPort,udpPort,secondServerIP,secondServerPort);

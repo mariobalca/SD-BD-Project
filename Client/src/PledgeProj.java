@@ -2,14 +2,16 @@
  * Created by Rui on 27/10/2015.
  */
 public class PledgeProj extends Request {
+    int proj, path;
+    double valor;
+
     PledgeProj(){
-        int proj, path;
-        double valor;
+
 
 
         //Definir o projeto a apoiar
         System.out.println("Indique o ID do projeto: ");
-        try{
+        try {
             proj = Integer.parseInt(reader.readLine());
         }
         catch (Exception e) {
