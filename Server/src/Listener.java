@@ -22,7 +22,6 @@ public class Listener extends Thread {
                 Socket clientSocket = listensocket.accept();
                 synchronized (Server.state){
                     Server.state = Server.SERVER_STATE.RECEIVING_REQUESTS;
-
                 }
                 new Connection(clientSocket);
             }
