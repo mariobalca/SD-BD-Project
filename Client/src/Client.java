@@ -71,7 +71,7 @@ public class Client {
     public static void main(String[] args) {
         String[] hosts= {
                 "localhost",
-                "10.42.0.21"
+                "localhost"
         };
 
         int[] ports={

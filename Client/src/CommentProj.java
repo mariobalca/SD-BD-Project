@@ -2,11 +2,12 @@
  * Created by Rui on 27/10/2015.
  */
 public class CommentProj extends Request{
+    int proj;
+    String subject = "", question = "";
 
     CommentProj(){
 
-        int proj;
-        String subject = "", question = "";
+
 
 
         //Definir o projeto a comentar

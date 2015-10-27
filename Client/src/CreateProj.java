@@ -5,10 +5,12 @@ import java.util.Date;
  * Created by Rui on 27/10/2015.
  */
 public class CreateProj extends Request{
+    String name = "", description;
+    int year, mon, day, hour, min;
+    double goal;
+
     CreateProj(){
-        String name = "", description;
-        int year, mon, day, hour, min;
-        double goal;
+
 
 
         //Definir o nome do projecto
