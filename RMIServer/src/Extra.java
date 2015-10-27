@@ -1,7 +1,9 @@
+import java.io.Serializable;
+
 /**
  * Created by mariobalca on 25-10-2015.
  */
-public class Extra {
+public class Extra implements Serializable {
     private int id;
     private double minValue;
     private String name;

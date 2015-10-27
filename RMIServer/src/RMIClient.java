@@ -10,7 +10,7 @@ public class RMIClient {
     public static void main(String args[]) {
         try {
             RMI h = (RMI) LocateRegistry.getRegistry(7000).lookup("rmi");
-            ArrayList<User> users = h.getUsers();
+            ArrayList<Project> users = h.getUserProjects(new User(1,"teste","teste",100));
             System.out.println("Server: " + users.get(0).toString());
         } catch (Exception e) {
             System.out.println("Exception in main: " + e);

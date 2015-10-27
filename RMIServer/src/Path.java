@@ -1,7 +1,9 @@
+import java.io.Serializable;
+
 /**
  * Created by mariobalca on 25-10-2015.
  */
-public class Path {
+public class Path implements Serializable {
     private int id;
     private String name;
     private String description;

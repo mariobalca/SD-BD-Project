@@ -1,15 +1,17 @@
+import java.io.Serializable;
+
 /**
  * Created by mariobalca on 25-10-2015.
  */
-public class Message {
+public class Message implements Serializable {
     private int id;
     private String subject;
     private String question;
     private String response;
-    private User sender;
-    private User receiver;
+    private String sender;
+    private String receiver;
 
-    public Message(int id, String sub, String q, String res, User sen, User rec){
+    public Message(int id, String sub, String q, String res, String sen, String rec){
         this.id = id;
         this.subject = sub;
         this.question = q;
@@ -18,19 +20,19 @@ public class Message {
         this.sender = sen;
     }
 
-    public User getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(User sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
-    public User getReceiver() {
+    public String getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(User receiver) {
+    public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
 
