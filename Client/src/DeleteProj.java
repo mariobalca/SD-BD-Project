@@ -4,10 +4,12 @@
 public class DeleteProj extends Request{
     
     DeleteProj() {
+        int proj;
+
         //Definir o projeto a eliminar
         System.out.println("Indique o ID do projeto a eliminar: ");
         try {
-            campos_string.add(reader.readLine());
+            proj = Integer.parseInt(reader.readLine());
         } catch (Exception e) {
         }
     }

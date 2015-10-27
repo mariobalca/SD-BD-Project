@@ -5,36 +5,36 @@ public class CommentProj extends Request{
 
     CommentProj(){
 
+        int proj;
+        String subject = "", question = "";
+
+
         //Definir o projeto a comentar
-        System.out.println("Indique o ID do projeto para fazer um comentário: ");
+        System.out.println("Indique o ID do projeto para fazer uma questão: ");
         try{
-            campos_string.add(reader.readLine());
+           proj = Integer.parseInt(reader.readLine());
         }
         catch (Exception e) {
+            System.out.println("Erro de escrita.");
         }
 
         //Definir o subject da mensagem
-        System.out.println("Indique o assunto da mensagem: ");
+        System.out.println("Indique o assunto da questão: ");
         try{
-            campos_string.add(reader.readLine());
+           subject = (reader.readLine());
         }
         catch (Exception e) {
+            System.out.println("Erro de escrita.");
         }
 
-        //Definir o titulo da mensagem
-        System.out.println("Indique o titulo da mensagem: ");
-        try{
-            campos_string.add(reader.readLine());
-        }
-        catch (Exception e) {
-        }
 
         //Definir a mensagem
-        System.out.println("Escreva o seu comentário: ");
+        System.out.println("Escreva a sua questão: ");
         try{
-            campos_string.add(reader.readLine());
+           question = (reader.readLine());
         }
         catch (Exception e) {
+            System.out.println("Erro de escrita.");
         }
     }
 }

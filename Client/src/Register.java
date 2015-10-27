@@ -2,20 +2,26 @@
  * Created by Rui on 26/10/2015.
  */
 public class Register extends Request{
+    String username = "";
+    String password = "";
+
+
     Register(){
         //add username;
         System.out.println("Insira o Username: ");
         try{
-            campos_string.add(reader.readLine());
+            username = reader.readLine();
         }
         catch (Exception e) {
+            System.out.println("Erro de escrita.");
         }
         //add password;
         System.out.println("Insira a Password: ");
         try{
-            campos_string.add(reader.readLine());
+            password = reader.readLine();
         }
         catch (Exception e) {
+            System.out.println("Erro de escrita.");
         }
     }
 }

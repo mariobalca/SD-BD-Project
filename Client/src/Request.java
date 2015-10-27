@@ -13,10 +13,6 @@ public class Request{
 
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-    ArrayList<String> campos_string = new ArrayList<String>();
-    ArrayList<Integer> campos_int = new ArrayList<Integer>();
-    ArrayList<Double> campos_double = new ArrayList<Double>();
-
 
     String tipo;
 

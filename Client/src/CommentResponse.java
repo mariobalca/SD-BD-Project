@@ -3,10 +3,13 @@
  */
 public class CommentResponse extends Request{
     CommentResponse(){
+        int id;
+        String response;
+
         //Perguntar o ID da mensagem a que estamos a responder
         System.out.println("Indique o ID da mensagem a que está a responder: ");
         try{
-            campos_string.add(reader.readLine());
+            id = Integer.parseInt(reader.readLine());
         }
         catch (Exception e) {
         }
@@ -14,7 +17,7 @@ public class CommentResponse extends Request{
         //Escrever a resposta
         System.out.println("Escreva a resposta: ");
         try{
-            campos_string.add(reader.readLine());
+           response = (reader.readLine());
         }
         catch (Exception e) {
         }

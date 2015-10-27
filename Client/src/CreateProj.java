@@ -6,52 +6,59 @@ import java.util.Date;
  */
 public class CreateProj extends Request{
     CreateProj(){
+        String name = "", description;
+        int year, mon, day, hour, min;
+        double goal;
+
+
         //Definir o nome do projecto
         System.out.println("Indique o nome do projeto: ");
         try{
-            campos_string.add(reader.readLine());
+            name = (reader.readLine());
         }
         catch (Exception e) {
+            System.out.println("Erro de escrita.");
         }
 
 
         //Definir a deadline do projeto
         System.out.println("Indique a Deadline do projeto: \nAno: ");
         try{
-            campos_int.add(Integer.parseInt(reader.readLine()));
+            year = (Integer.parseInt(reader.readLine()));
         }
         catch (Exception e) {
         }
         System.out.println("Mês: ");
         try{
-            campos_int.add(Integer.parseInt(reader.readLine()));
+            mon = (Integer.parseInt(reader.readLine()));
         }
         catch (Exception e) {
         }
         System.out.println("Dia: ");
         try{
-            campos_int.add(Integer.parseInt(reader.readLine()));
+            day = (Integer.parseInt(reader.readLine()));
         }
         catch (Exception e) {
         }
         System.out.println("Hora: ");
         try{
-            campos_int.add(Integer.parseInt(reader.readLine()));
+            hour = (Integer.parseInt(reader.readLine()));
         }
         catch (Exception e) {
         }
         System.out.println("Minuto: ");
         try{
-            campos_int.add(Integer.parseInt(reader.readLine()));
+            min = (Integer.parseInt(reader.readLine()));
         }
         catch (Exception e) {
+            System.out.println("Erro de escrita.");
         }
 
 
         //Definir o objetivo monetário
         System.out.println("Defina o objetivo monetário a alcançar: ");
         try{
-            campos_double.add(Double.parseDouble(reader.readLine()));
+           goal = (Double.parseDouble(reader.readLine()));
         }
         catch (Exception e) {
         }
@@ -60,7 +67,7 @@ public class CreateProj extends Request{
         //Definir a descrição do projeto
         System.out.println("Indique a descrição do projeto: ");
         try{
-            campos_string.add(reader.readLine());
+            description = (reader.readLine());
         }
         catch (Exception e) {
         }
