@@ -5,7 +5,11 @@ import java.util.Date;
 /**
  * Created by mariobalca on 25-10-2015.
  */
+<<<<<<< HEAD
 public class Project implements Serializable{
+=======
+public class Project implements Serializable {
+>>>>>>> 20e5d4792065df41c0d647e0ce4bd68a13a84488
     private int id;
     private String name;
     private Date deadline;
@@ -75,8 +79,21 @@ public class Project implements Serializable{
         this.paths = paths;
     }
 
+<<<<<<< HEAD
     @Override
     public String toString() {
         return "Nome: " + name + "\nDeadline: " + deadline + "\nObjective: " + objective + "\nDescription: " + description;
+=======
+    public String toString(){
+        return this.getName() + " | " + this.getDeadline() + " | " + this.getObjective() + " | " + this.getDescription();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+>>>>>>> 20e5d4792065df41c0d647e0ce4bd68a13a84488
     }
 }
