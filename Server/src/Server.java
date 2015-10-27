@@ -12,7 +12,7 @@ public class Server{
         RECEIVING_REQUESTS
     }
 
-    private SERVER_STATE state;
+    static SERVER_STATE state;
 
     private int udpPort;
     private String secondServerIP;
@@ -26,7 +26,6 @@ public class Server{
     private Listener listener;
 
     public Server(int port, int udpPort,String secondServerIP,int secondServerUdpPort){
-        state = SERVER_STATE.NOT_LISTENING;
         this.secondServerIP = secondServerIP;
         this.serverPort = port;
         this.secondServerPort = secondServerUdpPort;
@@ -37,7 +36,7 @@ public class Server{
         } catch (SocketException e) {
             e.printStackTrace();
         }
-        listener = new Listener(serverPort,state);
+        listener = new Listener(serverPort);
         tradeUdp();
     }
 
@@ -69,6 +68,7 @@ public class Server{
             synchronized (state){
                 message = (state == SERVER_STATE.RECEIVING_REQUESTS)?'r':'i';
             }
+            System.out.println(message);
             out[0] = (byte)message;
             try {
                 udpSocket.send(new DatagramPacket(out,1,InetAddress.getByName(secondServerIP),secondServerPort));
