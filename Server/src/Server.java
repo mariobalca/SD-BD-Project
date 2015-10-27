@@ -39,7 +39,7 @@ public class Server{
         } catch (SocketException e) {
             e.printStackTrace();
         }
-        listener = new Listener(serverPort,state);
+        listener = new Listener(serverPort);
         tradeUdp();
     }
 
@@ -71,6 +71,7 @@ public class Server{
             synchronized (state){
                 message = (state == SERVER_STATE.RECEIVING_REQUESTS)?'r':'i';
             }
+            System.out.println(message);
             out[0] = (byte)message;
             try {
                 udpSocket.send(new DatagramPacket(out,1,InetAddress.getByName(secondServerIP),secondServerPort));
