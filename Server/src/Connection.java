@@ -21,15 +21,15 @@ class Connection extends Thread{
             while(true){
                 //an echo server
                 String data = inputStream.readUTF();
-                System.out.println(data);
+                if(!data.equals("ping")) {
+                    System.out.println(data);
+                }
                 String resposta;
                 if(data.equals("ping")){
                     resposta = "ping";
                 }
                 else{
-                    System.out.println("Recebeu " + data);
                     resposta= data.replaceAll("a","o");
-                    System.out.println(resposta);
                 }
                 outputStream.writeUTF(resposta);
             }

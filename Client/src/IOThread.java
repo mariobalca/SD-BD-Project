@@ -8,23 +8,20 @@ import java.io.InputStreamReader;
 public class IOThread extends Thread{
 
     private BufferedReader reader;
-    private String currentString;
 
-    public IOThread(String currentString){
-        this.currentString = currentString;
+    public IOThread(){
         reader = new BufferedReader(new InputStreamReader(System.in));
         this.start();
     }
 
     public void run(){
-        String aux = null;
+        String aux;
         while(true){
             try {
                 aux = reader.readLine();
-                synchronized (currentString){
-                    if(currentString.equals("vazio")){
-                        currentString = aux;
-                        System.out.println(currentString);
+                synchronized (Client.currentString){
+                    if(Client.currentString.equals("vazio")){
+                        Client.currentString = aux;
                     }
                 }
             } catch (IOException e) {

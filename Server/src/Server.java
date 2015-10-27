@@ -14,7 +14,7 @@ public class Server{
         RECEIVING_REQUESTS
     }
 
-    private SERVER_STATE state = SERVER_STATE.NOT_LISTENING;
+    static SERVER_STATE state = SERVER_STATE.NOT_LISTENING;
 
     private int udpPort;
     private String secondServerIP;
@@ -112,7 +112,7 @@ public class Server{
     public static void main(String args[]) throws InterruptedException {
         int udpPort = 8011;
         int serverPort = 8001;
-        String secondServerIP = "localhost";
+        String secondServerIP = "10.42.0.21";
         int secondServerPort = 8012;
 
         new Server(serverPort,udpPort,secondServerIP,secondServerPort);
