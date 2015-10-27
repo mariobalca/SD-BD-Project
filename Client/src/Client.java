@@ -8,14 +8,16 @@ public class Client {
     private String[] hosts;
     private int[] ports;
 
-    private String currentString;
+    static String currentString;
+
+
 
     public Client(String[] hosts, int[] ports){
         this.hosts = hosts;
         this.ports = ports;
         this.currentString = new String("vazio");
 
-        new IOThread(currentString);
+        new IOThread();
 
         int currentServer = 0;
         Socket socket = null;
@@ -42,6 +44,12 @@ public class Client {
                     String data;
                     try{
                         data = in.readUTF();
+                        if(!data.equals("ping")){
+                            System.out.println(data);
+                            synchronized (currentString){
+                                currentString = "vazio";
+                            }
+                        }
                     }
                     catch (IOException e){
                         System.out.println("Nao recebeu resposta o servidor");
@@ -63,7 +71,7 @@ public class Client {
     public static void main(String[] args) {
         String[] hosts= {
                 "localhost",
-                "localhost"
+                "10.42.0.21"
         };
 
         int[] ports={
