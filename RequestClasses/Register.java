@@ -1,12 +1,18 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 /**
  * Created by Rui on 26/10/2015.
  */
 public class Register extends Request{
-    String username = "";
-    String password = "";
+    private String username = "";
+    private String password = "";
 
 
-    Register(){
+    public Register() {
+        super("Register");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
         //add username;
         System.out.println("Insira o Username: ");
         try{

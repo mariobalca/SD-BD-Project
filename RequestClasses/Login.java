@@ -1,12 +1,18 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 /**
  * Created by Rui on 26/10/2015.
  */
 public class Login extends Request {
-    String username = "";
-    String password = "";
+    public String username = "";
+    public String password = "";
 
 
-    Login(){
+    public Login(){
+        super("Login");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
         //add username;
         System.out.println("Insira o Username: ");
         try{

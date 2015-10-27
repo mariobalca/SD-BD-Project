@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -9,19 +10,21 @@ import java.util.ArrayList;
 import java.util.ArrayList;
 
 
-public class Request{
+public abstract class Request implements Serializable{
 
-    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    //protected BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    protected String tipo;
 
+    public Request(String tipo){
+        this.tipo = tipo;
+    }
 
-    String tipo;
-
-    Request(){
-
+    public String getTipo(){
+        return tipo;
     }
 
 
-    Request(String tipo){
+    /*Request(String tipo){
         this.tipo = tipo;
         switch (this.tipo) {
             case("LOGIN"):
@@ -73,7 +76,7 @@ public class Request{
                 new CommentProj();
                 break;
         }
-    }
+    }*/
 
 
 

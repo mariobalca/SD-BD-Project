@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -5,12 +7,13 @@ import java.util.Date;
  * Created by Rui on 27/10/2015.
  */
 public class CreateProj extends Request{
-    String name = "", description;
-    int year, mon, day, hour, min;
-    double goal;
+    private String name = "", description;
+    private int year, mon, day, hour, min;
+    private double goal;
 
-    CreateProj(){
-
+    public CreateProj(){
+        super("CreateProj");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
 
         //Definir o nome do projecto
@@ -30,7 +33,7 @@ public class CreateProj extends Request{
         }
         catch (Exception e) {
         }
-        System.out.println("Mês: ");
+        System.out.println("Mï¿½s: ");
         try{
             mon = (Integer.parseInt(reader.readLine()));
         }
@@ -57,8 +60,8 @@ public class CreateProj extends Request{
         }
 
 
-        //Definir o objetivo monetário
-        System.out.println("Defina o objetivo monetário a alcançar: ");
+        //Definir o objetivo monetï¿½rio
+        System.out.println("Defina o objetivo monetï¿½rio a alcanï¿½ar: ");
         try{
            goal = (Double.parseDouble(reader.readLine()));
         }
@@ -66,8 +69,8 @@ public class CreateProj extends Request{
         }
 
 
-        //Definir a descrição do projeto
-        System.out.println("Indique a descrição do projeto: ");
+        //Definir a descriï¿½ï¿½o do projeto
+        System.out.println("Indique a descriï¿½ï¿½o do projeto: ");
         try{
             description = (reader.readLine());
         }

@@ -1,12 +1,16 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 /**
  * Created by Rui on 27/10/2015.
  */
 public class PledgeProj extends Request {
-    int proj, path;
-    double valor;
+    private int proj, path;
+    private double valor;
 
-    PledgeProj(){
-
+    public PledgeProj(){
+        super("PledgeProj");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
 
         //Definir o projeto a apoiar

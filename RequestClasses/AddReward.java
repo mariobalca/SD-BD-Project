@@ -1,16 +1,20 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 /**
  * Created by Rui on 26/10/2015.
  */
 public class AddReward extends Request{
 
 
-    int proj;
-    double valor;
-    String nome = "";
-    String descricao = "";
+    private int proj;
+    private double valor;
+    private String nome = "";
+    private String descricao = "";
 
-    AddReward(){
-
+    public AddReward(){
+        super("AddReward");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         //Definir o projeto a que adicionar a reward
         System.out.println("Indique o ID do projeto: ");
@@ -21,8 +25,8 @@ public class AddReward extends Request{
             System.out.println("Erro de escrita.");
         }
 
-        //Definir o valor mínimo da reward
-        System.out.println("Indique o valor mínimo da reward: ");
+        //Definir o valor mï¿½nimo da reward
+        System.out.println("Indique o valor mï¿½nimo da reward: ");
         try{
             valor = Double.parseDouble(reader.readLine());
         }
@@ -39,8 +43,8 @@ public class AddReward extends Request{
             System.out.println("Erro de escrita.");
         }
 
-        //Definir a descrição da reward
-        System.out.println("Indique a descrição para a reward: ");
+        //Definir a descriï¿½ï¿½o da reward
+        System.out.println("Indique a descriï¿½ï¿½o para a reward: ");
         try{
            descricao = (reader.readLine());
         }

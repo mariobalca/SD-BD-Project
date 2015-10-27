@@ -11,23 +11,29 @@ public class IOThread extends Thread{
 
     public IOThread(){
         reader = new BufferedReader(new InputStreamReader(System.in));
-        this.start();
     }
 
     public void run(){
-        String aux;
         while(true){
-            try {
-                aux = reader.readLine();
-                synchronized (Client.currentString){
-                    if(Client.currentString.equals("vazio")){
-                        Client.currentString = aux;
-                    }
+            /*aux = reader.readLine();
+            synchronized (Client.currentString){
+                if(Client.currentString.equals("vazio")){
+                    Client.currentString = aux;
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            }*/
+            synchronized (Client.aux) {
+                System.out.println(Client.aux);
             }
-
+            synchronized (Client.currentRequest) {
+                Client.currentRequest = new Login();
+            }
+            synchronized (this){
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

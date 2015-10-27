@@ -1,17 +1,20 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 /**
  * Created by Rui on 27/10/2015.
  */
 public class CommentProj extends Request{
-    int proj;
-    String subject = "", question = "";
+    private int proj;
+    private String subject = "", question = "";
 
-    CommentProj(){
+    public CommentProj(){
+        super("CommentProj");
 
-
-
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         //Definir o projeto a comentar
-        System.out.println("Indique o ID do projeto para fazer uma questão: ");
+        System.out.println("Indique o ID do projeto para fazer uma questï¿½o: ");
         try{
            proj = Integer.parseInt(reader.readLine());
         }
@@ -20,7 +23,7 @@ public class CommentProj extends Request{
         }
 
         //Definir o subject da mensagem
-        System.out.println("Indique o assunto da questão: ");
+        System.out.println("Indique o assunto da questï¿½o: ");
         try{
            subject = (reader.readLine());
         }
@@ -30,7 +33,7 @@ public class CommentProj extends Request{
 
 
         //Definir a mensagem
-        System.out.println("Escreva a sua questão: ");
+        System.out.println("Escreva a sua questï¿½o: ");
         try{
            question = (reader.readLine());
         }
