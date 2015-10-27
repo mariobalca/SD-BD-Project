@@ -1,3 +1,5 @@
+import com.sun.org.apache.xpath.internal.SourceTree;
+
 import java.io.*;
 import java.net.*;
 
@@ -12,7 +14,7 @@ public class Server{
         RECEIVING_REQUESTS
     }
 
-    static SERVER_STATE state;
+    static SERVER_STATE state = SERVER_STATE.NOT_LISTENING;
 
     private int udpPort;
     private String secondServerIP;
@@ -47,7 +49,7 @@ public class Server{
         byte[] in = new byte[1];
 
 
-        while(pingsfailed<3 && new String(in).equals("i")){
+        while(pingsfailed<3 && !new String(in).equals("o")){
             try {
                 udpSocket.send(new DatagramPacket(out,1,InetAddress.getByName(secondServerIP),secondServerPort));
             } catch (IOException e) {
@@ -68,31 +70,36 @@ public class Server{
             synchronized (state){
                 message = (state == SERVER_STATE.RECEIVING_REQUESTS)?'r':'i';
             }
-            System.out.println(message);
+            //System.out.println(message);
             out[0] = (byte)message;
             try {
                 udpSocket.send(new DatagramPacket(out,1,InetAddress.getByName(secondServerIP),secondServerPort));
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Rede não alcançavel");
             }
             try {
                 udpSocket.receive(new DatagramPacket(in,1,InetAddress.getByName(secondServerIP),secondServerPort));
+                if(new String(in).equals("r")){
+                    System.out.println("LOL");
+                    synchronized (listener){
+                        try {
+                            System.out.println("Shutting down");
+                            synchronized(state) {
+                                state = SERVER_STATE.NOT_LISTENING;
+                            }
+                            listener.wait();
+                        } catch (InterruptedException e) {
+                            System.out.println("APARECEU ESTE ERRO AVISAR");
+                        }
+                    }
+                }
+
             } catch (IOException e) {
                 pingsfailed++;
                 if(pingsfailed == 3){
                     pingsfailed = 0;
                     if(!listener.isAlive()){
                         listener.notify();
-                    }
-                }
-            }
-            if(new String(in).equals('r')){
-                synchronized (listener){
-                    try {
-                    System.out.println("Shutting down");
-                        listener.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                 }
             }
