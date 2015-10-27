@@ -3,13 +3,21 @@
  */
 public class Login extends Request {
 
-    /*Login(){
+    Login(){
         //add username;
         System.out.println("Insira o Username: ");
-        campos_string.add(reader.realLine());
+        try{
+            campos_string.add(reader.readLine());
+        }
+        catch (Exception e) {
+        }
         //add password;
         System.out.println("Insira a Password: ");
-        campos_string.add(reader.realLine());
-    }*/
+        try{
+            campos_string.add(reader.readLine());
+        }
+        catch (Exception e) {
+        }
+    }
 
 }

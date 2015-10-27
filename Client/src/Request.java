@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
@@ -8,6 +10,8 @@ import java.util.ArrayList;
 
 
 public class Request{
+
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     ArrayList<String> campos_string = new ArrayList<String>();
     ArrayList<Integer> campos_int = new ArrayList<Integer>();
@@ -23,7 +27,7 @@ public class Request{
 
     Request(String tipo){
         this.tipo = tipo;
-        /*switch (this.tipo) {
+        switch (this.tipo) {
             case("LOGIN"):
                 new Login();
                 break;
@@ -49,41 +53,30 @@ public class Request{
                 new AddAdmin();
                 break;
             case("ADD_REWARD"):
-                String proj_id;
-                String
-            case PING:
+                new AddReward();
                 break;
-            case LOGIN:
+            case "COMMENT_RESPONSE":
+                new CommentResponse();
                 break;
-            case REGISTER:
+            case "DELETE_PROJ":
+                new DeleteProj();
                 break;
-            case LIST_ACTUAL_PROJ:
+            case "CREATE_PROJ":
+                new CreateProj();
                 break;
-            case LIST_OLDER_PROJ:
+            case "CHECK_BALANCE":
+                new CheckBalance();
                 break;
-            case CONSULT_PROJ:
+            case "CHECK_REWARDS":
+                new CheckRewards();
                 break;
-            case ADD_ADMIN:
+            case "PLEDGE_PROJ":
+                new PledgeProj();
                 break;
-            case ADD_REWARD:
+            case "COMMENT_PROJ":
+                new CommentProj();
                 break;
-            case COMMENT_RESPONSE:
-                break;
-            case EDIT_PROJ:
-                break;
-            case DELETE_PROJ:
-                break;
-            case CREATE_PROJ:
-                break;
-            case CHECK_BALANCE:
-                break;
-            case CHECK_REWARDS:
-                break;
-            case PLEDGE_PROJ:
-                break;
-            case COMMENT_PROJ:
-                break;
-        }*/
+        }
     }
 
 
