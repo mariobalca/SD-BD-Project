@@ -21,9 +21,16 @@ class Connection extends Thread{
             while(true){
                 //an echo server
                 String data = inputStream.readUTF();
-                System.out.println("Recebeu " + data);
-                String resposta = data.replaceAll("a","o");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+                System.out.println(data);
+                String resposta;
+                if(data.equals("ping")){
+                    resposta = "ping";
+                }
+                else{
+                    System.out.println("Recebeu " + data);
+                    resposta= data.replaceAll("a","o");
+                    System.out.println(resposta);
+                }
                 outputStream.writeUTF(resposta);
             }
         }catch(EOFException e){System.out.println("EOF:" + e);

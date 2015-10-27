@@ -5,17 +5,18 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class Client {
+    private String[] hosts;
+    private int[] ports;
 
-    static String[] hosts= {
-        "10.42.0.21",
-        "localhost"
-    };
+    private String currentString;
 
-    static int[] ports={
-            8001, 8002
-    };
+    public Client(String[] hosts, int[] ports){
+        this.hosts = hosts;
+        this.ports = ports;
+        this.currentString = new String("vazio");
 
-    public static void main(String[] args) {
+        new IOThread(currentString);
+
         int currentServer = 0;
         Socket socket = null;
         while(true){
@@ -25,16 +26,19 @@ public class Client {
                 socket.setKeepAlive(true);
                 socket.setSoTimeout(5000);
                 System.out.println("Established connection with " + hosts[currentServer] + '/' + ports[currentServer]);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
                 DataInputStream in = new DataInputStream(socket.getInputStream());
-                String input = "";
+                String input;
                 while (true){
-                    try {
-                        input = reader.readLine();
-                    }catch (Exception e) {
+                    synchronized (currentString) {
+                        if(currentString.equals("vazio"))
+                            input = "ping";
+                        else{
+                            input = currentString;
+                        }
+                        out.writeUTF(input);
+
                     }
-                    out.writeUTF(input);
                     String data;
                     try{
                         data = in.readUTF();
@@ -43,7 +47,7 @@ public class Client {
                         System.out.println("Nao recebeu resposta o servidor");
                         break;
                     }
-                    System.out.println(data);
+
                 }
             }catch (IOException e){
                 try {
@@ -54,7 +58,18 @@ public class Client {
                 currentServer = ((currentServer==1)?0:1);
             }
         }
+    }
 
+    public static void main(String[] args) {
+        String[] hosts= {
+                "localhost",
+                "localhost"
+        };
+
+        int[] ports={
+                8001, 8002
+        };
+        new Client(hosts,ports);
     }
 }
 

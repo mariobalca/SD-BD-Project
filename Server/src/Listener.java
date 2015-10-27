@@ -8,9 +8,11 @@ import java.net.Socket;
 public class Listener extends Thread {
 
     private int serverPort;
+    private Server.SERVER_STATE state;
 
-    public Listener(int serverPort){
+    public Listener(int serverPort, Server.SERVER_STATE state){
         this.serverPort = serverPort;
+        this.state = state;
     }
 
     @Override
@@ -20,8 +22,8 @@ public class Listener extends Thread {
             ServerSocket listensocket = new ServerSocket(serverPort);
             while (true) {
                 Socket clientSocket = listensocket.accept();
-                synchronized (Server.state){
-                    Server.state = Server.SERVER_STATE.RECEIVING_REQUESTS;
+                synchronized (state){
+                    state = Server.SERVER_STATE.RECEIVING_REQUESTS;
                 }
                 new Connection(clientSocket);
             }

@@ -14,7 +14,7 @@ public class Server{
         RECEIVING_REQUESTS
     }
 
-    static SERVER_STATE state = SERVER_STATE.NOT_LISTENING;
+    private SERVER_STATE state = SERVER_STATE.NOT_LISTENING;
 
     private int udpPort;
     private String secondServerIP;
@@ -28,6 +28,7 @@ public class Server{
     private Listener listener;
 
     public Server(int port, int udpPort,String secondServerIP,int secondServerUdpPort){
+        state = SERVER_STATE.NOT_LISTENING;
         this.secondServerIP = secondServerIP;
         this.serverPort = port;
         this.secondServerPort = secondServerUdpPort;
@@ -38,7 +39,7 @@ public class Server{
         } catch (SocketException e) {
             e.printStackTrace();
         }
-        listener = new Listener(serverPort);
+        listener = new Listener(serverPort,state);
         tradeUdp();
     }
 
@@ -70,7 +71,6 @@ public class Server{
             synchronized (state){
                 message = (state == SERVER_STATE.RECEIVING_REQUESTS)?'r':'i';
             }
-            //System.out.println(message);
             out[0] = (byte)message;
             try {
                 udpSocket.send(new DatagramPacket(out,1,InetAddress.getByName(secondServerIP),secondServerPort));
@@ -80,7 +80,6 @@ public class Server{
             try {
                 udpSocket.receive(new DatagramPacket(in,1,InetAddress.getByName(secondServerIP),secondServerPort));
                 if(new String(in).equals("r")){
-                    System.out.println("LOL");
                     synchronized (listener){
                         try {
                             System.out.println("Shutting down");
@@ -99,6 +98,9 @@ public class Server{
                 if(pingsfailed == 3){
                     pingsfailed = 0;
                     if(!listener.isAlive()){
+                        synchronized (state){
+                            state = SERVER_STATE.LISTENING;
+                        }
                         listener.notify();
                     }
                 }
@@ -108,14 +110,14 @@ public class Server{
     }
 
     public static void main(String args[]) throws InterruptedException {
-        int udpPort = 8012;
-        int serverPort = 8002;
-        String secondServerIP = "10.42.0.21";
-        int secondServerPort = 8011;
+        int udpPort = 8011;
+        int serverPort = 8001;
+        String secondServerIP = "localhost";
+        int secondServerPort = 8012;
 
         new Server(serverPort,udpPort,secondServerIP,secondServerPort);
         //Thread.sleep(1000);
-        //new Server(8002,8012,"localhost",8011);
+        //new Server(8001,8011,"localhost",8012);
     }
 
 }

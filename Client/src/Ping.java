@@ -3,7 +3,6 @@
  */
 public class Ping extends Request {
     Ping(){
-
     }
 
 }
