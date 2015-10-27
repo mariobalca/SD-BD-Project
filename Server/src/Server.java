@@ -71,7 +71,6 @@ public class Server{
             synchronized (state){
                 message = (state == SERVER_STATE.RECEIVING_REQUESTS)?'r':'i';
             }
-            System.out.println(message);
             out[0] = (byte)message;
             try {
                 udpSocket.send(new DatagramPacket(out,1,InetAddress.getByName(secondServerIP),secondServerPort));
@@ -111,8 +110,8 @@ public class Server{
     }
 
     public static void main(String args[]) throws InterruptedException {
-        int udpPort = 8011;
-        int serverPort = 8001;
+        int udpPort = 8012;
+        int serverPort = 8002;
         String secondServerIP = "localhost";
         int secondServerPort = 8012;
 

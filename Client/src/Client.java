@@ -11,10 +11,9 @@ public class Client {
     private int[] ports;
 
     private IOThread ioThread;
-    private boolean auth;
+    static boolean auth;
 
     static Request currentRequest;
-    static String aux;
 
 
 
@@ -22,7 +21,6 @@ public class Client {
         this.hosts = hosts;
         this.ports = ports;
         this.currentRequest = new Ping();
-        this.aux = "O que deseja?\n1.Login";
         this.auth = false;
         ioThread = new IOThread();
 
@@ -41,7 +39,8 @@ public class Client {
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 RequestResponse input;
                 synchronized (ioThread){
-                    ioThread.start();
+                    if(ioThread.getState() == IOThread.State.NEW)
+                        ioThread.start();
                 }
                 while (true){
                     synchronized (currentRequest) {
@@ -52,7 +51,6 @@ public class Client {
                     try{
                         data = (RequestResponse)in.readObject();
                         if(!data.response.tipo.equals("Ping")){
-                            System.out.println(data.response.tipo);
                             execute(data);
                             synchronized (currentRequest){
                                 currentRequest = new Ping();
@@ -85,16 +83,22 @@ public class Client {
                 auth = response.status;
                 if(auth){
                     System.out.println("Login efectuado");
-                    synchronized (aux){
-                        aux = "1.Check Balance";
-                    }
+
                 }
                 else{
                     System.out.println("Invalid credentials");
-                    synchronized (aux){
-                        aux = "1.List Projects";
-                    }
                 }
+                break;
+            case "ListActualProj":
+                ProjectListResponse response1 = (ProjectListResponse)data.response;
+                for(int i=0;i<response1.projects.size();i++){
+                    System.out.println(response1.projects.get(i));
+                }
+                break;
+            case "ConsultProj":
+                ProjectListResponse response2 = (ProjectListResponse)data.response;
+                System.out.println(response2.projects.get(0) + " Buéda detalhado");
+
 
         }
         synchronized (ioThread) {

@@ -85,7 +85,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ArrayList<Reward> rewards = new ArrayList<Reward>();
         while(result.next())
         {
-            rewards.add(new Reward());
+            //rewards.add(new Reward());
         }
         System.out.println("Get Rewards executed");
         return rewards;
@@ -97,7 +97,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ArrayList<Extra> extraRewards = new ArrayList<Extra>();
         while(result.next())
         {
-            extraRewards.add(new Extra());
+            //extraRewards.add(new Extra());
         }
         System.out.println("Get Extras executed");
         return extraRewards;
@@ -109,7 +109,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ArrayList<Message> messages = new ArrayList<Message>();
         while(result.next())
         {
-            messages.add(new Message());
+            //messages.add(new Message());
         }
         System.out.println("Get Messages executed");
         return messages;

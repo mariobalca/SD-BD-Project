@@ -1,10 +1,11 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Created by mariobalca on 25-10-2015.
  */
-public class Project {
+public class Project implements Serializable{
     private int id;
     private String name;
     private Date deadline;
@@ -72,5 +73,10 @@ public class Project {
 
     public void setPaths(ArrayList<Path> paths) {
         this.paths = paths;
+    }
+
+    @Override
+    public String toString() {
+        return "Nome: " + name + "\nDeadline: " + deadline + "\nObjective: " + objective + "\nDescription: " + description;
     }
 }
