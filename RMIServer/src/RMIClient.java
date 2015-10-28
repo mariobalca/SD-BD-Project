@@ -12,7 +12,6 @@ public class RMIClient {
         try {
             RMI h = (RMI) LocateRegistry.getRegistry(7000).lookup("rmi");
             ArrayList<User> projects = h.getUsers();
-            h.removeProject(1,1,1);
             for(User item : projects){
                 System.out.println(item.toString());
             }

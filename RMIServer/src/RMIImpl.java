@@ -142,8 +142,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            statement.executeQuery("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" + project.getDescription() + "\", " + userId + ")");
-            statement.executeQuery("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            statement.execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" + project.getDescription() + "\", " + userId + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
@@ -157,8 +157,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            statement.executeQuery("delete from projects where id = " + projectId);
-            statement.executeQuery("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            statement.execute("delete from projects where id = " + projectId);
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
@@ -172,8 +172,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            statement.executeQuery("insert into transactions (UserId, ProjectId, Value) values (" + userId + ", " + projectId + ","  + ", " + value + ")");
-            statement.executeQuery("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            statement.execute("insert into transactions (UserId, ProjectId, Value) values (" + userId + ", " + projectId + ","  + ", " + value + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
@@ -187,8 +187,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + message.getSender().getId());
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            statement.executeQuery("insert into messages (ProjectId, Subject, Question, Response, FromUserId) values (" + projectId + ",\"" + message.getSubject() + "\",\"" + message.getQuestion() + "\", \"\", " + message.getSender().getId() + ")");
-            statement.executeQuery("insert into logs (UserId, RequestId, Response) values (" + message.getSender().getId() + ", " + requestId + ", 1)");
+            statement.execute("insert into messages (ProjectId, Subject, Question, Response, FromUserId) values (" + projectId + ",\"" + message.getSubject() + "\",\"" + message.getQuestion() + "\", \"\", " + message.getSender().getId() + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + message.getSender().getId() + ", " + requestId + ", 1)");
 
             return true;
         }
@@ -202,8 +202,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            statement.executeQuery("update messages set response = " + response + " where id = " + messageId);
-            statement.executeQuery("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            statement.execute("update messages set response = " + response + " where id = " + messageId);
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
@@ -217,8 +217,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            statement.executeQuery("insert into paths (Name, Description, ProjectId) values (\"" + path.getName() + "\", \"" + path.getDescription() + "\", " + projectId + ")");
-            statement.executeQuery("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            statement.execute("insert into paths (Name, Description, ProjectId) values (\"" + path.getName() + "\", \"" + path.getDescription() + "\", " + projectId + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
@@ -232,8 +232,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            statement.executeQuery("delete from paths where id = " + requestId);
-            statement.executeQuery("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            statement.execute("delete from paths where id = " + requestId);
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
@@ -247,8 +247,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            statement.executeQuery("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" project.getDescription() + "\", " + userId + ")");
-            statement.executeQuery("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            statement.execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" project.getDescription() + "\", " + userId + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
         }
         else{
             result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
@@ -260,8 +260,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            statement.executeQuery("delete from rewards where id = " + rewardId);
-            statement.executeQuery("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            statement.execute("delete from rewards where id = " + rewardId);
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
         }
         else{
             result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
@@ -273,8 +273,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            statement.executeQuery("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" project.getDescription() + "\", " + userId + ")");
-            statement.executeQuery("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            statement.execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" project.getDescription() + "\", " + userId + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
         }
         else{
             result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
@@ -286,8 +286,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            statement.executeQuery("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" project.getDescription() + "\", " + userId + ")");
-            statement.executeQuery("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            statement.execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" project.getDescription() + "\", " + userId + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
         }
         else{
             result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
@@ -301,8 +301,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            statement.executeQuery("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" project.getDescription() + "\", " + userId + ")");
-            statement.executeQuery("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            statement.execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" project.getDescription() + "\", " + userId + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
         }
         else{
             result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
@@ -314,8 +314,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            statement.executeQuery("delete from extras where id = " + extraId);
-            statement.executeQuery("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            statement.execute("delete from extras where id = " + extraId);
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
         }
         else{
             result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
@@ -327,8 +327,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            statement.executeQuery("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" project.getDescription() + "\", " + userId + ")");
-            statement.executeQuery("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            statement.execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" project.getDescription() + "\", " + userId + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
         }
         else{
             result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
