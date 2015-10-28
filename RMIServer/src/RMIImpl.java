@@ -22,6 +22,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         this.statement.execute("PRAGMA foreign_keys = ON");
     }
 
+    // IDEMPOTENTES
+
     public ArrayList<User> getUsers() throws RemoteException, SQLException {
         ResultSet result = statement.executeQuery("Select * from Users");
         ArrayList<User> users = new ArrayList<User>();
@@ -138,6 +140,31 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
         System.out.println("Get Balance executed");
         return balance;
+    }
+
+    public boolean loginUser(String username, String password) throws SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from Users where username = \"" + username + "\" and password = \"" + password + "\"");
+        if(result.getInt(1) == 1){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
+    // NÃO IDEMPOTENTES
+
+
+    public boolean registerUser(String username, String password) throws SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from Users where username = \"" + username + "\" and password = \"" + password + "\"");
+        if (result.getInt(1) == 0){
+            statement.execute("insert into users (username, password, balance) values (\"" + username + "\", \"" + password + "\", " + 100 + ")");
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public boolean createProject(Project project, int requestId, int userId) throws RemoteException, SQLException {

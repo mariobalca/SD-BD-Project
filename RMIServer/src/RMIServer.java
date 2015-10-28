@@ -15,11 +15,11 @@ public class RMIServer{
     public RMIServer(){
         try {
             Connection connection = DriverManager.getConnection("jdbc:sqlite:RMIServer/src/Database/db.db");
-            System.setProperty("java.rmi.server.hostname","10.42.0.1");
+            //System.setProperty("java.rmi.server.hostname","localhost");
             RMIImpl rmiServer = new RMIImpl(connection);
             Registry r = LocateRegistry.createRegistry(7000);
             r.rebind("rmi", rmiServer);
-            System.out.println("Hello Server ready.");
+            System.out.println("RMI Server ready.");
         } catch (RemoteException re) {
             System.out.println("Exception in RMIServer.main: " + re);
         } catch (SQLException e){
