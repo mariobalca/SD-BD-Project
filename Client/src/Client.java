@@ -1,7 +1,3 @@
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-import jdk.nashorn.internal.ir.RuntimeNode;
-
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -83,6 +79,17 @@ public class Client {
                 auth = response.status;
                 if(auth){
                     System.out.println("Login efectuado");
+
+                }
+                else{
+                    System.out.println("Invalid credentials");
+                }
+                break;
+            case "Register":
+                BooleanResponse response4 = (BooleanResponse)data.response;
+                auth = response4.status;
+                if(auth){
+                    System.out.println("Registo efectuado");
 
                 }
                 else{

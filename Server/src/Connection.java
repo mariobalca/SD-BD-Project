@@ -20,6 +20,7 @@ class Connection extends Thread{
             inputStream = new ObjectInputStream(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             rmi = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS, 7000).lookup("rmi");
+            System.out.println("Connected to RMI and Client");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (NotBoundException e) {
@@ -57,10 +58,20 @@ class Connection extends Thread{
             case "Login":
                 Login aux = (Login)request;
                 boolean auth = false;
-                if(aux.username.equals("Tobias") && aux.password.equals("LOL")){
+                if(rmi.loginUser(aux.username, aux.password))
                     auth = true;
-                }
+
                 return new BooleanResponse("Login",auth);
+
+            case "Register":
+                Register aux2 = (Register)request;
+                boolean auth2 = false;
+
+                if(rmi.registerUser(aux2.username, aux2.password))
+                    auth2 = true;
+
+                return new BooleanResponse("Register",auth2);
+
             case "ListActualProj":
                 ProjectListResponse response = new ProjectListResponse("ListActualProj");
                 ArrayList<Project> projects = rmi.getProjects();

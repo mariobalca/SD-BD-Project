@@ -5,8 +5,8 @@ import java.io.InputStreamReader;
  * Created by Rui on 26/10/2015.
  */
 public class Register extends Request{
-    private String username = "";
-    private String password = "";
+    public String username = "";
+    public String password = "";
 
 
     public Register() {

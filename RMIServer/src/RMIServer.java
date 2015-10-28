@@ -19,7 +19,7 @@ public class RMIServer{
             RMIImpl rmiServer = new RMIImpl(connection);
             Registry r = LocateRegistry.createRegistry(7000);
             r.rebind("rmi", rmiServer);
-            System.out.println("Hello Server ready.");
+            System.out.println("RMI Server ready.");
         } catch (RemoteException re) {
             System.out.println("Exception in RMIServer.main: " + re);
         } catch (SQLException e){
