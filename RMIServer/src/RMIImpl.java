@@ -101,11 +101,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ArrayList<Reward> rewards = new ArrayList<Reward>();
         while(result.next())
         {
-<<<<<<< HEAD
-            //rewards.add(new Reward());
-=======
             rewards.add(new Reward(result.getInt(1), result.getDouble(2), result.getString(3), result.getString(4)));
->>>>>>> 20e5d4792065df41c0d647e0ce4bd68a13a84488
         }
         System.out.println("Get Rewards executed");
         return rewards;
@@ -117,11 +113,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ArrayList<Extra> extraRewards = new ArrayList<Extra>();
         while(result.next())
         {
-<<<<<<< HEAD
-            //extraRewards.add(new Extra());
-=======
             extraRewards.add(new Extra(result.getInt(1), result.getDouble(2), result.getString(3), result.getString(4)));
->>>>>>> 20e5d4792065df41c0d647e0ce4bd68a13a84488
         }
         System.out.println("Get Extras executed");
         return extraRewards;
@@ -133,11 +125,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ArrayList<Message> messages = new ArrayList<Message>();
         while(result.next())
         {
-<<<<<<< HEAD
-            //messages.add(new Message());
-=======
             messages.add(new Message(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getString(5), result.getString(6)));
->>>>>>> 20e5d4792065df41c0d647e0ce4bd68a13a84488
         }
         System.out.println("Get Messages executed");
         return messages;
