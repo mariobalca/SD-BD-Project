@@ -8,32 +8,15 @@ public class Message implements Serializable {
     private String subject;
     private String question;
     private String response;
-    private String sender;
-    private String receiver;
+    private User sender;
 
-    public Message(int id, String sub, String q, String res, String sen, String rec){
+
+    public Message(int id, String sub, String q, String res, User sen){
         this.id = id;
         this.subject = sub;
         this.question = q;
         this.response = res;
-        this.receiver = rec;
         this.sender = sen;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
     }
 
     public String getResponse() {
@@ -62,5 +45,13 @@ public class Message implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
     }
 }

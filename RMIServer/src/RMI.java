@@ -8,42 +8,41 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface RMI extends Remote, Serializable{
+
+    // IDEMPOTENTES
     ArrayList<User> getUsers() throws java.rmi.RemoteException, SQLException;
-    ArrayList<User> getAdmins(Project project) throws java.rmi.RemoteException, SQLException;
+    ArrayList<User> getAdmins(int projectId) throws java.rmi.RemoteException, SQLException;
     ArrayList<Project> getProjects() throws java.rmi.RemoteException, SQLException;
     ArrayList<Project> getOlderProjects() throws java.rmi.RemoteException, SQLException;
-    ArrayList<Project> getUserProjects(User user) throws java.rmi.RemoteException, SQLException;
-    ArrayList<Reward> getRewards(User user) throws java.rmi.RemoteException, SQLException;
-    ArrayList<Extra> getExtraRewards(User user) throws java.rmi.RemoteException, SQLException;
-    ArrayList<Message> getMessages(Project project) throws java.rmi.RemoteException, SQLException;
-
-    /*
-    public boolean createProject() throws java.rmi.RemoteException, SQLException;
-//  public boolean editProject(Project project) throws java.rmi.RemoteException, SQLException;
-    public boolean removeProject(Project project) throws java.rmi.RemoteException, SQLException;
-    public boolean financeProject(Project project, User user) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Project> getUserProjects(int projectId) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Reward> getRewards(int userId) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Extra> getExtraRewards(int userId) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Message> getMessages(int projectId) throws java.rmi.RemoteException, SQLException;
+    public double getBalance(int userId) throws java.rmi.RemoteException, SQLException;
 
 
-    public double getBalance(User user) throws java.rmi.RemoteException, SQLException;
+    // NÃO IDEMPOTENTES
+    public boolean createProject(Project project, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
+    public boolean removeProject(int projectId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
+    public boolean financeProject(int projectId, int requestId, int userId, int pathId, double value) throws java.rmi.RemoteException, SQLException;
 
 
-    public boolean sendMessage(String message) throws java.rmi.RemoteException, SQLException;
-    public boolean answerMessage(Message message) throws java.rmi.RemoteException, SQLException;
+    public boolean sendMessage(Message message, int projectId, int requestId) throws java.rmi.RemoteException, SQLException;
+    public boolean answerMessage(int messageId, String response, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
 
 
-    public boolean addReward() throws java.rmi.RemoteException, SQLException;
-    public boolean removeReward(Reward reward) throws java.rmi.RemoteException, SQLException;
-    public boolean winReward(Reward reward, User user) throws java.rmi.RemoteException, SQLException;
-    public boolean giveReward(Reward reward, User giver, User receiver) throws java.rmi.RemoteException, SQLException;
+    public boolean createPath(Path path, int requestId, int userId, int projectId) throws java.rmi.RemoteException, SQLException;
+    public boolean deletePath(int pathId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
+
+/*
+    public boolean addReward(Reward reward, int requestId) throws java.rmi.RemoteException, SQLException;
+    public boolean removeReward(int rewardId, int requestId) throws java.rmi.RemoteException, SQLException;
+    public boolean winReward(int rewardId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
+    public boolean giveReward(int rewardId, int requestId, int giverUserId, int receiverUserId) throws java.rmi.RemoteException, SQLException;
 
 
-    public boolean createPath() throws java.rmi.RemoteException, SQLException;
-    public boolean deletePath() throws java.rmi.RemoteException, SQLException;
-    public boolean votePath(Path path) throws java.rmi.RemoteException, SQLException;
-
-
-    public boolean addExtraReward() throws java.rmi.RemoteException, SQLException;
-    public boolean removeExtraReward(Extra extra) throws java.rmi.RemoteException, SQLException;
-    public boolean winExtraReward(Extra extra, User user) throws java.rmi.RemoteException, SQLException;
+    public boolean addExtraReward(Extra extra, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
+    public boolean removeExtraReward(int extraId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
+    public boolean winExtraReward(int  extraId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
 */
 }

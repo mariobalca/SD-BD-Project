@@ -18,11 +18,11 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         super();
         this.connection = connection;
         this.statement = connection.createStatement();
+        this.statement.execute("PRAGMA foreign_keys = ON");
     }
 
     public ArrayList<User> getUsers() throws RemoteException, SQLException {
         ResultSet result = statement.executeQuery("Select * from Users");
-        String returnValue = "";
         ArrayList<User> users = new ArrayList<User>();
         while(result.next())
         {
@@ -32,9 +32,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         return users;
     }
 
-    public ArrayList<User> getAdmins(Project project) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Users");
-        String returnValue = "";
+    public ArrayList<User> getAdmins(int projectId) throws java.rmi.RemoteException, SQLException{
+        ResultSet result = statement.executeQuery("Select * from Administrators where projectId = " + projectId);
         ArrayList<User> users = new ArrayList<User>();
         while(result.next())
         {
@@ -46,13 +45,14 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
     public ArrayList<Project> getProjects() throws java.rmi.RemoteException, SQLException{
         ResultSet result = statement.executeQuery("Select * from Projects");
-        String returnValue = "";
         ArrayList<Project> projects = new ArrayList<Project>();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         while(result.next())
         {
             try {
-                projects.add(new Project(result.getInt(1), result.getString(2),  format.parse(result.getString(3)), result.getDouble(4), result.getString(5)));
+                Date projectDate = format.parse(result.getString(3));
+                if(new Date().before(projectDate))
+                    projects.add(new Project(result.getInt(1), result.getString(2),  format.parse(result.getString(3)), result.getDouble(4), result.getString(5)));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -63,13 +63,14 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
     public ArrayList<Project> getOlderProjects() throws java.rmi.RemoteException, SQLException{
         ResultSet result = statement.executeQuery("Select * from Projects");
-        String returnValue = "";
         ArrayList<Project> projects = new ArrayList<Project>();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         while(result.next())
         {
             try {
-                projects.add(new Project(result.getInt(1), result.getString(2),  format.parse(result.getString(3)), result.getDouble(4), result.getString(5)));
+                Date projectDate = format.parse(result.getString(3));
+                if(new Date().after(projectDate))
+                    projects.add(new Project(result.getInt(1), result.getString(2), projectDate  , result.getDouble(4), result.getString(5)));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -78,9 +79,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         return projects;
     }
 
-    public ArrayList<Project> getUserProjects(User user) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Projects where OwnerUserId = " + user.getId());
-        String returnValue = "";
+    public ArrayList<Project> getUserProjects(int userId) throws java.rmi.RemoteException, SQLException{
+        ResultSet result = statement.executeQuery("Select * from Projects where OwnerUserId = " + userId);
         ArrayList<Project> projects = new ArrayList<Project>();;
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         while(result.next())
@@ -95,21 +95,19 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         return projects;
     }
 
-    public ArrayList<Reward> getRewards(User user) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Rewards_Users where OwnerUserId = " + user.getId());
-        String returnValue = "";
+    public ArrayList<Reward> getRewards(int userId) throws java.rmi.RemoteException, SQLException{
+        ResultSet result = statement.executeQuery("Select * from Rewards_Users where OwnerUserId = " + userId);
         ArrayList<Reward> rewards = new ArrayList<Reward>();
-        while(result.next())
-        {
+
+        while(result.next()){
             rewards.add(new Reward(result.getInt(1), result.getDouble(2), result.getString(3), result.getString(4)));
         }
         System.out.println("Get Rewards executed");
         return rewards;
     }
 
-    public ArrayList<Extra> getExtraRewards(User user) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Extras_Users where OwnerUserId = " + user.getId());
-        String returnValue = "";
+    public ArrayList<Extra> getExtraRewards(int userId) throws java.rmi.RemoteException, SQLException{
+        ResultSet result = statement.executeQuery("Select * from Extras_Users where OwnerUserId = " + userId);
         ArrayList<Extra> extraRewards = new ArrayList<Extra>();
         while(result.next())
         {
@@ -119,15 +117,223 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         return extraRewards;
     }
 
-    public ArrayList<Message> getMessages(Project project) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select Messages.id, Messages.Subject, Messages.Question, Messages.Response, Users.Username, Users.Username from Messages INNER JOIN Users ON Messages.ToUserId = Users.id AND Messages.FromUserId = Users.id where ProjectId = " + project.getId());
-        String returnValue = "";
+    public ArrayList<Message> getMessages(int projectId) throws java.rmi.RemoteException, SQLException{
+        ResultSet result = statement.executeQuery("select * from messages");
         ArrayList<Message> messages = new ArrayList<Message>();
         while(result.next())
         {
-            messages.add(new Message(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getString(5), result.getString(6)));
+            ResultSet fromUserResult = statement.executeQuery("select * from Users where fromUserId = " + result.getInt(5));
+            User fromUser = new User(fromUserResult.getInt(1), fromUserResult.getString(2), fromUserResult.getString(3), fromUserResult.getDouble(4));
+
+            messages.add(new Message(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), fromUser));
         }
         System.out.println("Get Messages executed");
         return messages;
     }
+
+    public double getBalance(int userId) throws java.rmi.RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select Balance from Users where id = " + userId);
+        double balance = result.getDouble(1);
+
+        System.out.println("Get Balance executed");
+        return balance;
+    }
+
+    public boolean createProject(Project project, int requestId, int userId) throws RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        if(result.getInt(1) == 0){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            statement.execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" + project.getDescription() + "\", " + userId + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+
+            return true;
+        }
+        else{
+            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            return result.getBoolean(1);
+        }
+    }
+
+    public boolean removeProject(int projectId, int requestId, int userId) throws RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        if(result.getInt(1) == 0){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            statement.execute("delete from projects where id = " + projectId);
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+
+            return true;
+        }
+        else{
+            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            return result.getBoolean(1);
+        }
+    }
+
+    public boolean financeProject(int projectId, int requestId, int userId, int pathId, double value) throws RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        if(result.getInt(1) == 0){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            statement.execute("insert into transactions (UserId, ProjectId, Value) values (" + userId + ", " + projectId + ","  + ", " + value + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+
+            return true;
+        }
+        else{
+            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            return result.getBoolean(1);
+        }
+    }
+
+    public boolean sendMessage(Message message, int projectId, int requestId) throws RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + message.getSender().getId());
+        if(result.getInt(1) == 0){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            statement.execute("insert into messages (ProjectId, Subject, Question, Response, FromUserId) values (" + projectId + ",\"" + message.getSubject() + "\",\"" + message.getQuestion() + "\", \"\", " + message.getSender().getId() + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + message.getSender().getId() + ", " + requestId + ", 1)");
+
+            return true;
+        }
+        else{
+            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + message.getSender().getId());
+            return result.getBoolean(1);
+        }
+    }
+
+    public boolean answerMessage(int messageId, String response, int requestId, int userId) throws RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        if(result.getInt(1) == 0){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            statement.execute("update messages set response = " + response + " where id = " + messageId);
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+
+            return true;
+        }
+        else{
+            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            return result.getBoolean(1);
+        }
+    }
+
+    public boolean createPath(Path path, int requestId, int userId, int projectId) throws RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        if(result.getInt(1) == 0){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            statement.execute("insert into paths (Name, Description, ProjectId) values (\"" + path.getName() + "\", \"" + path.getDescription() + "\", " + projectId + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+
+            return true;
+        }
+        else{
+            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            return result.getBoolean(1);
+        }
+    }
+
+    public boolean deletePath(int pathId, int requestId, int userId) throws RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        if(result.getInt(1) == 0){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            statement.execute("delete from paths where id = " + requestId);
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+
+            return true;
+        }
+        else{
+            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            return result.getBoolean(1);
+        }
+    }
+/*
+    public boolean addReward(Reward reward, int requestId) throws RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        if(result.getInt(1) == 0){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            statement.execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" project.getDescription() + "\", " + userId + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+        }
+        else{
+            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            return result.getBoolean(1);
+        }
+    }
+
+    public boolean removeReward(int rewardId, int requestId) throws RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        if(result.getInt(1) == 0){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            statement.execute("delete from rewards where id = " + rewardId);
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+        }
+        else{
+            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            return result.getBoolean(1);
+        }
+    }
+
+    public boolean winReward(int rewardId, int requestId, int userId) throws RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        if(result.getInt(1) == 0){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            statement.execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" project.getDescription() + "\", " + userId + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+        }
+        else{
+            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            return result.getBoolean(1);
+        }
+    }
+
+    public boolean giveReward(int rewardId, int requestId, int giverUserId, int receiverUserId) throws RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        if(result.getInt(1) == 0){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            statement.execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" project.getDescription() + "\", " + userId + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+        }
+        else{
+            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            return result.getBoolean(1);
+        }
+    }
+
+
+
+    public boolean addExtraReward(Extra extra, int requestId, int userId) throws RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        if(result.getInt(1) == 0){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            statement.execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" project.getDescription() + "\", " + userId + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+        }
+        else{
+            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            return result.getBoolean(1);
+        }
+    }
+
+    public boolean removeExtraReward(int extraId, int requestId, int userId) throws RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        if(result.getInt(1) == 0){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            statement.execute("delete from extras where id = " + extraId);
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+        }
+        else{
+            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            return result.getBoolean(1);
+        }
+    }
+
+    public boolean winExtraReward(int extraId, int requestId, int userId) throws RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        if(result.getInt(1) == 0){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            statement.execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" project.getDescription() + "\", " + userId + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+        }
+        else{
+            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            return result.getBoolean(1);
+        }
+    }*/
 }
