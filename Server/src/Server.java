@@ -79,7 +79,6 @@ public class Server{
             }
             try {
                 udpSocket.receive(new DatagramPacket(in,1,InetAddress.getByName(secondServerIP),secondServerPort));
-                System.out.println(new String(in));
                 if(new String(in).equals("r")){
                     synchronized (listener){
                         try {

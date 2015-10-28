@@ -17,19 +17,12 @@ class Connection extends Thread{
     public Connection(Socket socket){
         this.socket = socket;
         try {
-            socket.setKeepAlive(true);
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
-        try {
             inputStream = new ObjectInputStream(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
-            rmi = (RMI) LocateRegistry.getRegistry("localhost",7000).lookup("rmi");
-        } catch (RemoteException e){
-            System.out.println("OYOYO");
+            rmi = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS, 7000).lookup("rmi");
         } catch (IOException e) {
             e.printStackTrace();
-        }catch (NotBoundException e) {
+        } catch (NotBoundException e) {
             e.printStackTrace();
         }
         start();
