@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.util.Scanner;
 
 /**
  * Created by pedro on 27-10-2015.
@@ -21,11 +23,69 @@ public class IOThread extends Thread{
                     Client.currentString = aux;
                 }
             }*/
-            synchronized (Client.aux) {
-                System.out.println(Client.aux);
+
+            if(!Client.auth){
+                System.out.println("O que deseja?\n1.Login\n2.Register\n3.List current projects\n4.List older projects\n5.Consult project\n");
+                int opc;
+                try {
+                    opc = Integer.parseInt(reader.readLine());
+                    synchronized (Client.currentRequest) {
+                        switch (opc) {
+                            case 1:
+                                Client.currentRequest = new Login();
+                                break;
+                            case 2:
+                                Client.currentRequest = new Register();
+                                break;
+                            case 3:
+                                Client.currentRequest = new ListActualProj();
+                                synchronized (this){
+                                    wait();
+                                }
+                                System.out.println("Qual Queres?");
+                                Client.currentRequest = new ConsultProj();
+                                break;
+                            case 4:
+                                Client.currentRequest = new ListOlderProj();
+                                break;
+                            case 5:
+                                Client.currentRequest = new ConsultProj();
+                                break;
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-            synchronized (Client.currentRequest) {
-                Client.currentRequest = new Login();
+            else{
+                System.out.println("O que deseja?\n1.Check Balance\n2.Check Rewards\n3.List current projects\n4.List older projects\n5.Consult project\n6.Pledge Project\n7.Comment Project\n8.Create Project");
+                int opc;
+                try {
+                    opc = Integer.parseInt(reader.readLine());
+                    synchronized (Client.currentRequest) {
+                        switch (opc) {
+                            case 1:
+                                Client.currentRequest = new Login();
+                                break;
+                            case 2:
+                                Client.currentRequest = new Register();
+                                break;
+                            case 3:
+                                Client.currentRequest = new ListActualProj();
+                                break;
+                            case 4:
+                                Client.currentRequest = new ListOlderProj();
+                                break;
+                            case 5:
+                                Client.currentRequest = new ConsultProj();
+                                break;
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             synchronized (this){
                 try {

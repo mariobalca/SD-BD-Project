@@ -10,7 +10,7 @@ public class RMIClient {
     public static void main(String args[]) {
         try {
             RMI h = (RMI) LocateRegistry.getRegistry(7000).lookup("rmi");
-            ArrayList<Project> projects = h.getOlderProjects();
+            ArrayList<Project> projects = h.getProjects();
             for(Project item : projects){
                 System.out.println(item.toString());
             }
