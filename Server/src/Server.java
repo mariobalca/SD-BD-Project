@@ -14,13 +14,13 @@ public class Server{
         RECEIVING_REQUESTS
     }
 
-    static SERVER_STATE state = SERVER_STATE.NOT_LISTENING;
+    static SERVER_STATE state;
 
     private int udpPort;
     private String secondServerIP;
     private int secondServerPort;
     private int serverPort;
-    static String RMI_ADDRESS = "10.42.0.1";
+    static String RMI_ADDRESS = "localhost";
 
 
     private DatagramSocket udpSocket;
@@ -79,6 +79,7 @@ public class Server{
             }
             try {
                 udpSocket.receive(new DatagramPacket(in,1,InetAddress.getByName(secondServerIP),secondServerPort));
+                System.out.println(new String(in));
                 if(new String(in).equals("r")){
                     synchronized (listener){
                         try {
@@ -110,7 +111,7 @@ public class Server{
     }
 
     public static void main(String args[]) throws InterruptedException {
-        int udpPort = 8012;
+        int udpPort = 8011;
         int serverPort = 8002;
         String secondServerIP = "localhost";
         int secondServerPort = 8012;

@@ -98,6 +98,13 @@ public class Client {
             case "ConsultProj":
                 ProjectListResponse response2 = (ProjectListResponse)data.response;
                 System.out.println(response2.projects.get(0) + " Buéda detalhado");
+                break;
+            case "ListOlderProj":
+                ProjectListResponse response3 = (ProjectListResponse)data.response;
+                for(int i=0;i<response3.projects.size();i++){
+                    System.out.println(response3.projects.get(i));
+                }
+                break;
 
 
         }
