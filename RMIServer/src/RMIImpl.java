@@ -22,7 +22,6 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
     public ArrayList<User> getUsers() throws RemoteException, SQLException {
         ResultSet result = statement.executeQuery("Select * from Users");
-        String returnValue = "";
         ArrayList<User> users = new ArrayList<User>();
         while(result.next())
         {
@@ -32,9 +31,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         return users;
     }
 
-    public ArrayList<User> getAdmins(Project project) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Users");
-        String returnValue = "";
+    public ArrayList<User> getAdmins(int projectId) throws java.rmi.RemoteException, SQLException{
+        ResultSet result = statement.executeQuery("Select * from Administrators where projectId = " + projectId);
         ArrayList<User> users = new ArrayList<User>();
         while(result.next())
         {
@@ -46,13 +44,14 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
     public ArrayList<Project> getProjects() throws java.rmi.RemoteException, SQLException{
         ResultSet result = statement.executeQuery("Select * from Projects");
-        String returnValue = "";
         ArrayList<Project> projects = new ArrayList<Project>();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         while(result.next())
         {
             try {
-                projects.add(new Project(result.getInt(1), result.getString(2),  format.parse(result.getString(3)), result.getDouble(4), result.getString(5)));
+                Date projectDate = format.parse(result.getString(3));
+                if(new Date().before(projectDate))
+                    projects.add(new Project(result.getInt(1), result.getString(2),  format.parse(result.getString(3)), result.getDouble(4), result.getString(5)));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -63,13 +62,15 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
     public ArrayList<Project> getOlderProjects() throws java.rmi.RemoteException, SQLException{
         ResultSet result = statement.executeQuery("Select * from Projects");
-        String returnValue = "";
         ArrayList<Project> projects = new ArrayList<Project>();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         while(result.next())
         {
             try {
-                projects.add(new Project(result.getInt(1), result.getString(2),  format.parse(result.getString(3)), result.getDouble(4), result.getString(5)));
+                Date projectDate = format.parse(result.getString(3));
+                System.out.println(new Date().toString());
+                if(new Date().after(projectDate))
+                    projects.add(new Project(result.getInt(1), result.getString(2), projectDate  , result.getDouble(4), result.getString(5)));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -78,9 +79,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         return projects;
     }
 
-    public ArrayList<Project> getUserProjects(User user) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Projects where OwnerUserId = " + user.getId());
-        String returnValue = "";
+    public ArrayList<Project> getUserProjects(int userId) throws java.rmi.RemoteException, SQLException{
+        ResultSet result = statement.executeQuery("Select * from Projects where OwnerUserId = " + userId);
         ArrayList<Project> projects = new ArrayList<Project>();;
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         while(result.next())
@@ -95,9 +95,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         return projects;
     }
 
-    public ArrayList<Reward> getRewards(User user) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Rewards_Users where OwnerUserId = " + user.getId());
-        String returnValue = "";
+    public ArrayList<Reward> getRewards(int userId) throws java.rmi.RemoteException, SQLException{
+        ResultSet result = statement.executeQuery("Select * from Rewards_Users where OwnerUserId = " + userId);
         ArrayList<Reward> rewards = new ArrayList<Reward>();
         while(result.next())
         {
@@ -107,9 +106,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         return rewards;
     }
 
-    public ArrayList<Extra> getExtraRewards(User user) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Extras_Users where OwnerUserId = " + user.getId());
-        String returnValue = "";
+    public ArrayList<Extra> getExtraRewards(int userId) throws java.rmi.RemoteException, SQLException{
+        ResultSet result = statement.executeQuery("Select * from Extras_Users where OwnerUserId = " + userId);
         ArrayList<Extra> extraRewards = new ArrayList<Extra>();
         while(result.next())
         {
@@ -119,15 +117,83 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         return extraRewards;
     }
 
-    public ArrayList<Message> getMessages(Project project) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select Messages.id, Messages.Subject, Messages.Question, Messages.Response, Users.Username, Users.Username from Messages INNER JOIN Users ON Messages.ToUserId = Users.id AND Messages.FromUserId = Users.id where ProjectId = " + project.getId());
-        String returnValue = "";
+    public ArrayList<Message> getMessages(int projectId) throws java.rmi.RemoteException, SQLException{
+        ResultSet result = statement.executeQuery("select * from messages");
         ArrayList<Message> messages = new ArrayList<Message>();
         while(result.next())
         {
-            messages.add(new Message(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getString(5), result.getString(6)));
+            ResultSet fromUserResult = statement.executeQuery("select * from Users where fromUserId = " + result.getInt(5));
+            User fromUser = new User(fromUserResult.getInt(1), fromUserResult.getString(2), fromUserResult.getString(3), fromUserResult.getDouble(4));
+            ResultSet toUserResult = statement.executeQuery("select * from Users where toUserId = " + result.getInt(5));
+            User toUser = new User(toUserResult.getInt(1), toUserResult.getString(2), toUserResult.getString(3), toUserResult.getDouble(4));
+
+            messages.add(new Message(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), fromUser, toUser));
         }
         System.out.println("Get Messages executed");
         return messages;
+    }
+
+    public double getBalance(int userId) throws java.rmi.RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select Balance from Users where id = " + userId);
+        double balance = result.getDouble(1);
+
+        System.out.println("Get Balance executed");
+        return balance;
+    }
+
+    public boolean createProject(Project project, int userId) throws RemoteException, SQLException {
+
+    }
+
+    public boolean removeProject(int projectId) throws RemoteException, SQLException {
+        return false;
+    }
+
+    public boolean financeProject(int projectId, int userId, int pathId) throws RemoteException, SQLException {
+        return false;
+    }
+
+    public boolean sendMessage(Message message) throws RemoteException, SQLException {
+        return false;
+    }
+
+    public boolean answerMessage(int messageId) throws RemoteException, SQLException {
+        return false;
+    }
+
+    public boolean addReward(Reward reward) throws RemoteException, SQLException {
+        return false;
+    }
+
+    public boolean removeReward(int rewardId) throws RemoteException, SQLException {
+        return false;
+    }
+
+    public boolean winReward(int rewardId, int userId) throws RemoteException, SQLException {
+        return false;
+    }
+
+    public boolean giveReward(int rewardId, int giverUserId, int receiverUserId) throws RemoteException, SQLException {
+        return false;
+    }
+
+    public boolean createPath(Path path, int projectId) throws RemoteException, SQLException {
+        return false;
+    }
+
+    public boolean deletePath(int pathId) throws RemoteException, SQLException {
+        return false;
+    }
+
+    public boolean addExtraReward(Extra extra) throws RemoteException, SQLException {
+        return false;
+    }
+
+    public boolean removeExtraReward(int extraId) throws RemoteException, SQLException {
+        return false;
+    }
+
+    public boolean winExtraReward(int extraId, int userId) throws RemoteException, SQLException {
+        return false;
     }
 }

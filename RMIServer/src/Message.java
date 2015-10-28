@@ -8,32 +8,17 @@ public class Message implements Serializable {
     private String subject;
     private String question;
     private String response;
-    private String sender;
-    private String receiver;
+    private User sender;
+    private User receiver;
 
-    public Message(int id, String sub, String q, String res, String sen, String rec){
+
+    public Message(int id, String sub, String q, String res, User sen, User rec){
         this.id = id;
         this.subject = sub;
         this.question = q;
         this.response = res;
-        this.receiver = rec;
         this.sender = sen;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
+        this.receiver = rec;
     }
 
     public String getResponse() {
