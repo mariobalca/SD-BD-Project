@@ -24,7 +24,7 @@ public class IOThread extends Thread{
                 }
             }*/
 
-            if(!Client.auth){
+            if(Client.userId<=0){
                 System.out.println("O que deseja?\n1.Login\n2.Register\n3.List current projects\n4.List older projects\n5.Consult project\n");
                 int opc;
                 try {
@@ -67,10 +67,10 @@ public class IOThread extends Thread{
                     synchronized (Client.currentRequest) {
                         switch (opc) {
                             case 1:
-                                Client.currentRequest = new Login();
+                                Client.currentRequest = new CheckBalance();
                                 break;
                             case 2:
-                                Client.currentRequest = new Register();
+                                Client.currentRequest = new CheckRewards();
                                 break;
                             case 3:
                                 Client.currentRequest = new ListActualProj();
@@ -80,6 +80,15 @@ public class IOThread extends Thread{
                                 break;
                             case 5:
                                 Client.currentRequest = new ConsultProj();
+                                break;
+                            case 6:
+                                Client.currentRequest = new PledgeProj();
+                                break;
+                            case 7:
+                                Client.currentRequest = new CommentProj();
+                                break;
+                            case 8:
+                                Client.currentRequest = new CreateProj();
                                 break;
                         }
                     }
