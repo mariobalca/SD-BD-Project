@@ -2,18 +2,27 @@ import sun.rmi.runtime.Log;
 
 import java.io.*;
 import java.net.Socket;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 class Connection extends Thread{
     ObjectInputStream inputStream;
     ObjectOutputStream outputStream;
     Socket socket;
+    RMI rmi;
     public Connection(Socket socket){
         this.socket = socket;
         try {
             inputStream = new ObjectInputStream(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
+            rmi = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS, 7000).lookup("rmi");
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NotBoundException e) {
             e.printStackTrace();
         }
         start();
@@ -38,10 +47,12 @@ class Connection extends Thread{
         }catch(EOFException e){System.out.println("EOF:" + e);
         }catch(IOException e){System.out.println("IO:" + e);} catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-    public Response execute(Request request){
+    public Response execute(Request request) throws RemoteException, SQLException {
         switch (request.tipo){
             case "Login":
                 Login aux = (Login)request;
@@ -52,9 +63,18 @@ class Connection extends Thread{
                 return new BooleanResponse("Login",auth);
             case "ListActualProj":
                 ProjectListResponse response = new ProjectListResponse("ListActualProj");
-                response.projects.add(new Project(0,"Ganza", new Date(2015,4,20,4,20),420000,"Purex"));
-                response.projects.add(new Project(1,"Bombardeamento do NEI",new Date(2001,9,11,15,10),666000,"Tudo morto"));
+                ArrayList<Project> projects = rmi.getProjects();
+                for(Project item : projects){
+                    response.projects.add(item);
+                }
                 return response;
+            case "ListOlderProj":
+                ProjectListResponse response2 = new ProjectListResponse("ListOlderProj");
+                ArrayList<Project> projects2 = rmi.getOlderProjects();
+                for(Project item : projects2){
+                    response2.projects.add(item);
+                }
+                return response2;
             case "ConsultProj":
                 ProjectListResponse response1 = new ProjectListResponse("ConsultProj");
                 response1.projects.add(new Project(0,"Ganza", new Date(2015,4,20,4,20),420000,"Purex"));

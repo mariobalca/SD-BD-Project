@@ -20,7 +20,7 @@ public class Server{
     private String secondServerIP;
     private int secondServerPort;
     private int serverPort;
-
+    static String RMI_ADDRESS = "10.42.0.1";
 
 
     private DatagramSocket udpSocket;

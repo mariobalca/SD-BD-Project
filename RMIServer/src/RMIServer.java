@@ -2,6 +2,7 @@
  * Created by mariobalca on 24-10-2015.
  */
 
+import java.net.*;
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -14,7 +15,7 @@ public class RMIServer{
     public RMIServer(){
         try {
             Connection connection = DriverManager.getConnection("jdbc:sqlite:RMIServer/src/Database/db.db");
-
+            System.setProperty("java.rmi.server.hostname","10.42.0.1");
             RMIImpl rmiServer = new RMIImpl(connection);
             Registry r = LocateRegistry.createRegistry(7000);
             r.rebind("rmi", rmiServer);
