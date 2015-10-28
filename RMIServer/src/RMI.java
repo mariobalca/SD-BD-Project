@@ -34,15 +34,15 @@ public interface RMI extends Remote, Serializable{
     public boolean createPath(Path path, int requestId, int userId, int projectId) throws java.rmi.RemoteException, SQLException;
     public boolean deletePath(int pathId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
 
-/*
-    public boolean addReward(Reward reward, int requestId) throws java.rmi.RemoteException, SQLException;
-    public boolean removeReward(int rewardId, int requestId) throws java.rmi.RemoteException, SQLException;
+
+    public boolean addReward(Reward reward, int requestId, int projectId, int userId) throws java.rmi.RemoteException, SQLException;
+    public boolean removeReward(int rewardId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
     public boolean winReward(int rewardId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
     public boolean giveReward(int rewardId, int requestId, int giverUserId, int receiverUserId) throws java.rmi.RemoteException, SQLException;
 
 
-    public boolean addExtraReward(Extra extra, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
+    public boolean addExtraReward(Extra extra, int requestId, int projectId, int userId) throws java.rmi.RemoteException, SQLException;
     public boolean removeExtraReward(int extraId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
     public boolean winExtraReward(int  extraId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
-*/
+
 }
