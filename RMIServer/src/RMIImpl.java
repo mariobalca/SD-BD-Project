@@ -143,7 +143,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public boolean loginUser(String username, String password) throws SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from Users where username = \"" + username + "\" and password = \"" + password + "\"");
+        ResultSet result = statement.executeQuery("select count(*), from Users where username = \"" + username + "\" and password = \"" + password + "\"");
         if(result.getInt(1) == 1){
             return true;
         }

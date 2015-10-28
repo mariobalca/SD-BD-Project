@@ -7,7 +7,9 @@ public class Client {
     private int[] ports;
 
     private IOThread ioThread;
-    static boolean auth;
+    static int userId;
+    static int requestId;
+
 
     static Request currentRequest;
 
@@ -17,7 +19,7 @@ public class Client {
         this.hosts = hosts;
         this.ports = ports;
         this.currentRequest = new Ping();
-        this.auth = false;
+        this.userId = 0;
         ioThread = new IOThread();
 
 
@@ -75,9 +77,10 @@ public class Client {
     private void execute(RequestResponse data) {
         switch (data.response.tipo){
             case "Login":
-                BooleanResponse response = (BooleanResponse)data.response;
-                auth = response.status;
-                if(auth){
+                IntResponse intresponse = (IntResponse)data.response;
+                userId = intresponse.values[0];
+                requestId = intresponse.values[1];
+                if(userId>0){
                     System.out.println("Login efectuado");
 
                 }
@@ -86,9 +89,10 @@ public class Client {
                 }
                 break;
             case "Register":
-                BooleanResponse response4 = (BooleanResponse)data.response;
-                auth = response4.status;
-                if(auth){
+                IntResponse response4 = (IntResponse)data.response;
+                userId = response4.values[0];
+                requestId = 0;
+                if(userId>0){
                     System.out.println("Registo efectuado");
 
                 }
@@ -97,19 +101,19 @@ public class Client {
                 }
                 break;
             case "ListActualProj":
-                ProjectListResponse response1 = (ProjectListResponse)data.response;
-                for(int i=0;i<response1.projects.size();i++){
-                    System.out.println(response1.projects.get(i));
+                ProjectListResponse projectresponse = (ProjectListResponse)data.response;
+                for(int i=0;i<projectresponse.projects.size();i++){
+                    System.out.println(projectresponse.projects.get(i));
                 }
                 break;
             case "ConsultProj":
-                ProjectListResponse response2 = (ProjectListResponse)data.response;
-                System.out.println(response2.projects.get(0) + " Buéda detalhado");
+                projectresponse = (ProjectListResponse)data.response;
+                System.out.println(projectresponse.projects.get(0) + " Buéda detalhado");
                 break;
             case "ListOlderProj":
-                ProjectListResponse response3 = (ProjectListResponse)data.response;
-                for(int i=0;i<response3.projects.size();i++){
-                    System.out.println(response3.projects.get(i));
+                projectresponse = (ProjectListResponse)data.response;
+                for(int i=0;i<projectresponse.projects.size();i++){
+                    System.out.println(projectresponse.projects.get(i));
                 }
                 break;
 
