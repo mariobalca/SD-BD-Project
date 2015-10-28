@@ -9,6 +9,11 @@ public class Path implements Serializable {
     private String description;
     private int votes;
 
+    public Path(String n, String d){
+        this.name = n;
+        this.description = d;
+    }
+
     public Path(int id, String n, String d){
         this.id = id;
         this.name = n;

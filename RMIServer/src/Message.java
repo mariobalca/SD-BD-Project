@@ -9,16 +9,14 @@ public class Message implements Serializable {
     private String question;
     private String response;
     private User sender;
-    private User receiver;
 
 
-    public Message(int id, String sub, String q, String res, User sen, User rec){
+    public Message(int id, String sub, String q, String res, User sen){
         this.id = id;
         this.subject = sub;
         this.question = q;
         this.response = res;
         this.sender = sen;
-        this.receiver = rec;
     }
 
     public String getResponse() {
@@ -47,5 +45,13 @@ public class Message implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
     }
 }
