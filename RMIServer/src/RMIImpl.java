@@ -15,7 +15,12 @@ import java.util.Date;
 public class RMIImpl extends UnicastRemoteObject implements RMI  {
     static Connection connection;
     static Statement statement;
-    protected RMIImpl(Connection connection) throws RemoteException, SQLException x\
+    protected RMIImpl(Connection connection) throws RemoteException, SQLException {
+        super();
+        this.connection = connection;
+        this.statement = connection.createStatement();
+        this.statement.execute("PRAGMA foreign_keys = ON");
+    }
 
     // IDEMPOTENTES
 
@@ -138,9 +143,9 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public int[] loginUser(String username, String password) throws SQLException {
-        ResultSet result = statement.executeQuery("select id from Users where username = \"" + username + "\" and password = \"" + password + "\"");
+        ResultSet result = statement.executeQuery("select count(*), id from Users where username = \"" + username + "\" and password = \"" + password + "\"");
         if(result.getInt(1) == 1){
-            int userId = result.getInt(1);
+            int userId = result.getInt(2);
             result = statement.executeQuery("select count(*) from logs where userId = " + userId);
             return new int[]{userId, result.getInt(1)};
         }
@@ -154,9 +159,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
 
     public int registerUser(String username, String password) throws SQLException {
-        ResultSet result = statement.executeQuery("select id from Users where username = \"" + username +"\"");
+        ResultSet result = statement.executeQuery("select count(*) from Users where username = \"" + username +"\"");
         if (result.getInt(1) == 0){
             statement.execute("insert into users (username, password, balance) values (\"" + username + "\", \"" + password + "\", " + 100 + ")");
+            result = statement.executeQuery("select id from Users where username = \"" + username +"\"");
             return result.getInt(1);
         }
         else {
