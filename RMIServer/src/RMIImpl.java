@@ -142,13 +142,15 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         return balance;
     }
 
-    public boolean loginUser(String username, String password) throws SQLException {
-        ResultSet result = statement.executeQuery("select count(*), from Users where username = \"" + username + "\" and password = \"" + password + "\"");
+    public int[] loginUser(String username, String password) throws SQLException {
+        ResultSet result = statement.executeQuery("select id from Users where username = \"" + username + "\" and password = \"" + password + "\"");
         if(result.getInt(1) == 1){
-            return true;
+            int userId = result.getInt(1);
+            result = statement.executeQuery("select count(*) from logs where userId = " + userId);
+            return new int[]{userId, result.getInt(1)};
         }
         else{
-            return false;
+            return new int[]{0, 0};
         }
     }
 
@@ -156,14 +158,14 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     // NÃO IDEMPOTENTES
 
 
-    public boolean registerUser(String username, String password) throws SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from Users where username = \"" + username + "\" and password = \"" + password + "\"");
+    public int registerUser(String username, String password) throws SQLException {
+        ResultSet result = statement.executeQuery("select id from Users where username = \"" + username +"\"");
         if (result.getInt(1) == 0){
             statement.execute("insert into users (username, password, balance) values (\"" + username + "\", \"" + password + "\", " + 100 + ")");
-            return true;
+            return result.getInt(1);
         }
         else {
-            return false;
+            return 0;
         }
     }
 

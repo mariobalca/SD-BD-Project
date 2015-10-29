@@ -19,10 +19,10 @@ public interface RMI extends Remote, Serializable{
     ArrayList<Extra> getExtraRewards(int userId) throws java.rmi.RemoteException, SQLException;
     ArrayList<Message> getMessages(int projectId) throws java.rmi.RemoteException, SQLException;
     public double getBalance(int userId) throws java.rmi.RemoteException, SQLException;
-    public boolean loginUser(String username, String password) throws java.rmi.RemoteException, SQLException;
+    public int[] loginUser(String username, String password) throws java.rmi.RemoteException, SQLException;
 
     // NÃO IDEMPOTENTES
-    public boolean registerUser(String username, String password) throws java.rmi.RemoteException, SQLException;
+    public int registerUser(String username, String password) throws java.rmi.RemoteException, SQLException;
     public boolean createProject(Project project, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
     public boolean removeProject(int projectId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
     public boolean financeProject(int projectId, int requestId, int userId, int pathId, double value) throws java.rmi.RemoteException, SQLException;
