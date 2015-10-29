@@ -33,17 +33,16 @@ class Connection extends Thread{
         try{
             while(true){
                 //an echo server
-                RequestResponse data = (RequestResponse)inputStream.readObject();
+                Request data = (Request)inputStream.readObject();
                 Response resposta;
-                if(!data.request.getTipo().equals("Ping")) {
-                    System.out.println(data.request.getTipo());
-                    resposta = execute(data.request);
+                if(!data.getTipo().equals("Ping")) {
+                    System.out.println(data.getTipo());
+                    resposta = execute(data);
                 }
                 else{
                     resposta = new Response("Ping");
                 }
-                data.response = resposta;
-                outputStream.writeObject(data);
+                outputStream.writeObject(resposta);
             }
         }catch(EOFException e){System.out.println("EOF:" + e);
         }catch(IOException e){System.out.println("IO:" + e);} catch (ClassNotFoundException e) {

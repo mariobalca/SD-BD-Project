@@ -1,3 +1,5 @@
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -11,14 +13,12 @@ public class Client {
     static int requestId;
 
 
-    static Request currentRequest;
-
-
+    static RequestResponse currentRequest = new RequestResponse();
+    static Boolean requestToSend = false;
 
     public Client(String[] hosts, int[] ports){
         this.hosts = hosts;
         this.ports = ports;
-        this.currentRequest = new Ping();
         this.userId = 0;
         ioThread = new IOThread();
 
@@ -35,24 +35,33 @@ public class Client {
                 System.out.println("Established connection with " + hosts[currentServer] + '/' + ports[currentServer]);
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-                RequestResponse input;
+                Request input;
                 synchronized (ioThread){
                     if(ioThread.getState() == IOThread.State.NEW)
                         ioThread.start();
                 }
                 while (true){
                     synchronized (currentRequest) {
-                        input = new RequestResponse(currentRequest);
+                        synchronized (requestToSend) {
+                            if(requestToSend)
+                                input = currentRequest.request;
+                            else
+                                input = new Ping();
+                            }
                         out.writeObject(input);
                     }
-                    RequestResponse data;
+                    Response data;
                     try{
-                        data = (RequestResponse)in.readObject();
-                        if(!data.response.tipo.equals("Ping")){
-                            execute(data);
-                            synchronized (currentRequest){
-                                currentRequest = new Ping();
+                        data = (Response)in.readObject();
+                        if(!data.tipo.equals("Ping")){
+                            synchronized (requestToSend){
+                                requestToSend = false;
                             }
+                            currentRequest.response = data;
+                            synchronized (ioThread) {
+                                ioThread.notify();
+                            }
+
                         }
                     }
                     catch (IOException e){

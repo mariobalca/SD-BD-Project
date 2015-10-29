@@ -25,37 +25,46 @@ public class IOThread extends Thread{
             }*/
 
             if(Client.userId<=0){
-                System.out.println("O que deseja?\n1.Login\n2.Register\n3.List current projects\n4.List older projects\n5.Consult project\n");
+                System.out.println("O que deseja?\n1.Login\n2.Register\n3.List current projects\n4.List older projects\n");
                 int opc;
                 try {
                     opc = Integer.parseInt(reader.readLine());
-                    synchronized (Client.currentRequest) {
-                        switch (opc) {
-                            case 1:
-                                Client.currentRequest = new Login();
-                                break;
-                            case 2:
-                                Client.currentRequest = new Register();
-                                break;
-                            case 3:
-                                Client.currentRequest = new ListActualProj();
-                                synchronized (this){
-                                    wait();
+                    switch (opc) {
+                        case 1:
+                            schedule(new Login());
+                            IntResponse intResponse = (IntResponse)Client.currentRequest.response;
+                            if(intResponse.values[0] == 0){
+                                System.out.println("Invalid Credentials");
+                            }
+                            else{
+                                System.out.println("Successful Login");
+                                Client.userId = intResponse.values[0];
+                            }
+                            break;
+                        case 2:
+                            schedule(new Register());
+                            break;
+                        case 3:
+                            schedule(new ListOlderProj());
+                            ProjectListResponse projectListResponse = (ProjectListResponse)Client.currentRequest.response;
+                            if(projectListResponse.projects.size() == 0){
+                                System.out.println("Nothing to show");
+                            }
+                            else{
+                                for(Project project:projectListResponse.projects){
+                                    System.out.println(project);
                                 }
-                                System.out.println("Qual Queres?");
-                                Client.currentRequest = new ConsultProj();
-                                break;
-                            case 4:
-                                Client.currentRequest = new ListOlderProj();
-                                break;
-                            case 5:
-                                Client.currentRequest = new ConsultProj();
-                                break;
-                        }
+                                schedule(new ConsultProj());
+                            }
+                            break;
+                        case 4:
+                            schedule(new ListOlderProj());
+
+                            System.out.println("Qual Queres?");
+                            schedule(new ConsultProj());
+                            break;
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -67,28 +76,28 @@ public class IOThread extends Thread{
                     synchronized (Client.currentRequest) {
                         switch (opc) {
                             case 1:
-                                Client.currentRequest = new CheckBalance();
+                                Client.currentRequest.request = new CheckBalance();
                                 break;
                             case 2:
-                                Client.currentRequest = new CheckRewards();
+                                Client.currentRequest.request = new CheckRewards();
                                 break;
                             case 3:
-                                Client.currentRequest = new ListActualProj();
+                                Client.currentRequest.request = new ListActualProj();
                                 break;
                             case 4:
-                                Client.currentRequest = new ListOlderProj();
+                                Client.currentRequest.request = new ListOlderProj();
                                 break;
                             case 5:
-                                Client.currentRequest = new ConsultProj();
+                                Client.currentRequest.request = new ConsultProj();
                                 break;
                             case 6:
-                                Client.currentRequest = new PledgeProj();
+                                Client.currentRequest.request = new PledgeProj();
                                 break;
                             case 7:
-                                Client.currentRequest = new CommentProj();
+                                Client.currentRequest.request = new CommentProj();
                                 break;
                             case 8:
-                                Client.currentRequest = new CreateProj();
+                                Client.currentRequest.request = new CreateProj();
                                 break;
                         }
                     }
@@ -96,13 +105,23 @@ public class IOThread extends Thread{
                     e.printStackTrace();
                 }
             }
-            synchronized (this){
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        }
+    }
+
+    public void schedule(Request request){
+        synchronized (Client.currentRequest){
+            Client.currentRequest.request = request;
+        }
+        synchronized (Client.requestToSend){
+            Client.requestToSend = true;
+        }
+        synchronized (this){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
+
     }
 }

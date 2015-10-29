@@ -77,7 +77,7 @@ public class Project implements Serializable{
 
     @Override
     public String toString() {
-        return "Nome: " + name + "\nDeadline: " + deadline + "\nObjective: " + objective + "\nDescription: " + description;
+        return "Nome: " + name + "\nDeadline: " + deadline + "\nObjective: " + objective + "\nDescription: " + description + "\nId: " + id;
     }
 
     public String getName() {

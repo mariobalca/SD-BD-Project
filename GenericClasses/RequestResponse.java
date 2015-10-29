@@ -8,14 +8,9 @@ public class RequestResponse implements Serializable{
     public Response response;
 
 
-    private static int currentId = 0;
-
     private int id;
 
-    public RequestResponse(Request tipo){
-        request = tipo;
-        id = currentId;
-        currentId++;
+    public RequestResponse(){
     }
 
 
