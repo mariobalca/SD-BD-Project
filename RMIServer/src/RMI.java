@@ -14,7 +14,8 @@ public interface RMI extends Remote, Serializable{
     ArrayList<User> getAdmins(int projectId) throws java.rmi.RemoteException, SQLException;
     ArrayList<Project> getProjects() throws java.rmi.RemoteException, SQLException;
     ArrayList<Project> getOlderProjects() throws java.rmi.RemoteException, SQLException;
-    ArrayList<Project> getUserProjects(int projectId) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Project> getOwnedProjects(int projectId) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Project> getAdminProjects(int projectId) throws java.rmi.RemoteException, SQLException;
     ArrayList<Reward> getRewards(int userId) throws java.rmi.RemoteException, SQLException;
     ArrayList<Extra> getExtraRewards(int userId) throws java.rmi.RemoteException, SQLException;
     ArrayList<Message> getMessages(int projectId) throws java.rmi.RemoteException, SQLException;
@@ -25,6 +26,7 @@ public interface RMI extends Remote, Serializable{
     public int registerUser(String username, String password) throws java.rmi.RemoteException, SQLException;
     public boolean createProject(Project project, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
     public boolean cancelProject(int projectId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
+    public boolean endProject(int projectId) throws RemoteException, SQLException;
     public boolean financeProject(int projectId, int requestId, int userId, int pathId, double value) throws java.rmi.RemoteException, SQLException;
 
     public boolean addAdmin(int projectId, int requestId, int userId, int newAdminId) throws java.rmi.RemoteException, SQLException;

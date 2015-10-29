@@ -11,6 +11,7 @@ CREATE TABLE Projects(
 	Deadline DATETIME NOT NULL,
 	Objective REAL NOT NULL,
 	Description TEXT NOT NULL,
+	Active INTEGER NOT NULL,
 	OwnerUserId INTEGER NOT NULL,
 	FOREIGN KEY (OwnerUserId) REFERENCES Users(id)
 );
