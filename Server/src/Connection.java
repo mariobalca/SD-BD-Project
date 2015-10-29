@@ -57,20 +57,13 @@ class Connection extends Thread{
         switch (request.tipo){
             case "Login":
                 Login aux = (Login)request;
-                boolean auth = false;
-                if(rmi.loginUser(aux.username, aux.password))
-                    auth = true;
-
-                return new BooleanResponse("Login",auth);
+                int[] login = rmi.loginUser(aux.username,aux.password);
+                return new IntResponse("Login",login);
 
             case "Register":
                 Register aux2 = (Register)request;
-                boolean auth2 = false;
-
-                if(rmi.registerUser(aux2.username, aux2.password))
-                    auth2 = true;
-
-                return new BooleanResponse("Register",auth2);
+                int auth2 = rmi.registerUser(aux2.username,aux2.password);
+                return new IntResponse("Register",new int[]{auth2});
 
             case "ListActualProj":
                 ProjectListResponse response = new ProjectListResponse("ListActualProj");

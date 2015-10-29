@@ -3,8 +3,8 @@
  */
 public class IntResponse extends Response{
     public int[] values;
-    public IntResponse(String tipo,int size){
+    public IntResponse(String tipo,int[] values){
         super(tipo);
-        values = new int[size];
+        this.values = values;
     }
 }

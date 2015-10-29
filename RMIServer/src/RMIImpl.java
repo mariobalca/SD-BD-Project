@@ -15,12 +15,7 @@ import java.util.Date;
 public class RMIImpl extends UnicastRemoteObject implements RMI  {
     static Connection connection;
     static Statement statement;
-    protected RMIImpl(Connection connection) throws RemoteException, SQLException {
-        super();
-        this.connection = connection;
-        this.statement = connection.createStatement();
-        this.statement.execute("PRAGMA foreign_keys = ON");
-    }
+    protected RMIImpl(Connection connection) throws RemoteException, SQLException x\
 
     // IDEMPOTENTES
 
