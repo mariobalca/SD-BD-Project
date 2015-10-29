@@ -24,9 +24,11 @@ public interface RMI extends Remote, Serializable{
     // NÃO IDEMPOTENTES
     public int registerUser(String username, String password) throws java.rmi.RemoteException, SQLException;
     public boolean createProject(Project project, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
-    public boolean removeProject(int projectId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
+    public boolean cancelProject(int projectId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
     public boolean financeProject(int projectId, int requestId, int userId, int pathId, double value) throws java.rmi.RemoteException, SQLException;
 
+    public boolean addAdmin(int projectId, int requestId, int userId, int newAdminId) throws java.rmi.RemoteException, SQLException;
+    public boolean removeAdmin(int projectId, int requestId, int userId, int newAdminId) throws java.rmi.RemoteException, SQLException;
 
     public boolean sendMessage(Message message, int projectId, int requestId) throws java.rmi.RemoteException, SQLException;
     public boolean answerMessage(int messageId, String response, int requestId, int userId) throws java.rmi.RemoteException, SQLException;

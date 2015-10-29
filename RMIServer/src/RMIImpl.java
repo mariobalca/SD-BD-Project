@@ -187,13 +187,20 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         }
     }
 
-    public boolean removeProject(int projectId, int requestId, int userId) throws RemoteException, SQLException {
+    public boolean cancelProject(int projectId, int requestId, int userId) throws RemoteException, SQLException {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            result = statement.executeQuery("select * from administrators where user = " + userId + " and projectId= " + projectId);
+            result = statement.executeQuery("select count(*) from projects where OwnerUserId = " + userId + " and projectId= " + projectId);
 
-            if(!result.next())
+            if(result.getInt(1) == 0)
                 return false;
+
+            result = statement.executeQuery("select UserId, Value from transactions where ProjectId = " + projectId);
+            while(result.next())
+            {
+                ResultSet balance = statement.executeQuery("select balance from users where id = " + result.getInt(1));
+                statement.execute("update users set balance = " + (balance.getDouble(1) + result.getDouble(2)) + " where id = " + userId);
+            }
 
             statement.execute("delete from projects where id = " + projectId);
             statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
@@ -217,6 +224,48 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             result = statement.executeQuery("select id from transactions where userId = " + userId);
             result.last();
             statement.execute("insert into votes (TransactionId, PathId) values (" + result.getInt(1) + ", " + pathId + ")");
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+
+            return true;
+        }
+        else{
+            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            return result.getBoolean(1);
+        }
+    }
+
+    public boolean addAdmin(int projectId, int requestId, int userId, int newAdminId) throws RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        if(result.getInt(1) == 0){
+            result = statement.executeQuery("select * from administrators where user = " + userId + " and projectId= " + projectId);
+
+            if(!result.next())
+                return false;
+
+            result = statement.executeQuery("select * from administrators where user = " + newAdminId + " and projectId= " + projectId);
+            if(result.next())
+                return false;
+
+            statement.execute("insert into administrators (UserId, ProjectId) = " + newAdminId + " and projectId = " + projectId);
+            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+
+            return true;
+        }
+        else{
+            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            return result.getBoolean(1);
+        }
+    }
+
+    public boolean removeAdmin(int projectId, int requestId, int userId, int removeAdminId) throws RemoteException, SQLException {
+        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        if(result.getInt(1) == 0){
+            result = statement.executeQuery("select administrators.*, projects.OwnerUserId from administrators, projects where userId = " + userId + " and projectId= " + projectId + " and projects.OwnerUserId != " + removeAdminId);
+
+            if(!result.next())
+                return false;
+
+            statement.execute("delete from administrators where userId = " + removeAdminId + " and projectId = " + projectId);
             statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
