@@ -8,25 +8,18 @@ import java.util.Scanner;
 /**
  * Created by pedro on 27-10-2015.
  */
-public class IOThread extends Thread{
+public class IOThread extends Thread {
 
-    private BufferedReader reader;
+    public BufferedReader reader;
 
-    public IOThread(){
+    public IOThread() {
         reader = new BufferedReader(new InputStreamReader(System.in));
     }
 
-    public void run(){
+    public void run() {
         IntResponse intResponse;
-        while(true){
-            /*aux = reader.readLine();
-            synchronized (Client.currentString){
-                if(Client.currentString.equals("vazio")){
-                    Client.currentString = aux;
-                }
-            }*/
-
-            if(Client.userId<=0){
+        while (true) {
+            if (Client.userId <= 0) {
                 System.out.println("O que deseja?\n1.Login\n2.Register\n3.List current projects\n4.List older projects\n");
                 int opc;
 
@@ -35,22 +28,70 @@ public class IOThread extends Thread{
                     switch (opc) {
                         case 1:
                             schedule(new Login());
+                            intResponse = (IntResponse) Client.currentRequest.response;
+                            if (intResponse.values[0] == 0) {
+                                System.out.println("Invalid Credentials");
+                            } else {
+                                System.out.println("Successful Login");
+                                Client.userId = intResponse.values[0];
+                            }
                             break;
                         case 2:
                             schedule(new Register());
+                            intResponse = (IntResponse) Client.currentRequest.response;
+                            Client.userId = intResponse.values[0];
+                            if (Client.userId == 0) {
+                                System.out.println("Invalid Register");
+                            } else {
+                                System.out.println("Successful Register");
+                            }
                             break;
                         case 3:
                             schedule(new ListActualProj());
+                            ProjectListResponse projectListResponse = (ProjectListResponse) Client.currentRequest.response;
+                            if (projectListResponse.projects.size() == 0) {
+                                System.out.println("Nothing to show");
+                            } else {
+                                for (Project project : projectListResponse.projects) {
+                                    System.out.println(project);
+                                }
+                                System.out.println("Which project do you want to see? (0 if none)");
+                                int aux = Integer.parseInt(reader.readLine());
+                                if (aux != 0) {
+                                    for (Project project : projectListResponse.projects) {
+                                        if (project.getId() == aux) {
+                                            System.out.println(project.detailed());
+                                        }
+                                    }
+                                }
+                            }
                             break;
                         case 4:
                             schedule(new ListOlderProj());
+                            projectListResponse = (ProjectListResponse) Client.currentRequest.response;
+                            if (projectListResponse.projects.size() == 0) {
+                                System.out.println("Nothing to show");
+                            } else {
+                                for (Project project : projectListResponse.projects) {
+                                    System.out.println(project);
+                                }
+                                System.out.println("Which project do you want to see? (0 if none)");
+                                int aux = Integer.parseInt(reader.readLine());
+                                if (aux != 0) {
+                                    for (Project project : projectListResponse.projects) {
+                                        if (project.getId() == aux) {
+                                            System.out.println(project.detailed());
+                                        }
+                                    }
+                                }
+
+                            }
                             break;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            else{
+            } else {
                 System.out.println("O que deseja?\n1.Check Balance\n2.Check Rewards\n3.List current projects\n4.List older projects\n5.Consult project\n6.Pledge Project\n7.Comment Project\n8.Create Project");
                 int opc;
                 try {
@@ -58,21 +99,72 @@ public class IOThread extends Thread{
                     switch (opc) {
                         case 1:
                             schedule(new CheckBalance());
+                            DoubleResponse doubleResponse;
+                            synchronized (Client.currentRequest.response) {
+                                doubleResponse = (DoubleResponse) Client.currentRequest.response;
+                            }
+                            System.out.println("Tem o saldo de " + doubleResponse.value + " euros\n");
                             break;
                         case 2:
                             schedule(new CheckRewards());
+
                             break;
                         case 3:
                             schedule(new ListActualProj());
+                            ProjectListResponse projectListResponse = (ProjectListResponse) Client.currentRequest.response;
+                            if (projectListResponse.projects.size() == 0) {
+                                System.out.println("Nothing to show");
+                            } else {
+                                for (Project project : projectListResponse.projects) {
+                                    System.out.println(project);
+                                }
+                                System.out.println("Which project do you want to see? (0 if none)");
+                                int aux = Integer.parseInt(reader.readLine());
+                                if (aux != 0) {
+                                    for (Project project : projectListResponse.projects) {
+                                        if (project.getId() == aux) {
+                                            System.out.println(project.detailed());
+                                        }
+                                    }
+                                }
+                            }
                             break;
                         case 4:
                             schedule(new ListOlderProj());
+                            projectListResponse = (ProjectListResponse) Client.currentRequest.response;
+                            if (projectListResponse.projects.size() == 0) {
+                                System.out.println("Nothing to show");
+                            } else {
+                                for (Project project : projectListResponse.projects) {
+                                    System.out.println(project);
+                                }
+                                System.out.println("Which project do you want to see? (0 if none)");
+                                int aux = Integer.parseInt(reader.readLine());
+                                if (aux != 0) {
+                                    for (Project project : projectListResponse.projects) {
+                                        if (project.getId() == aux) {
+                                            System.out.println(project.detailed());
+                                        }
+                                    }
+                                }
+                            }
+
                             break;
                         case 5:
                             schedule(new ConsultProj());
                             break;
                         case 6:
-                            schedule(new PledgeProj());
+                            schedule(new ListActualProj());
+                            projectListResponse = (ProjectListResponse) Client.currentRequest.response;
+                            if(projectListResponse.projects.size()==0){
+                                System.out.println("Nothing to pledge to");
+                            }
+                            else {
+                                for(Project p:projectListResponse.projects){
+                                    System.out.println(p.detailed());
+                                }
+                                schedule(new PledgeProj());
+                            }
                             break;
                         case 7:
                             schedule(new CommentProj());
@@ -88,21 +180,20 @@ public class IOThread extends Thread{
         }
     }
 
-    public void schedule(Request request){
-        synchronized (Client.currentRequest){
+    public void schedule(Request request) {
+        synchronized (Client.currentRequest) {
             Client.currentRequest.request = request;
         }
-        synchronized (Client.requestToSend){
+        synchronized (Client.requestToSend) {
             Client.requestToSend = true;
         }
-        synchronized (this){
+        synchronized (this) {
             try {
                 wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        request.awnser(this);
 
     }
 }

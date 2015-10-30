@@ -31,16 +31,4 @@ public class Login extends Request {
         }
     }
 
-    @Override
-    public void awnser(IOThread thread) {
-        IntResponse intResponse = (IntResponse)Client.currentRequest.response;
-        if(intResponse.values[0] == 0){
-            System.out.println("Invalid Credentials");
-        }
-        else{
-            System.out.println("Successful Login");
-            Client.userId = intResponse.values[0];
-        }
-
-    }
 }

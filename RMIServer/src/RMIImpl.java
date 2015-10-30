@@ -192,7 +192,12 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             result = statement.executeQuery("select id from projects where name = \"" + project.getName()+"\"");
             statement.execute("insert into administrators (ProjectId, UserId) values (" + result.getInt(1) + ", " + userId + ")");
             statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
-
+            for(Reward reward :project.getRewards()){
+                addReward(reward,0,project.getId(),userId);
+            }
+            for(Path path:project.getPaths()){
+                createPath(path,0,userId,project.getId());
+            }
             return true;
         }
         else{

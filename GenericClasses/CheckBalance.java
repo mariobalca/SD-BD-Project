@@ -6,4 +6,8 @@ public class CheckBalance extends  Request{
     public CheckBalance(){
         super("CheckBalance");
     }
+
+    @Override
+    public void awnser(IOThread thread) {
+    }
 }

@@ -43,4 +43,9 @@ public class Reward implements Serializable {
     public int getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "Id: " + id+" Value: " + minValue + " Name: " + name + " Description: " + description;
+    }
 }

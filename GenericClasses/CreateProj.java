@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,10 +12,14 @@ public class CreateProj extends Request{
     public int year, mon, day, hour, min;
     public double goal;
     public int userId;
+    public ArrayList<Path> paths;
+    public ArrayList<Reward> rewards;
 
     public CreateProj(int userId){
         super("CreateProj");
         this.userId = userId;
+        this.rewards = new ArrayList<>();
+        this.paths = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
 
@@ -79,17 +84,51 @@ public class CreateProj extends Request{
         catch (Exception e) {
         }
 
+        System.out.println("Add reward (0 if no)");
+        try {
+            while(!reader.readLine().equals("0")){
+                System.out.println("Qual id:");
+                int id = Integer.parseInt(reader.readLine());
+                System.out.println("Qual valor:");
+                int valor = Integer.parseInt(reader.readLine());
+                System.out.println("Nome :");
+                String nome = reader.readLine();
+                System.out.println("Description: ");
+                String d = reader.readLine();
+                rewards.add(new Reward(id,valor,nome,d));
+                System.out.println("Add reward (0 if no)");
+            }
+            System.out.println("Add path (0 if no)");
+            while(!reader.readLine().equals("0")){
+                System.out.println("Qual id:");
+                int id = Integer.parseInt(reader.readLine());
+                System.out.println("Nome :");
+                String nome = reader.readLine();
+                System.out.println("Description: ");
+                String d = reader.readLine();
+                paths.add(new Path(id,nome,d));
+                System.out.println("Add path (0 if no)");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
     }
 
     @Override
     public void awnser(IOThread thread) {
-        BooleanResponse response = (BooleanResponse)Client.currentRequest.response;
+        BooleanResponse response;
+        synchronized (Client.currentRequest.response) {
+            response = (BooleanResponse) Client.currentRequest.response;
+        }
         if(response.status){
             System.out.println("Created successfully");
         }
         else{
             System.out.println("Not possible to create");
         }
+
     }
 }

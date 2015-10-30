@@ -12,7 +12,6 @@ public class PledgeProj extends Request {
         super("PledgeProj");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-
         //Definir o projeto a apoiar
         System.out.println("Indique o ID do projeto: ");
         try {
@@ -36,5 +35,6 @@ public class PledgeProj extends Request {
         }
         catch (Exception e) {
         }
+
     }
 }

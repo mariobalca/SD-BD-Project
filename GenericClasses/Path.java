@@ -47,4 +47,9 @@ public class Path implements Serializable {
     public void setVotes(int votes) {
         this.votes = votes;
     }
+
+    @Override
+    public String toString() {
+        return "Id: " + id + " Name: " + name +" Description: " + description;
+    }
 }

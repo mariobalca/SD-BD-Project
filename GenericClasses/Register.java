@@ -31,15 +31,4 @@ public class Register extends Request{
         }
     }
 
-    @Override
-    public void awnser(IOThread thread) {
-        IntResponse intResponse = (IntResponse) Client.currentRequest.response;
-        Client.userId = intResponse.values[0];
-        if(Client.userId == 0){
-            System.out.println("Invalid Register");
-        }
-        else {
-            System.out.println("Successful Register");
-        }
-    }
 }

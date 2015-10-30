@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by mariobalca on 25-10-2015.
  */
-public class Project implements Serializable{
+public class Project implements Serializable {
     private int id;
     private String name;
     private Date deadline;
@@ -16,13 +16,13 @@ public class Project implements Serializable{
     private ArrayList<Reward> rewards;
     private ArrayList<Path> paths;
 
-    public Project(int id, String n, Date deadline, double objective, String description, boolean active){
+    public Project(int id, String n, Date deadline, double objective, String description, boolean active) {
         this.id = id;
         this.name = n;
         this.deadline = deadline;
         this.objective = objective;
         this.description = description;
-        this.active  = active;
+        this.active = active;
     }
 
     public Date getDeadline() {
@@ -96,5 +96,22 @@ public class Project implements Serializable{
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String detailed() {
+        String s = "Nome: " + name + "\nDeadline: " + deadline + "\nObjective: " + objective + "\nDescription: " + description + "\nId: " + id + "\n";
+        if (paths.size() > 0) {
+            s += "Paths:\n";
+            for (Path path : paths) {
+                s+= path.toString() + "\n";
+            }
+        }
+        if(rewards.size() > 0){
+            s+= "Rewards:\n";
+            for(Reward reward:rewards){
+                s+= reward.toString() + "\n";
+            }
+        }
+        return s;
     }
 }
