@@ -62,7 +62,7 @@ public class CreateProj extends Request{
         }
 
 
-        //Definir o objetivo monet�rio
+        //Definir o objetivo monetário
         System.out.println("Defina o objetivo monet�rio a alcan�ar: ");
         try{
            goal = (Double.parseDouble(reader.readLine()));
@@ -71,8 +71,8 @@ public class CreateProj extends Request{
         }
 
 
-        //Definir a descri��o do projeto
-        System.out.println("Indique a descri��o do projeto: ");
+        //Definir a descrição do projeto
+        System.out.println("Indique a descricao do projeto: ");
         try{
             description = (reader.readLine());
         }

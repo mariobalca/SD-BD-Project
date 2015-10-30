@@ -25,8 +25,8 @@ public class AddReward extends Request{
             System.out.println("Erro de escrita.");
         }
 
-        //Definir o valor m�nimo da reward
-        System.out.println("Indique o valor m�nimo da reward: ");
+        //Definir o valor minimo da reward
+        System.out.println("Indique o valor minimo da reward: ");
         try{
             valor = Double.parseDouble(reader.readLine());
         }
@@ -43,8 +43,8 @@ public class AddReward extends Request{
             System.out.println("Erro de escrita.");
         }
 
-        //Definir a descri��o da reward
-        System.out.println("Indique a descri��o para a reward: ");
+        //Definir a descricao da reward
+        System.out.println("Indique a descricao para a reward: ");
         try{
            descricao = (reader.readLine());
         }
