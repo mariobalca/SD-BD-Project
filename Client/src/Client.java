@@ -45,7 +45,6 @@ public class Client {
                         synchronized (requestToSend) {
                             if(requestToSend) {
                                 input = currentRequest.request;
-                                System.out.println(input.tipo);
                             }
                             else
                                 input = new Ping();

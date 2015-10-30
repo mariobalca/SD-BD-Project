@@ -188,7 +188,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            statement.execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" + project.getDescription() + "\", " + userId + ")");
+            statement.execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId,Active) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" + project.getDescription() + "\", " + userId + "," +1+ ")");
             result = statement.executeQuery("select id from projects where name = \"" + project.getName()+"\"");
             statement.execute("insert into administrators (ProjectId, UserId) values (" + result.getInt(1) + ", " + userId + ")");
             statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
