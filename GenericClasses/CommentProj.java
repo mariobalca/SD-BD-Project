@@ -14,7 +14,7 @@ public class CommentProj extends Request{
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         //Definir o projeto a comentar
-        System.out.println("Indique o ID do projeto para fazer uma quest�o: ");
+        System.out.println("Indique o ID do projeto para fazer uma questao: ");
         try{
            proj = Integer.parseInt(reader.readLine());
         }
@@ -23,7 +23,7 @@ public class CommentProj extends Request{
         }
 
         //Definir o subject da mensagem
-        System.out.println("Indique o assunto da quest�o: ");
+        System.out.println("Indique o assunto da questao: ");
         try{
            subject = (reader.readLine());
         }
@@ -33,7 +33,7 @@ public class CommentProj extends Request{
 
 
         //Definir a mensagem
-        System.out.println("Escreva a sua quest�o: ");
+        System.out.println("Escreva a sua questao: ");
         try{
            question = (reader.readLine());
         }

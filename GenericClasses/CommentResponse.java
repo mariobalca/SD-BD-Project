@@ -14,7 +14,7 @@ public class CommentResponse extends Request{
 
 
         //Perguntar o ID da mensagem a que estamos a responder
-        System.out.println("Indique o ID da mensagem a que est� a responder: ");
+        System.out.println("Indique o ID da mensagem a que esta a responder: ");
         try{
             id = Integer.parseInt(reader.readLine());
         }
