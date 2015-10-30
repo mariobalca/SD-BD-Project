@@ -13,11 +13,11 @@ public class Project implements Serializable{
     private String description;
     private boolean active;
     private ArrayList<Message> messages;
+    private ArrayList<Extra> extras;
     private ArrayList<Reward> rewards;
     private ArrayList<Path> paths;
 
-    public Project(int id, String n, Date deadline, double objective, String description, boolean active){
-        this.id = id;
+    public Project(String n, Date deadline, double objective, String description, boolean active){
         this.name = n;
         this.deadline = deadline;
         this.objective = objective;
@@ -96,5 +96,17 @@ public class Project implements Serializable{
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public ArrayList<Extra> getExtras() {
+        return extras;
+    }
+
+    public void setExtras(ArrayList<Extra> extras) {
+        this.extras = extras;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

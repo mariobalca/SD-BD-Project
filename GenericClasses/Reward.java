@@ -9,8 +9,7 @@ public class Reward implements Serializable {
     private String name;
     private String description;
 
-    public Reward(int id, double min, String n, String d){
-        this.id = id;
+    public Reward(double min, String n, String d){
         this.minValue = min;
         this.name = n;
         this.description = d;
@@ -42,5 +41,9 @@ public class Reward implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

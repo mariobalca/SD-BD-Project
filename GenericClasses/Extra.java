@@ -9,8 +9,7 @@ public class Extra implements Serializable {
     private String name;
     private String description;
 
-    public Extra(int id, double min, String n, String d){
-        this.id = id;
+    public Extra(double min, String n, String d){
         this.minValue = min;
         this.name = n;
         this.description = d;
@@ -42,5 +41,9 @@ public class Extra implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

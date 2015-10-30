@@ -16,9 +16,12 @@ public interface RMI extends Remote, Serializable{
     ArrayList<Project> getOlderProjects() throws java.rmi.RemoteException, SQLException;
     ArrayList<Project> getOwnedProjects(int projectId) throws java.rmi.RemoteException, SQLException;
     ArrayList<Project> getAdminProjects(int projectId) throws java.rmi.RemoteException, SQLException;
-    ArrayList<Reward> getRewards(int userId) throws java.rmi.RemoteException, SQLException;
-    ArrayList<Extra> getExtraRewards(int userId) throws java.rmi.RemoteException, SQLException;
-    ArrayList<Message> getMessages(int projectId) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Reward> getProjectRewards(int projectId) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Extra> getProjectExtraRewards(int projectId) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Path> getProjectPaths(int projectId) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Message> getProjectMessages(int projectId) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Reward> getUserRewards(int userId) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Extra> getUserExtraRewards(int userId) throws java.rmi.RemoteException, SQLException;
     public double getBalance(int userId) throws java.rmi.RemoteException, SQLException;
     public int[] loginUser(String username, String password) throws java.rmi.RemoteException, SQLException;
 

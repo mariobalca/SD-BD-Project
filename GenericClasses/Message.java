@@ -11,8 +11,7 @@ public class Message implements Serializable {
     private User sender;
 
 
-    public Message(int id, String sub, String q, String res, User sen){
-        this.id = id;
+    public Message(String sub, String q, String res, User sen){
         this.subject = sub;
         this.question = q;
         this.response = res;
@@ -53,5 +52,9 @@ public class Message implements Serializable {
 
     public void setSender(User sender) {
         this.sender = sender;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

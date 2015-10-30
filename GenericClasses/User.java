@@ -14,8 +14,7 @@ public class User implements Serializable {
     private ArrayList<Reward> myRewards;
     private ArrayList<Extra> myExtras;
 
-    public User(int id, String u, String p, double b){
-        this.id = id;
+    public User(String u, String p, double b){
         this.username = u;
         this.password = p;
         this.balance = b;
@@ -83,5 +82,9 @@ public class User implements Serializable {
 
     public void setMyExtras(ArrayList<Extra> myExtras) {
         this.myExtras = myExtras;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
