@@ -18,4 +18,8 @@ public class ConsultProj extends Request{
         catch (Exception e) {
         }
     }
+
+    @Override
+    public void awnser(IOThread thread) {
+    }
 }

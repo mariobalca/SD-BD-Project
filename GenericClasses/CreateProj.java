@@ -7,12 +7,14 @@ import java.util.Date;
  * Created by Rui on 27/10/2015.
  */
 public class CreateProj extends Request{
-    private String name = "", description;
-    private int year, mon, day, hour, min;
-    private double goal;
+    public String name = "", description;
+    public int year, mon, day, hour, min;
+    public double goal;
+    public int userId;
 
-    public CreateProj(){
+    public CreateProj(int userId){
         super("CreateProj");
+        this.userId = userId;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
 
@@ -78,5 +80,16 @@ public class CreateProj extends Request{
         }
 
 
+    }
+
+    @Override
+    public void awnser(IOThread thread) {
+        BooleanResponse response = (BooleanResponse)Client.currentRequest.response;
+        if(response.status){
+            System.out.println("Created successfully");
+        }
+        else{
+            System.out.println("Not possible to create");
+        }
     }
 }

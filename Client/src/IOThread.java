@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.nio.channels.CancelledKeyException;
 import java.util.Scanner;
 
 /**
@@ -16,6 +17,7 @@ public class IOThread extends Thread{
     }
 
     public void run(){
+        IntResponse intResponse;
         while(true){
             /*aux = reader.readLine();
             synchronized (Client.currentString){
@@ -27,41 +29,21 @@ public class IOThread extends Thread{
             if(Client.userId<=0){
                 System.out.println("O que deseja?\n1.Login\n2.Register\n3.List current projects\n4.List older projects\n");
                 int opc;
+
                 try {
                     opc = Integer.parseInt(reader.readLine());
                     switch (opc) {
                         case 1:
                             schedule(new Login());
-                            IntResponse intResponse = (IntResponse)Client.currentRequest.response;
-                            if(intResponse.values[0] == 0){
-                                System.out.println("Invalid Credentials");
-                            }
-                            else{
-                                System.out.println("Successful Login");
-                                Client.userId = intResponse.values[0];
-                            }
                             break;
                         case 2:
                             schedule(new Register());
                             break;
                         case 3:
-                            schedule(new ListOlderProj());
-                            ProjectListResponse projectListResponse = (ProjectListResponse)Client.currentRequest.response;
-                            if(projectListResponse.projects.size() == 0){
-                                System.out.println("Nothing to show");
-                            }
-                            else{
-                                for(Project project:projectListResponse.projects){
-                                    System.out.println(project);
-                                }
-                                schedule(new ConsultProj());
-                            }
+                            schedule(new ListActualProj());
                             break;
                         case 4:
                             schedule(new ListOlderProj());
-
-                            System.out.println("Qual Queres?");
-                            schedule(new ConsultProj());
                             break;
                     }
                 } catch (IOException e) {
@@ -73,33 +55,31 @@ public class IOThread extends Thread{
                 int opc;
                 try {
                     opc = Integer.parseInt(reader.readLine());
-                    synchronized (Client.currentRequest) {
-                        switch (opc) {
-                            case 1:
-                                Client.currentRequest.request = new CheckBalance();
-                                break;
-                            case 2:
-                                Client.currentRequest.request = new CheckRewards();
-                                break;
-                            case 3:
-                                Client.currentRequest.request = new ListActualProj();
-                                break;
-                            case 4:
-                                Client.currentRequest.request = new ListOlderProj();
-                                break;
-                            case 5:
-                                Client.currentRequest.request = new ConsultProj();
-                                break;
-                            case 6:
-                                Client.currentRequest.request = new PledgeProj();
-                                break;
-                            case 7:
-                                Client.currentRequest.request = new CommentProj();
-                                break;
-                            case 8:
-                                Client.currentRequest.request = new CreateProj();
-                                break;
-                        }
+                    switch (opc) {
+                        case 1:
+                            schedule(new CheckBalance());
+                            break;
+                        case 2:
+                            schedule(new CheckRewards());
+                            break;
+                        case 3:
+                            schedule(new ListActualProj());
+                            break;
+                        case 4:
+                            schedule(new ListOlderProj());
+                            break;
+                        case 5:
+                            schedule(new ConsultProj());
+                            break;
+                        case 6:
+                            schedule(new PledgeProj());
+                            break;
+                        case 7:
+                            schedule(new CommentProj());
+                            break;
+                        case 8:
+                            schedule(new CreateProj(Client.userId));
+                            break;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -122,6 +102,7 @@ public class IOThread extends Thread{
                 e.printStackTrace();
             }
         }
+        request.awnser(this);
 
     }
 }

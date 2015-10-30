@@ -43,13 +43,15 @@ public class Client {
                 while (true){
                     synchronized (currentRequest) {
                         synchronized (requestToSend) {
-                            if(requestToSend)
+                            if(requestToSend) {
                                 input = currentRequest.request;
+                                System.out.println(input.tipo);
+                            }
                             else
                                 input = new Ping();
-                            }
-                        out.writeObject(input);
+                        }
                     }
+                    out.writeObject(input);
                     Response data;
                     try{
                         data = (Response)in.readObject();
@@ -83,7 +85,7 @@ public class Client {
         }
     }
 
-    private void execute(RequestResponse data) {
+    /*private void execute(RequestResponse data) {
         switch (data.response.tipo){
             case "Login":
                 IntResponse intresponse = (IntResponse)data.response;
@@ -132,7 +134,7 @@ public class Client {
             ioThread.notify();
         }
     }
-
+*/
     public static void main(String[] args) {
         String[] hosts= {
                 "localhost",

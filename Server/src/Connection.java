@@ -82,6 +82,11 @@ class Connection extends Thread{
                 ProjectListResponse response1 = new ProjectListResponse("ConsultProj");
                 response1.projects.add(new Project(0,"Ganza", new Date(2015,4,20,4,20),420000,"Purex"));
                 return response1;
+            case "CreateProj":
+                CreateProj aux3 = (CreateProj)request;
+                Project project = new Project(1,aux3.name,new Date(aux3.year,aux3.mon,aux3.day,aux3.hour,aux3.min),aux3.goal,aux3.description);
+                return new BooleanResponse("CreateProj",rmi.createProject(project,1,aux3.userId));
+
 
         }
         return null;

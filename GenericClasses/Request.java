@@ -23,6 +23,9 @@ public abstract class Request implements Serializable{
         return tipo;
     }
 
+    public void awnser(IOThread thread) {
+    }
+
 
     /*Request(String tipo){
         this.tipo = tipo;
