@@ -20,10 +20,10 @@ public class RMIServer{
             Registry r = LocateRegistry.createRegistry(7000);
             r.rebind("rmi", rmiServer);
             Timer t = new Timer();
-            MyTask mTask = new MyTask();
+            MyTask mTask = new MyTask(rmiServer);
             // This task is scheduled to run every 10 seconds
 
-            t.scheduleAtFixedRate(mTask, 0, 10000);
+            t.scheduleAtFixedRate(mTask, 0, 30000);
             System.out.println("RMI Server ready.");
         } catch (RemoteException re) {
             System.out.println("Exception in RMIServer.main: " + re);

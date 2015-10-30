@@ -11,16 +11,18 @@ public class Project implements Serializable{
     private Date deadline;
     private double objective;
     private String description;
+    private boolean active;
     private ArrayList<Message> messages;
     private ArrayList<Reward> rewards;
     private ArrayList<Path> paths;
 
-    public Project(int id, String n, Date deadline, double objective, String description){
+    public Project(int id, String n, Date deadline, double objective, String description, boolean active){
         this.id = id;
         this.name = n;
         this.deadline = deadline;
         this.objective = objective;
         this.description = description;
+        this.active  = active;
     }
 
     public Date getDeadline() {
@@ -86,5 +88,13 @@ public class Project implements Serializable{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
