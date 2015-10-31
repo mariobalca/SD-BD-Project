@@ -182,13 +182,12 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Extra> getProjectExtraLevels(int projectId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = connection.createStatement().executeQuery("Select id from Extras where ProjectId = " + projectId);
+        ResultSet result = connection.createStatement().executeQuery("select * from extras where projectid = " + projectId);
         ArrayList<Extra> extraRewards = new ArrayList<Extra>();
         while(result.next())
         {
-            ResultSet extraRS = connection.createStatement().executeQuery("select * from extras where id = " + result.getInt(1));
-            Extra e = new Extra(extraRS.getDouble(2), extraRS.getString(3), extraRS.getString(4));
-            e.setId(extraRS.getInt(1));
+            Extra e = new Extra(result.getDouble(2), result.getString(3), result.getString(4));
+            e.setId(result.getInt(1));
             extraRewards.add(e);
         }
         System.out.println("Get User Extras executed");
@@ -555,7 +554,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     public boolean winReward(int rewardId, int requestId, int userId, int flag) throws RemoteException, SQLException {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0 || requestId == 0){
-            connection.createStatement().execute("insert into rewards_users (RewardId, WinnerUserId, OwnerUserId) values (" + rewardId + ", " + userId + ", " + userId + ", " + flag + ")");
+            connection.createStatement().execute("insert into rewards_users (RewardId, WinnerUserId, OwnerUserId,flag) values (" + rewardId + ", " + userId + ", " + userId + ", " + flag + ")");
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
