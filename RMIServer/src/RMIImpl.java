@@ -61,11 +61,12 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             try {
                 Date projectDate = format.parse(result.getString(3));
                 Project p = new Project(result.getString(2), projectDate, result.getDouble(4), result.getString(5), result.getBoolean(6));
-                p.setId(result.getInt(1));
-                p.setPaths(this.getProjectPaths(result.getInt(1)));
-                //p.setMessages(this.getProjectMessages(result.getInt(1)));
-                //p.setRewards(this.getProjectRewards(result.getInt(1)));
-                //p.setExtras(this.getProjectExtraRewards(result.getInt(1)));
+                int projectId = result.getInt(1);
+                p.setId(projectId);
+                p.setPaths(this.getProjectPaths(projectId));
+                p.setMessages(this.getProjectMessages(projectId));
+                p.setRewards(this.getProjectRewards(projectId));
+                p.setExtras(this.getProjectExtraRewards(projectId));
                 projects.add(p);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -84,11 +85,12 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             try {
                 Date projectDate = format.parse(result.getString(3));
                 Project p = new Project(result.getString(2), projectDate, result.getDouble(4), result.getString(5), result.getBoolean(6));
-                p.setId(result.getInt(1));
-                p.setPaths(this.getProjectPaths(result.getInt(1)));
-                p.setMessages(this.getProjectMessages(result.getInt(1)));
-                p.setRewards(this.getProjectRewards(result.getInt(1)));
-                p.setExtras(this.getProjectExtraRewards(result.getInt(1)));
+                int projectId = result.getInt(1);
+                p.setId(projectId);
+                p.setPaths(this.getProjectPaths(projectId));
+                p.setMessages(this.getProjectMessages(projectId));
+                p.setRewards(this.getProjectRewards(projectId));
+                p.setExtras(this.getProjectExtraRewards(projectId));
                 projects.add(p);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -107,11 +109,12 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             try {
                 Date projectDate = format.parse(result.getString(3));
                 Project p = new Project(result.getString(2), projectDate, result.getDouble(4), result.getString(5), result.getBoolean(6));
-                p.setId(result.getInt(1));
-                p.setPaths(this.getProjectPaths(result.getInt(1)));
-                p.setMessages(this.getProjectMessages(result.getInt(1)));
-                p.setRewards(this.getProjectRewards(result.getInt(1)));
-                p.setExtras(this.getProjectExtraRewards(result.getInt(1)));
+                int projectId = result.getInt(1);
+                p.setId(projectId);
+                p.setPaths(this.getProjectPaths(projectId));
+                p.setMessages(this.getProjectMessages(projectId));
+                p.setRewards(this.getProjectRewards(projectId));
+                p.setExtras(this.getProjectExtraRewards(projectId));
                 projects.add(p);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -130,11 +133,12 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             try {
                 Date projectDate = format.parse(result.getString(3));
                 Project p = new Project(result.getString(2), projectDate, result.getDouble(4), result.getString(5), result.getBoolean(6));
-                p.setId(result.getInt(1));
-                p.setPaths(this.getProjectPaths(result.getInt(1)));
-                p.setMessages(this.getProjectMessages(result.getInt(1)));
-                p.setRewards(this.getProjectRewards(result.getInt(1)));
-                p.setExtras(this.getProjectExtraRewards(result.getInt(1)));
+                int projectId = result.getInt(1);
+                p.setId(projectId);
+                p.setPaths(this.getProjectPaths(projectId));
+                p.setMessages(this.getProjectMessages(projectId));
+                p.setRewards(this.getProjectRewards(projectId));
+                p.setExtras(this.getProjectExtraRewards(projectId));
                 projects.add(p);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -277,10 +281,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
             System.out.println(projectId);
             for(Reward reward :project.getRewards()){
-                addReward(reward,requestId,projectId,userId);
+                this.addReward(reward,0,projectId,userId);
             }
             for(Path path:project.getPaths()){
-                createPath(path,requestId,userId,projectId);
+                this.createPath(path,0,userId,projectId);
             }
             return true;
         }
