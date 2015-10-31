@@ -7,12 +7,12 @@ public class Path implements Serializable {
     private int id;
     private String name;
     private String description;
-    private int votes;
+    private double value;
 
-    public Path(String n, String d, int votes){
+    public Path(String n, String d, double value){
         this.name = n;
         this.description = d;
-        this.votes = votes;
+        this.value = value;
     }
 
     public int getId() {
@@ -35,14 +35,6 @@ public class Path implements Serializable {
         this.description = description;
     }
 
-    public int getVotes() {
-        return votes;
-    }
-
-    public void setVotes(int votes) {
-        this.votes = votes;
-    }
-
     @Override
     public String toString() {
         return "Id: " + id + " Name: " + name + " Description: " + description;
@@ -50,5 +42,13 @@ public class Path implements Serializable {
     public void setId(int id) {
         this.id = id;
 
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
     }
 }

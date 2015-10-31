@@ -226,11 +226,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         while(result.next())
         {
             int pathId = result.getInt(1);
-            int votes = statement.executeQuery("select count(*) from Votes where pathId = " + pathId).getInt(1);
+            double value = statement.executeQuery("select sum(value) from Transactions where pathId = " + pathId).getInt(1);
 
-            Path p = new Path(result.getString(2), result.getString(4), votes);
+            Path p = new Path(result.getString(2), result.getString(4), value);
             p.setId(pathId);
-            p.setVotes(votes);
             paths.add(p);
         }
         System.out.println("Get Paths executed");
