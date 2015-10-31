@@ -103,6 +103,10 @@ class Connection extends Thread{
             case "PledgeProj":
                 PledgeProj proj = (PledgeProj)request;
                 return new BooleanResponse("PledgeProj",rmi.financeProject(proj.proj,proj.requestId,proj.userId,proj.path,proj.valor));
+            case "CheckRewards":
+                ArrayList<Reward> rewardlist = rmi.getUserRewards(request.userId);
+                System.out.println(rewardlist.size());
+                return new RewardsResponse("CheckRewards",rewardlist);
 
         }
         return null;
