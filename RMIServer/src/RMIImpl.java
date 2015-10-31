@@ -182,7 +182,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Extra> getProjectExtraLevels(int projectId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = connection.createStatement().executeQuery("Select extraId from Extras_Users, Extras where ProjectId = " + projectId + " and ExtraId = Extras.id ");
+        ResultSet result = connection.createStatement().executeQuery("Select id from Extras where ProjectId = " + projectId);
         ArrayList<Extra> extraRewards = new ArrayList<Extra>();
         while(result.next())
         {
