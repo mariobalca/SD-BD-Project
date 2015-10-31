@@ -136,8 +136,8 @@ public class Client {
 */
     public static void main(String[] args) {
         String[] hosts= {
-                "10.42.0.21",
-                "localhost"
+                "localhost",
+                "10.42.0.1"
         };
 
         int[] ports={

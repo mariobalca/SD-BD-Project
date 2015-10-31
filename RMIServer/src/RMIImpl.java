@@ -53,7 +53,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     public ArrayList<Project> getProjectsWithoutDetails() throws java.rmi.RemoteException, SQLException{
         ResultSet result = connection.createStatement().executeQuery("Select * from Projects where active = 1");
         ArrayList<Project> projects = new ArrayList<Project>();
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         while(result.next())
         {
             try {
@@ -73,7 +73,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     public ArrayList<Project> getProjects() throws java.rmi.RemoteException, SQLException{
         ResultSet result = connection.createStatement().executeQuery("Select * from Projects where active = 1");
         ArrayList<Project> projects = new ArrayList<Project>();
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         while(result.next())
         {
             try {
@@ -97,7 +97,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     public ArrayList<Project> getOlderProjects() throws java.rmi.RemoteException, SQLException{
         ResultSet result = connection.createStatement().executeQuery("Select * from Projects where active = 0");
         ArrayList<Project> projects = new ArrayList<Project>();
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         while(result.next())
         {
             try {
@@ -121,7 +121,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     public ArrayList<Project> getOwnedProjects(int userId) throws java.rmi.RemoteException, SQLException{
         ResultSet result = connection.createStatement().executeQuery("Select * from Projects where OwnerUserId = " + userId);
         ArrayList<Project> projects = new ArrayList<Project>();
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         while(result.next())
         {
             try {
@@ -145,7 +145,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     public ArrayList<Project> getAdminProjects(int userId) throws java.rmi.RemoteException, SQLException{
         ResultSet result = connection.createStatement().executeQuery("Select Projects.* from Projects, Administrators where UserId = " + userId + " and Projects.id = ProjectId and active = 1");
         ArrayList<Project> projects = new ArrayList<Project>();
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         while(result.next())
         {
             try {
@@ -296,7 +296,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     public boolean createProject(Project project, int requestId, int userId) throws RemoteException, SQLException {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             result = connection.createStatement().executeQuery("select id from projects where Name = \"" + project.getName()+"\"");
             if(result.next())
                 return false;

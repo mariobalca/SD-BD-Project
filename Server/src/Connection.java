@@ -6,6 +6,9 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -83,10 +86,17 @@ class Connection extends Thread{
                 return response1;
             case "CreateProj":
                 CreateProj aux3 = (CreateProj)request;
-                Project project = new Project(aux3.name,new Date(aux3.year,aux3.mon,aux3.day,aux3.hour,aux3.min),aux3.goal,aux3.description,true);
-                project.setRewards(((CreateProj) request).rewards);
-                project.setPaths(((CreateProj) request).paths);
-                return new BooleanResponse("CreateProj",rmi.createProject(project,((CreateProj) request).requestId,aux3.userId));
+                String dataAux = aux3.year + "-" + aux3.mon + "-" + aux3.day + " " + aux3.hour + ":" + aux3.min;
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                try {
+                    Date date = dateFormat.parse(dataAux);
+                    Project project = new Project(aux3.name,date,aux3.goal,aux3.description,true);
+                    project.setRewards(((CreateProj) request).rewards);
+                    project.setPaths(((CreateProj) request).paths);
+                    return new BooleanResponse("CreateProj",rmi.createProject(project,((CreateProj) request).requestId,aux3.userId));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             case "CheckBalance":
                 double value = rmi.getBalance(request.userId);
                 return new DoubleResponse("CheckBalance",value);
