@@ -365,7 +365,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         else {
             double balance = connection.createStatement().executeQuery("select balance from users where id = " + ownerUserId).getDouble(1);
             connection.createStatement().execute("update users set balance = " + (sum + balance) + " where id = " + ownerUserId);
-            connection.createStatement().execute("update Rewards_Users set flag = 1 where projectId = " + projectId);
+            ResultSet rewardsRS = connection.createStatement().executeQuery("select id from Rewards where projectId = " + projectId);
+            while(rewardsRS.next()){
+                connection.createStatement().execute("update Rewards_Users set flag = 1 where rewardId = " + rewardsRS.getInt(1));
+            }
             connection.createStatement().execute("update projects set active = 0 where id = " + projectId);
         }
         return true;
