@@ -66,7 +66,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
                 e.printStackTrace();
             }
         }
-        System.out.println("Get Projects executed");
+        System.out.println("Get Projects without Details Executed");
         return projects;
     }
 
@@ -176,12 +176,12 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             r.setId(rewardRS.getInt(1));
             rewards.add(r);
         }
-        System.out.println("Get User Rewards executed");
+        System.out.println("Get Project Rewards executed");
         return rewards;
     }
 
     public ArrayList<Extra> getProjectExtraLevels(int projectId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = connection.createStatement().executeQuery("select * from extras where projectid = " + projectId);
+        ResultSet result = connection.createStatement().executeQuery("select * from extras where ProjectId = " + projectId);
         ArrayList<Extra> extraRewards = new ArrayList<Extra>();
         while(result.next())
         {
@@ -189,7 +189,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             e.setId(result.getInt(1));
             extraRewards.add(e);
         }
-        System.out.println("Get User Extras executed");
+        System.out.println("Get Project Extra Levels executed");
         return extraRewards;
     }
 
@@ -223,7 +223,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             p.setId(pathId);
             paths.add(p);
         }
-        System.out.println("Get Paths executed");
+        System.out.println("Get Project Paths executed");
         return paths;
     }
 
@@ -243,7 +243,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             m.setId(result.getInt(1));
             messages.add(m);
         }
-        System.out.println("Get Messages executed");
+        System.out.println("Get Project Messages executed");
         return messages;
     }
 
@@ -251,7 +251,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = connection.createStatement().executeQuery("select Balance from Users where id = " + userId);
         double balance = result.getDouble(1);
 
-        System.out.println("Get Balance executed");
+        System.out.println("Get User Balance executed");
         return balance;
     }
 
@@ -265,6 +265,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         else{
             return new int[]{0, 0};
         }
+
     }
 
 
