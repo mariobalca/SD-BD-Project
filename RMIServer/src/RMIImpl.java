@@ -16,18 +16,16 @@ import java.util.Date;
 
 public class RMIImpl extends UnicastRemoteObject implements RMI  {
     static Connection connection;
-    static Statement statement;
     protected RMIImpl(Connection connection) throws RemoteException, SQLException {
         super();
         this.connection = connection;
-        this.statement = connection.createStatement();
-        this.statement.execute("PRAGMA foreign_keys = ON");
+        connection.createStatement().execute("PRAGMA foreign_keys = ON");
     }
 
     // IDEMPOTENTES
 
     public ArrayList<User> getUsers() throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("Select * from Users");
+        ResultSet result = connection.createStatement().executeQuery("Select * from Users");
         ArrayList<User> users = new ArrayList<User>();
         while(result.next())
         {
@@ -40,7 +38,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<User> getAdmins(int projectId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Administrators where projectId = " + projectId);
+        ResultSet result = connection.createStatement().executeQuery("Select * from Administrators where projectId = " + projectId);
         ArrayList<User> users = new ArrayList<User>();
         while(result.next())
         {
@@ -53,7 +51,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Project> getProjectsWithoutDetails() throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Projects where active = 1");
+        ResultSet result = connection.createStatement().executeQuery("Select * from Projects where active = 1");
         ArrayList<Project> projects = new ArrayList<Project>();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         while(result.next())
@@ -73,7 +71,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Project> getProjects() throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Projects where active = 1");
+        ResultSet result = connection.createStatement().executeQuery("Select * from Projects where active = 1");
         ArrayList<Project> projects = new ArrayList<Project>();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         while(result.next())
@@ -97,7 +95,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Project> getOlderProjects() throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Projects where active = 0");
+        ResultSet result = connection.createStatement().executeQuery("Select * from Projects where active = 0");
         ArrayList<Project> projects = new ArrayList<Project>();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         while(result.next())
@@ -121,7 +119,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Project> getOwnedProjects(int userId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Projects where OwnerUserId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("Select * from Projects where OwnerUserId = " + userId);
         ArrayList<Project> projects = new ArrayList<Project>();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         while(result.next())
@@ -145,7 +143,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Project> getAdminProjects(int userId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select Projects.* from Projects, Administrators where UserId = " + userId + " and Projects.id = ProjectId and active = 1");
+        ResultSet result = connection.createStatement().executeQuery("Select Projects.* from Projects, Administrators where UserId = " + userId + " and Projects.id = ProjectId and active = 1");
         ArrayList<Project> projects = new ArrayList<Project>();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         while(result.next())
@@ -169,7 +167,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Reward> getProjectRewards(int projectId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Rewards_Users, Rewards where ProjectId = " + projectId + " and RewardId = Rewards.id ");
+        ResultSet result = connection.createStatement().executeQuery("Select * from Rewards_Users, Rewards where ProjectId = " + projectId + " and RewardId = Rewards.id ");
         ArrayList<Reward> rewards = new ArrayList<Reward>();
 
         while(result.next()){
@@ -182,7 +180,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Extra> getProjectExtraRewards(int projectId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Extras_Users, Extras where ProjectId = " + projectId + " and ExtraId = Extras.id ");
+        ResultSet result = connection.createStatement().executeQuery("Select * from Extras_Users, Extras where ProjectId = " + projectId + " and ExtraId = Extras.id ");
         ArrayList<Extra> extraRewards = new ArrayList<Extra>();
         while(result.next())
         {
@@ -195,7 +193,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Reward> getUserRewards(int userId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Rewards_Users where OwnerUserId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("Select * from Rewards_Users where OwnerUserId = " + userId);
         ArrayList<Reward> rewards = new ArrayList<Reward>();
 
         while(result.next()){
@@ -208,7 +206,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Extra> getUserExtraRewards(int userId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Extras_Users where OwnerUserId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("Select * from Extras_Users where OwnerUserId = " + userId);
         ArrayList<Extra> extraRewards = new ArrayList<Extra>();
         while(result.next())
         {
@@ -221,14 +219,17 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Path> getProjectPaths(int projectId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("select * from paths where projectId = " + projectId);
+        ResultSet result = connection.createStatement().executeQuery("select * from paths where projectId = " + projectId);
         ArrayList<Path> paths = new ArrayList<Path>();
+        int i = 0;
         while(result.next())
         {
+            System.out.println(i++);
             int pathId = result.getInt(1);
-            double value = statement.executeQuery("select sum(value) from Transactions where pathId = " + pathId).getInt(1);
+            double value = connection.createStatement().executeQuery("select sum(value) from Transactions where pathId = " + pathId).getDouble(1);
 
             Path p = new Path(result.getString(2), result.getString(4), value);
+
             p.setId(pathId);
             paths.add(p);
         }
@@ -237,14 +238,14 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Message> getProjectMessages(int projectId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("select * from messages where projectId = " + projectId);
+        ResultSet result = connection.createStatement().executeQuery("select * from messages where projectId = " + projectId);
         ArrayList<Message> messages = new ArrayList<Message>();
         while(result.next())
         {
             String subject = result.getString(3);
             String question = result.getString(4);
             String response = result.getString(5);
-            ResultSet fromUserResult = statement.executeQuery("select * from Users where fromUserId = " + result.getInt(5));
+            ResultSet fromUserResult = connection.createStatement().executeQuery("select * from Users where fromUserId = " + result.getInt(5));
             User fromUser = new User(fromUserResult.getString(2), fromUserResult.getString(3), fromUserResult.getDouble(4));
             fromUser.setId(fromUserResult.getInt(1));
 
@@ -257,7 +258,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public double getBalance(int userId) throws java.rmi.RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select Balance from Users where id = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("select Balance from Users where id = " + userId);
         double balance = result.getDouble(1);
 
         System.out.println("Get Balance executed");
@@ -265,10 +266,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public int[] loginUser(String username, String password) throws SQLException {
-        ResultSet result = statement.executeQuery("select count(*), id from Users where username = \"" + username + "\" and password = \"" + password + "\"");
+        ResultSet result = connection.createStatement().executeQuery("select count(*), id from Users where username = \"" + username + "\" and password = \"" + password + "\"");
         if(result.getInt(1) == 1){
             int userId = result.getInt(2);
-            result = statement.executeQuery("select count(*) from logs where userId = " + userId);
+            result = connection.createStatement().executeQuery("select count(*) from logs where userId = " + userId);
             return new int[]{userId, result.getInt(1)};
         }
         else{
@@ -281,10 +282,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
 
     public int registerUser(String username, String password) throws SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from Users where username = \"" + username +"\"");
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from Users where username = \"" + username +"\"");
         if (result.getInt(1) == 0){
-            statement.execute("insert into users (username, password, balance) values (\"" + username + "\", \"" + password + "\", " + 100 + ")");
-            result = statement.executeQuery("select id from Users where username = \"" + username +"\"");
+            connection.createStatement().execute("insert into users (username, password, balance) values (\"" + username + "\", \"" + password + "\", " + 100 + ")");
+            result = connection.createStatement().executeQuery("select id from Users where username = \"" + username +"\"");
             return result.getInt(1);
         }
         else {
@@ -293,19 +294,19 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public boolean createProject(Project project, int requestId, int userId) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            result = statement.executeQuery("select id from projects where Name = \"" + project.getName()+"\"");
+            result = connection.createStatement().executeQuery("select id from projects where Name = \"" + project.getName()+"\"");
             if(result.next())
                 return false;
 
-            statement.execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId,Active) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" + project.getDescription() + "\", " + userId + "," +1+ ")");
+            connection.createStatement().execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId,Active) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" + project.getDescription() + "\", " + userId + "," +1+ ")");
 
-            result = statement.executeQuery("select id from projects where Name = \"" + project.getName()+"\"");
+            result = connection.createStatement().executeQuery("select id from projects where Name = \"" + project.getName()+"\"");
             int projectId = result.getInt(1);
-            statement.execute("insert into administrators (ProjectId, UserId) values (" + projectId + ", " + userId + ")");
-            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            connection.createStatement().execute("insert into administrators (ProjectId, UserId) values (" + projectId + ", " + userId + ")");
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
             System.out.println(projectId);
             for(Reward reward :project.getRewards()){
                 this.createReward(reward, 0, projectId, userId);
@@ -316,70 +317,70 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             return true;
         }
         else{
-            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
         }
     }
 
     public boolean cancelProject(int projectId, int requestId, int userId) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            result = statement.executeQuery("select count(*) from administrators where userId = " + userId + " and projectId= " + projectId);
+            result = connection.createStatement().executeQuery("select count(*) from administrators where userId = " + userId + " and projectId= " + projectId);
             if(result.getInt(1) == 0)
                 return false;
 
-            result = statement.executeQuery("select UserId, Value from transactions where ProjectId = " + projectId);
+            result = connection.createStatement().executeQuery("select UserId, Value from transactions where ProjectId = " + projectId);
             while(result.next())
             {
                 int pledgerId = result.getInt(1);
                 double value = result.getDouble(2);
-                double balance = statement.executeQuery("select balance from users where id = " + pledgerId).getDouble(1);
-                statement.execute("update users set balance = " + (balance + value) + " where id = " + pledgerId);
+                double balance = connection.createStatement().executeQuery("select balance from users where id = " + pledgerId).getDouble(1);
+                connection.createStatement().execute("update users set balance = " + (balance + value) + " where id = " + pledgerId);
             }
 
-            statement.execute("update projects set active = 0 where id = " + projectId);
-            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            connection.createStatement().execute("update projects set active = 0 where id = " + projectId);
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
         else{
-            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
         }
     }
 
     public boolean endProject(int projectId) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select objective, OwnerUserId from projects where id = " + projectId);
+        ResultSet result = connection.createStatement().executeQuery("select objective, OwnerUserId from projects where id = " + projectId);
         double objective = result.getDouble(1);
         int ownerUserId = result.getInt(2);
-        double sum = statement.executeQuery("select sum(value) from transactions where projectId = " + projectId).getDouble(1);
+        double sum = connection.createStatement().executeQuery("select sum(value) from transactions where projectId = " + projectId).getDouble(1);
         if(sum<objective) {
-            result = statement.executeQuery("select UserId, Value from transactions where ProjectId = " + projectId);
+            result = connection.createStatement().executeQuery("select UserId, Value from transactions where ProjectId = " + projectId);
 
             while(result.next())
             {
                 int pledgerId = result.getInt(1);
                 double value = result.getDouble(2);
-                double balance = statement.executeQuery("select balance from users where id = " + pledgerId).getDouble(1);
-                statement.execute("update users set balance = " + (balance + value) + " where id = " + pledgerId);
+                double balance = connection.createStatement().executeQuery("select balance from users where id = " + pledgerId).getDouble(1);
+                connection.createStatement().execute("update users set balance = " + (balance + value) + " where id = " + pledgerId);
             }
 
-            statement.execute("update projects set active = 0 where id = " + projectId);
+            connection.createStatement().execute("update projects set active = 0 where id = " + projectId);
         }
         else {
-            double balance = statement.executeQuery("select balance from users where id = " + ownerUserId).getDouble(1);
-            statement.execute("update users set balance = " + (sum + balance) + " where id = " + ownerUserId);
-            result = statement.executeQuery("select UserId, Value from transactions where ProjectId = " + projectId);
+            double balance = connection.createStatement().executeQuery("select balance from users where id = " + ownerUserId).getDouble(1);
+            connection.createStatement().execute("update users set balance = " + (sum + balance) + " where id = " + ownerUserId);
+            result = connection.createStatement().executeQuery("select UserId, Value from transactions where ProjectId = " + projectId);
             int userId = result.getInt(1);
             double value = result.getDouble(2);
             while(result.next())
             {
-                ResultSet rewards = statement.executeQuery("select id from rewards where minValue = " + value + " and ProjectId = " + projectId);
+                ResultSet rewards = connection.createStatement().executeQuery("select id from rewards where minValue = " + value + " and ProjectId = " + projectId);
                 if(rewards.next()){
                     this.winReward(rewards.getInt(1), 0, userId);
                 }
 
-                ResultSet extras = statement.executeQuery("select id from extras where minValue = " + sum + " and ProjectId = " + projectId);
+                ResultSet extras = connection.createStatement().executeQuery("select id from extras where minValue = " + sum + " and ProjectId = " + projectId);
                 if(rewards.next()){
                     this.winExtraReward(extras.getInt(1), 0, userId);
                 }
@@ -389,268 +390,268 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public boolean financeProject(int projectId, int requestId, int userId, int pathId, double value) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            result = statement.executeQuery("select balance from users where userId = " + userId);
+            result = connection.createStatement().executeQuery("select balance from users where userId = " + userId);
             if(result.getDouble(1) < value)
                 return false;
-            statement.execute("update users set balance = " + (result.getDouble(1) - value) + " where id = " + userId);
-            statement.execute("insert into transactions (UserId, ProjectId, Value) values (" + userId + ", " + projectId + ","  + ", " + value + ")");
-            result = statement.executeQuery("select id from transactions where userId = " + userId);
+            connection.createStatement().execute("update users set balance = " + (result.getDouble(1) - value) + " where id = " + userId);
+            connection.createStatement().execute("insert into transactions (UserId, ProjectId, Value) values (" + userId + ", " + projectId + ","  + ", " + value + ")");
+            result = connection.createStatement().executeQuery("select id from transactions where userId = " + userId);
             result.last();
-            statement.execute("insert into votes (TransactionId, PathId) values (" + result.getInt(1) + ", " + pathId + ")");
-            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            connection.createStatement().execute("insert into votes (TransactionId, PathId) values (" + result.getInt(1) + ", " + pathId + ")");
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
         else{
-            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
         }
     }
 
     public boolean addAdmin(int projectId, int requestId, int userId, int newAdminId) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            result = statement.executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
+            result = connection.createStatement().executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
 
             if(!result.next())
                 return false;
 
-            result = statement.executeQuery("select * from administrators where userId = " + newAdminId + " and projectId= " + projectId);
+            result = connection.createStatement().executeQuery("select * from administrators where userId = " + newAdminId + " and projectId= " + projectId);
             if(result.next())
                 return false;
 
-            statement.execute("insert into administrators (UserId, ProjectId) = " + newAdminId + " and projectId = " + projectId);
-            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            connection.createStatement().execute("insert into administrators (UserId, ProjectId) = " + newAdminId + " and projectId = " + projectId);
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
         else{
-            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
         }
     }
 
     public boolean removeAdmin(int projectId, int requestId, int userId, int removeAdminId) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            result = statement.executeQuery("select administrators.*, projects.OwnerUserId from administrators, projects where userId = " + userId + " and projectId= " + projectId + " and projects.OwnerUserId != " + removeAdminId);
+            result = connection.createStatement().executeQuery("select administrators.*, projects.OwnerUserId from administrators, projects where userId = " + userId + " and projectId= " + projectId + " and projects.OwnerUserId != " + removeAdminId);
 
             if(!result.next())
                 return false;
 
-            statement.execute("delete from administrators where userId = " + removeAdminId + " and projectId = " + projectId);
-            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            connection.createStatement().execute("delete from administrators where userId = " + removeAdminId + " and projectId = " + projectId);
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
         else{
-            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
         }
     }
 
     public boolean sendMessage(Message message, int projectId, int requestId) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + message.getSender().getId());
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + message.getSender().getId());
         if(result.getInt(1) == 0){
-            statement.execute("insert into messages (ProjectId, Subject, Question, Response, FromUserId) values (" + projectId + ",\"" + message.getSubject() + "\",\"" + message.getQuestion() + "\", \"\", " + message.getSender().getId() + ")");
-            statement.execute("insert into logs (UserId, RequestId, Response) values (" + message.getSender().getId() + ", " + requestId + ", 1)");
+            connection.createStatement().execute("insert into messages (ProjectId, Subject, Question, Response, FromUserId) values (" + projectId + ",\"" + message.getSubject() + "\",\"" + message.getQuestion() + "\", \"\", " + message.getSender().getId() + ")");
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + message.getSender().getId() + ", " + requestId + ", 1)");
 
             return true;
         }
         else{
-            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + message.getSender().getId());
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + message.getSender().getId());
             return result.getBoolean(1);
         }
     }
 
     public boolean answerMessage(int messageId, String response, int requestId, int userId) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            int projectId = statement.executeQuery("select projectId from messages where id = " + messageId + ")").getInt(1);
-            result = statement.executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
+            int projectId = connection.createStatement().executeQuery("select projectId from messages where id = " + messageId + ")").getInt(1);
+            result = connection.createStatement().executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
 
             if(!result.next())
                 return false;
 
-            statement.execute("update messages set response = " + response + " where id = " + messageId);
-            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            connection.createStatement().execute("update messages set response = " + response + " where id = " + messageId);
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
         else{
-            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
         }
     }
 
     public boolean createPath(Path path, int requestId, int userId, int projectId) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0 || requestId == 0){
-            result = statement.executeQuery("select id from paths where Name = \"" + path.getName()+"\" and projectId = " + projectId);
+            result = connection.createStatement().executeQuery("select id from paths where Name = \"" + path.getName()+"\" and projectId = " + projectId);
             if(result.next())
                 return false;
 
-            result = statement.executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
+            result = connection.createStatement().executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
 
             if(!result.next())
                 return false;
 
-            statement.execute("insert into paths (Name, Description, ProjectId) values (\"" + path.getName() + "\", \"" + path.getDescription() + "\", " + projectId + ")");
-            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            connection.createStatement().execute("insert into paths (Name, Description, ProjectId) values (\"" + path.getName() + "\", \"" + path.getDescription() + "\", " + projectId + ")");
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
         else{
-            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
         }
     }
 
     public boolean deletePath(int pathId, int requestId, int userId) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            int projectId = statement.executeQuery("select projectId from paths where id = " + pathId + ")").getInt(1);
-            result = statement.executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
+            int projectId = connection.createStatement().executeQuery("select projectId from paths where id = " + pathId + ")").getInt(1);
+            result = connection.createStatement().executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
 
             if(!result.next())
                 return false;
 
-            statement.execute("delete from paths where id = " + pathId);
-            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            connection.createStatement().execute("delete from paths where id = " + pathId);
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
         else{
-            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
         }
     }
 
     public boolean createReward(Reward reward, int requestId, int projectId, int userId) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0 || requestId == 0){
-            result = statement.executeQuery("select id from rewards where Name = \"" + reward.getName()+"\" and projectId = " + projectId);
+            result = connection.createStatement().executeQuery("select id from rewards where Name = \"" + reward.getName()+"\" and projectId = " + projectId);
             if(result.next())
                 return false;
 
-            result = statement.executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
+            result = connection.createStatement().executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
             if(!result.next())
                 return false;
             System.out.println("insert into rewards (MinValue, Name, Description, ProjectId) values (" + reward.getMinValue()  + ",\"" + reward.getName() + "\", \"" + reward.getDescription() + "\", " + projectId + ")");
-            statement.execute("insert into rewards (MinValue, Name, Description, ProjectId) values (" + reward.getMinValue()  + ",\"" + reward.getName() + "\", \"" + reward.getDescription() + "\", " + projectId + ")");
-            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            connection.createStatement().execute("insert into rewards (MinValue, Name, Description, ProjectId) values (" + reward.getMinValue()  + ",\"" + reward.getName() + "\", \"" + reward.getDescription() + "\", " + projectId + ")");
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
         else{
-            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
         }
     }
 
     public boolean removeReward(int rewardId, int requestId, int userId) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            int projectId = statement.executeQuery("select projectId from rewards where id = " + rewardId + ")").getInt(1);
-            result = statement.executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
+            int projectId = connection.createStatement().executeQuery("select projectId from rewards where id = " + rewardId + ")").getInt(1);
+            result = connection.createStatement().executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
 
             if(!result.next())
                 return false;
 
-            statement.execute("delete from rewards where id = " + rewardId);
-            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            connection.createStatement().execute("delete from rewards where id = " + rewardId);
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
         else{
-            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
         }
     }
 
     public boolean winReward(int rewardId, int requestId, int userId) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0 || requestId == 0){
-            statement.execute("insert into rewards_users (RewardId, WinnerUserId, OwnerUserId) values (" + rewardId + ", " + userId + ", " + userId + ")");
-            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            connection.createStatement().execute("insert into rewards_users (RewardId, WinnerUserId, OwnerUserId) values (" + rewardId + ", " + userId + ", " + userId + ")");
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
         else{
-            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
         }
     }
 
     public boolean giveReward(int rewardId, int requestId, int userId, int receiverUserId) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0 || requestId == 0){
-            statement.execute("update rewards_users set OwnerUserId = " + receiverUserId + " where RewardId = " + rewardId);
-            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            connection.createStatement().execute("update rewards_users set OwnerUserId = " + receiverUserId + " where RewardId = " + rewardId);
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
         else{
-            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
         }
     }
 
     public boolean createExtraReward(Extra extra, int requestId, int projectId, int userId) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0 || requestId == 0){
-            result = statement.executeQuery("select id from extras where Name = \"" + extra.getName()+"\" and projectId = " + projectId);
+            result = connection.createStatement().executeQuery("select id from extras where Name = \"" + extra.getName()+"\" and projectId = " + projectId);
             if(result.next())
                 return false;
 
-            result = statement.executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
+            result = connection.createStatement().executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
 
             if(!result.next())
                 return false;
 
-            statement.execute("insert into extras (MinValue, Name, Description, ProjectId) values (" + extra.getMinValue()  + ",\"" + extra.getName() + "\", \"" + extra.getDescription() + "\", " + projectId + ")");
-            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            connection.createStatement().execute("insert into extras (MinValue, Name, Description, ProjectId) values (" + extra.getMinValue()  + ",\"" + extra.getName() + "\", \"" + extra.getDescription() + "\", " + projectId + ")");
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
         else{
-            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
         }
     }
 
     public boolean removeExtraReward(int extraId, int requestId, int userId) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            int projectId = statement.executeQuery("select projectId from rewards where id = " + extraId + ")").getInt(1);
-            result = statement.executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
+            int projectId = connection.createStatement().executeQuery("select projectId from rewards where id = " + extraId + ")").getInt(1);
+            result = connection.createStatement().executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
 
             if(!result.next())
                 return false;
 
-            statement.execute("delete from extras where id = " + extraId);
-            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            connection.createStatement().execute("delete from extras where id = " + extraId);
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
         else{
-            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
         }
     }
 
     public boolean winExtraReward(int extraId, int requestId, int userId) throws RemoteException, SQLException {
-        ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            statement.execute("insert into rewards_users (RewardId, UserId) values (" + extraId + ", " + userId  + ")");
-            statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            connection.createStatement().execute("insert into rewards_users (RewardId, UserId) values (" + extraId + ", " + userId  + ")");
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
         }
         else{
-            result = statement.executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
         }
     }
