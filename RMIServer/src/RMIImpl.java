@@ -173,7 +173,6 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         while(result.next()){
             ResultSet rewardRS = connection.createStatement().executeQuery("select * from rewards where id = " + result.getInt(1));
             Reward r = new Reward(rewardRS.getDouble(2), rewardRS.getString(3), rewardRS.getString(4));
-            r.setFlag(rewardRS.getBoolean(5));
             r.setId(rewardRS.getInt(1));
             rewards.add(r);
         }
@@ -195,13 +194,13 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Reward> getUserRewards(int userId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = connection.createStatement().executeQuery("Select rewardId from Rewards_Users where OwnerUserId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("Select rewardId,flag from Rewards_Users where OwnerUserId = " + userId);
         ArrayList<Reward> rewards = new ArrayList<Reward>();
 
         while(result.next()){
             ResultSet rewardRS = connection.createStatement().executeQuery("select * from rewards where id = " + result.getInt(1));
             Reward r = new Reward(rewardRS.getDouble(2), rewardRS.getString(3), rewardRS.getString(4));
-            r.setFlag(rewardRS.getBoolean(5));
+            r.setFlag(result.getBoolean(2));
             r.setId(rewardRS.getInt(1));
             rewards.add(r);
         }
@@ -365,7 +364,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         else {
             double balance = connection.createStatement().executeQuery("select balance from users where id = " + ownerUserId).getDouble(1);
             connection.createStatement().execute("update users set balance = " + (sum + balance) + " where id = " + ownerUserId);
-            connection.createStatement().execute("update Rewards_Users set flag = 1 where projectId = " + projectId);
+            ResultSet rewardsRS = connection.createStatement().executeQuery("select id from Rewards where projectId = " + projectId);
+            while(rewardsRS.next()){
+                connection.createStatement().execute("update Rewards_Users set flag = 1 where rewardId = " + rewardsRS.getInt(1));
+            }
             connection.createStatement().execute("update projects set active = 0 where id = " + projectId);
         }
         return true;
@@ -377,10 +379,15 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             result = connection.createStatement().executeQuery("select balance from users where id = " + userId);
             if(result.getDouble(1) < value)
                 return false;
+
+            ResultSet rewardIdRS = connection.createStatement().executeQuery("select id from rewards where projectId = " + projectId + " and MinValue = " + value);
+            if(!rewardIdRS.next())
+                return false;
+            
             connection.createStatement().execute("update users set balance = " + (result.getDouble(1) - value) + " where id = " + userId);
-            connection.createStatement().execute("insert into transactions (UserId, ProjectId,PathId, Value) values (" + userId + ", "+ +pathId+ ", " + projectId + ", " + value + ")");
-            int rewardId = connection.createStatement().executeQuery("select id from rewards where projectId = " + projectId + " and MinValue = " + value).getInt(1);
-            this.winReward(rewardId, 0, userId, 0);
+            connection.createStatement().execute("insert into transactions (UserId, ProjectId,PathId, Value) values (" + userId + ", " +projectId  + ", " + pathId+ ", " + value + ")");
+
+            this.winReward(result.getInt(1), 0, userId, 0);
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
