@@ -83,8 +83,10 @@ class Connection extends Thread{
                 return response1;
             case "CreateProj":
                 CreateProj aux3 = (CreateProj)request;
-                Project project = new Project(1,aux3.name,new Date(aux3.year,aux3.mon,aux3.day,aux3.hour,aux3.min),aux3.goal,aux3.description,true);
-                return new BooleanResponse("CreateProj",rmi.createProject(project,1,aux3.userId));
+                Project project = new Project(aux3.name,new Date(aux3.year,aux3.mon,aux3.day,aux3.hour,aux3.min),aux3.goal,aux3.description,true);
+                project.setRewards(((CreateProj) request).rewards);
+                project.setPaths(((CreateProj) request).paths);
+                return new BooleanResponse("CreateProj",rmi.createProject(project,((CreateProj) request).requestId,aux3.userId));
             case "CheckBalance":
                 double value = rmi.getBalance(request.userId);
                 return new DoubleResponse("CheckBalance",value);

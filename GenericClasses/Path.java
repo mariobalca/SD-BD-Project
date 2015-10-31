@@ -9,15 +9,10 @@ public class Path implements Serializable {
     private String description;
     private int votes;
 
-    public Path(String n, String d){
+    public Path(String n, String d, int votes){
         this.name = n;
         this.description = d;
-    }
-
-    public Path(int id, String n, String d){
-        this.id = id;
-        this.name = n;
-        this.description = d;
+        this.votes = votes;
     }
 
     public int getId() {
@@ -50,6 +45,10 @@ public class Path implements Serializable {
 
     @Override
     public String toString() {
-        return "Id: " + id + " Name: " + name +" Description: " + description;
+        return "Id: " + id + " Name: " + name + " Description: " + description;
+    }
+    public void setId(int id) {
+        this.id = id;
+
     }
 }

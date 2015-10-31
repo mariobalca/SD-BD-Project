@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
  */
 public class DeleteProj extends Request{
     private int proj;
+    public int requestId;
     public DeleteProj() {
         super("DeleteProj");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -16,5 +17,6 @@ public class DeleteProj extends Request{
             proj = Integer.parseInt(reader.readLine());
         } catch (Exception e) {
         }
+        requestId = ++Client.requestId;
     }
 }

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 public class PledgeProj extends Request {
     private int proj, path;
     private double valor;
+    public int requestId;
 
     public PledgeProj(){
         super("PledgeProj");
@@ -35,6 +36,7 @@ public class PledgeProj extends Request {
         }
         catch (Exception e) {
         }
+        requestId = ++Client.requestId;
 
     }
 }

@@ -2,7 +2,9 @@
  * Created by mariobalca on 24-10-2015.
  */
 
+import javax.lang.model.type.ArrayType;
 import javax.xml.transform.Result;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
@@ -29,7 +31,9 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ArrayList<User> users = new ArrayList<User>();
         while(result.next())
         {
-            users.add(new User(result.getInt(1), result.getString(2), result.getString(3), result.getDouble(4)));
+            User u = new User(result.getString(2), result.getString(3), result.getDouble(4));
+            u.setId(result.getInt(1));
+            users.add(u);
         }
         System.out.println("Get Users executed");
         return users;
@@ -40,7 +44,9 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ArrayList<User> users = new ArrayList<User>();
         while(result.next())
         {
-            users.add(new User(result.getInt(1), result.getString(2), result.getString(3), result.getDouble(4)));
+            User u = new User(result.getString(2), result.getString(3), result.getDouble(4));
+            u.setId(result.getInt(1));
+            users.add(u);
         }
         System.out.println("Get Admins executed");
         return users;
@@ -54,7 +60,13 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         {
             try {
                 Date projectDate = format.parse(result.getString(3));
-                projects.add(new Project(result.getInt(1), result.getString(2), projectDate  , result.getDouble(4), result.getString(5), result.getBoolean(6)));
+                Project p = new Project(result.getString(2), projectDate, result.getDouble(4), result.getString(5), result.getBoolean(6));
+                p.setId(result.getInt(1));
+                p.setPaths(this.getProjectPaths(result.getInt(1)));
+                //p.setMessages(this.getProjectMessages(result.getInt(1)));
+                //p.setRewards(this.getProjectRewards(result.getInt(1)));
+                //p.setExtras(this.getProjectExtraRewards(result.getInt(1)));
+                projects.add(p);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -71,7 +83,13 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         {
             try {
                 Date projectDate = format.parse(result.getString(3));
-                projects.add(new Project(result.getInt(1), result.getString(2), projectDate  , result.getDouble(4), result.getString(5), result.getBoolean(6)));
+                Project p = new Project(result.getString(2), projectDate, result.getDouble(4), result.getString(5), result.getBoolean(6));
+                p.setId(result.getInt(1));
+                p.setPaths(this.getProjectPaths(result.getInt(1)));
+                p.setMessages(this.getProjectMessages(result.getInt(1)));
+                p.setRewards(this.getProjectRewards(result.getInt(1)));
+                p.setExtras(this.getProjectExtraRewards(result.getInt(1)));
+                projects.add(p);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -87,7 +105,14 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         while(result.next())
         {
             try {
-                projects.add(new Project(result.getInt(1), result.getString(2), format.parse(result.getString(3)), result.getDouble(4), result.getString(5), result.getBoolean(6)));
+                Date projectDate = format.parse(result.getString(3));
+                Project p = new Project(result.getString(2), projectDate, result.getDouble(4), result.getString(5), result.getBoolean(6));
+                p.setId(result.getInt(1));
+                p.setPaths(this.getProjectPaths(result.getInt(1)));
+                p.setMessages(this.getProjectMessages(result.getInt(1)));
+                p.setRewards(this.getProjectRewards(result.getInt(1)));
+                p.setExtras(this.getProjectExtraRewards(result.getInt(1)));
+                projects.add(p);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -103,7 +128,14 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         while(result.next())
         {
             try {
-                projects.add(new Project(result.getInt(1), result.getString(2), format.parse(result.getString(3)), result.getDouble(4), result.getString(5), result.getBoolean(6)));
+                Date projectDate = format.parse(result.getString(3));
+                Project p = new Project(result.getString(2), projectDate, result.getDouble(4), result.getString(5), result.getBoolean(6));
+                p.setId(result.getInt(1));
+                p.setPaths(this.getProjectPaths(result.getInt(1)));
+                p.setMessages(this.getProjectMessages(result.getInt(1)));
+                p.setRewards(this.getProjectRewards(result.getInt(1)));
+                p.setExtras(this.getProjectExtraRewards(result.getInt(1)));
+                projects.add(p);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -112,37 +144,86 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         return projects;
     }
 
-    public ArrayList<Reward> getRewards(int userId) throws java.rmi.RemoteException, SQLException{
+    public ArrayList<Reward> getProjectRewards(int projectId) throws java.rmi.RemoteException, SQLException{
+        ResultSet result = statement.executeQuery("Select * from Rewards_Users where ProjectId = " + projectId);
+        ArrayList<Reward> rewards = new ArrayList<Reward>();
+
+        while(result.next()){
+            Reward r = new Reward(result.getDouble(2), result.getString(3), result.getString(4));
+            r.setId(result.getInt(1));
+            rewards.add(r);
+        }
+        System.out.println("Get User Rewards executed");
+        return rewards;
+    }
+
+    public ArrayList<Extra> getProjectExtraRewards(int projectId) throws java.rmi.RemoteException, SQLException{
+        ResultSet result = statement.executeQuery("Select * from Extras_Users where ProjectId = " + projectId);
+        ArrayList<Extra> extraRewards = new ArrayList<Extra>();
+        while(result.next())
+        {
+            Extra e = new Extra(result.getDouble(2), result.getString(3), result.getString(4));
+            e.setId(result.getInt(1));
+            extraRewards.add(e);
+        }
+        System.out.println("Get User Extras executed");
+        return extraRewards;
+    }
+
+    public ArrayList<Reward> getUserRewards(int userId) throws java.rmi.RemoteException, SQLException{
         ResultSet result = statement.executeQuery("Select * from Rewards_Users where OwnerUserId = " + userId);
         ArrayList<Reward> rewards = new ArrayList<Reward>();
 
         while(result.next()){
-            rewards.add(new Reward(result.getInt(1), result.getDouble(2), result.getString(3), result.getString(4)));
+            Reward r = new Reward(result.getDouble(2), result.getString(3), result.getString(4));
+            r.setId(result.getInt(1));
+            rewards.add(r);
         }
-        System.out.println("Get Rewards executed");
+        System.out.println("Get User Rewards executed");
         return rewards;
     }
 
-    public ArrayList<Extra> getExtraRewards(int userId) throws java.rmi.RemoteException, SQLException{
+    public ArrayList<Extra> getUserExtraRewards(int userId) throws java.rmi.RemoteException, SQLException{
         ResultSet result = statement.executeQuery("Select * from Extras_Users where OwnerUserId = " + userId);
         ArrayList<Extra> extraRewards = new ArrayList<Extra>();
         while(result.next())
         {
-            extraRewards.add(new Extra(result.getInt(1), result.getDouble(2), result.getString(3), result.getString(4)));
+            Extra e = new Extra(result.getDouble(2), result.getString(3), result.getString(4));
+            e.setId(result.getInt(1));
+            extraRewards.add(e);
         }
-        System.out.println("Get Extras executed");
+        System.out.println("Get User Extras executed");
         return extraRewards;
     }
 
-    public ArrayList<Message> getMessages(int projectId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("select * from messages");
+    public ArrayList<Path> getProjectPaths(int projectId) throws java.rmi.RemoteException, SQLException{
+        ResultSet result = statement.executeQuery("select * from paths where projectId = " + projectId);
+        ArrayList<Path> paths = new ArrayList<Path>();
+        while(result.next())
+        {
+            int votes = statement.executeQuery("select count(*) from Votes where pathId = " + result.getInt(1)).getInt(1);
+
+            Path p = new Path(result.getString(2), result.getString(4), votes);
+            p.setId(result.getInt(1));
+            p.setVotes(votes);
+            paths.add(p);
+        }
+        System.out.println("Get Paths executed");
+        return paths;
+    }
+
+    public ArrayList<Message> getProjectMessages(int projectId) throws java.rmi.RemoteException, SQLException{
+        ResultSet result = statement.executeQuery("select * from messages where projectId = " + projectId);
         ArrayList<Message> messages = new ArrayList<Message>();
         while(result.next())
         {
             ResultSet fromUserResult = statement.executeQuery("select * from Users where fromUserId = " + result.getInt(5));
-            User fromUser = new User(fromUserResult.getInt(1), fromUserResult.getString(2), fromUserResult.getString(3), fromUserResult.getDouble(4));
+            User fromUser = new User(fromUserResult.getString(2), fromUserResult.getString(3), fromUserResult.getDouble(4));
+            fromUser.setId(fromUserResult.getInt(1));
 
-            messages.add(new Message(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), fromUser));
+            Message m = new Message(result.getString(2), result.getString(3), result.getString(4), fromUser);
+            m.setId(result.getInt(1));
+            messages.add(m);
         }
         System.out.println("Get Messages executed");
         return messages;
@@ -189,14 +270,17 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             statement.execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId,Active) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" + project.getDescription() + "\", " + userId + "," +1+ ")");
-            result = statement.executeQuery("select id from projects where name = \"" + project.getName()+"\"");
-            statement.execute("insert into administrators (ProjectId, UserId) values (" + result.getInt(1) + ", " + userId + ")");
+            System.out.println("select id from projects where Name = \"" + project.getName()+"\"");
+            result = statement.executeQuery("select id from projects where Name = \"" + project.getName()+"\"");
+            int projectId = result.getInt(1);
+            statement.execute("insert into administrators (ProjectId, UserId) values (" + projectId + ", " + userId + ")");
             statement.execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            System.out.println(projectId);
             for(Reward reward :project.getRewards()){
-                addReward(reward,0,project.getId(),userId);
+                addReward(reward,requestId,projectId,userId);
             }
             for(Path path:project.getPaths()){
-                createPath(path,0,userId,project.getId());
+                createPath(path,requestId,userId,projectId);
             }
             return true;
         }

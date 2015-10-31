@@ -34,12 +34,14 @@ public class IOThread extends Thread {
                             } else {
                                 System.out.println("Successful Login");
                                 Client.userId = intResponse.values[0];
+                                Client.requestId = intResponse.values[1];
                             }
                             break;
                         case 2:
                             schedule(new Register());
                             intResponse = (IntResponse) Client.currentRequest.response;
                             Client.userId = intResponse.values[0];
+                            Client.requestId = 0;
                             if (Client.userId == 0) {
                                 System.out.println("Invalid Register");
                             } else {

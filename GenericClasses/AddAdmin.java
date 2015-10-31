@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 public class AddAdmin extends Request{
     private int proj;
     private String admin = "";
+    public int requestId;
 
     public AddAdmin(){
         super("AddAdmin");
@@ -30,5 +31,6 @@ public class AddAdmin extends Request{
         catch (Exception e) {
             System.out.println("Erro de escrita.");
         }
+        requestId = ++Client.requestId;
     }
 }

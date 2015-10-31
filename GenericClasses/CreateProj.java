@@ -14,6 +14,7 @@ public class CreateProj extends Request{
     public int userId;
     public ArrayList<Path> paths;
     public ArrayList<Reward> rewards;
+    public int requestId;
 
     public CreateProj(int userId){
         super("CreateProj");
@@ -67,7 +68,7 @@ public class CreateProj extends Request{
         }
 
 
-        //Definir o objetivo monet�rio
+        //Definir o objetivo monetário
         System.out.println("Defina o objetivo monet�rio a alcan�ar: ");
         try{
            goal = (Double.parseDouble(reader.readLine()));
@@ -76,8 +77,8 @@ public class CreateProj extends Request{
         }
 
 
-        //Definir a descri��o do projeto
-        System.out.println("Indique a descri��o do projeto: ");
+        //Definir a descrição do projeto
+        System.out.println("Indique a descricao do projeto: ");
         try{
             description = (reader.readLine());
         }
@@ -87,48 +88,30 @@ public class CreateProj extends Request{
         System.out.println("Add reward (0 if no)");
         try {
             while(!reader.readLine().equals("0")){
-                System.out.println("Qual id:");
-                int id = Integer.parseInt(reader.readLine());
                 System.out.println("Qual valor:");
                 int valor = Integer.parseInt(reader.readLine());
                 System.out.println("Nome :");
                 String nome = reader.readLine();
                 System.out.println("Description: ");
                 String d = reader.readLine();
-                rewards.add(new Reward(id,valor,nome,d));
+                rewards.add(new Reward(valor,nome,d));
                 System.out.println("Add reward (0 if no)");
             }
             System.out.println("Add path (0 if no)");
             while(!reader.readLine().equals("0")){
-                System.out.println("Qual id:");
-                int id = Integer.parseInt(reader.readLine());
                 System.out.println("Nome :");
                 String nome = reader.readLine();
                 System.out.println("Description: ");
                 String d = reader.readLine();
-                paths.add(new Path(id,nome,d));
+                paths.add(new Path(nome,d,0));
                 System.out.println("Add path (0 if no)");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        requestId = ++Client.requestId;
 
-
-    }
-
-    @Override
-    public void awnser(IOThread thread) {
-        BooleanResponse response;
-        synchronized (Client.currentRequest.response) {
-            response = (BooleanResponse) Client.currentRequest.response;
-        }
-        if(response.status){
-            System.out.println("Created successfully");
-        }
-        else{
-            System.out.println("Not possible to create");
-        }
 
     }
 }
