@@ -18,7 +18,7 @@ class MyTask extends TimerTask {
 
     public void run() {
         try {
-            ArrayList<Project> projects = serverInstance.getProjects();
+            ArrayList<Project> projects = serverInstance.getProjectsWithoutDetails();
             for(Project p : projects){
                 if(p.getDeadline().before(new Date())){
                     serverInstance.endProject(p.getId());
