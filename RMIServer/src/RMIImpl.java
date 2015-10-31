@@ -173,7 +173,6 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         while(result.next()){
             ResultSet rewardRS = connection.createStatement().executeQuery("select * from rewards where id = " + result.getInt(1));
             Reward r = new Reward(rewardRS.getDouble(2), rewardRS.getString(3), rewardRS.getString(4));
-            r.setFlag(rewardRS.getBoolean(5));
             r.setId(rewardRS.getInt(1));
             rewards.add(r);
         }
@@ -195,13 +194,13 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Reward> getUserRewards(int userId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = connection.createStatement().executeQuery("Select rewardId from Rewards_Users where OwnerUserId = " + userId);
+        ResultSet result = connection.createStatement().executeQuery("Select rewardId,flag from Rewards_Users where OwnerUserId = " + userId);
         ArrayList<Reward> rewards = new ArrayList<Reward>();
 
         while(result.next()){
             ResultSet rewardRS = connection.createStatement().executeQuery("select * from rewards where id = " + result.getInt(1));
             Reward r = new Reward(rewardRS.getDouble(2), rewardRS.getString(3), rewardRS.getString(4));
-            r.setFlag(rewardRS.getBoolean(5));
+            r.setFlag(result.getBoolean(2));
             r.setId(rewardRS.getInt(1));
             rewards.add(r);
         }
