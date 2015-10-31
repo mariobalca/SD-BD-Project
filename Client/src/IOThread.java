@@ -186,6 +186,16 @@ public class IOThread extends Thread {
                             break;
                         case 8:
                             schedule(new CreateProj(Client.userId));
+                            BooleanResponse booleanResponse;
+                            synchronized (Client.currentRequest.response){
+                                booleanResponse = (BooleanResponse)Client.currentRequest.response;
+                            }
+                            if(booleanResponse.status){
+                                System.out.println("Criado com sucesso");
+                            }
+                            else{
+                                System.out.println("Já existe um projeto com esse nome");
+                            }
                             break;
                     }
                 } catch (IOException e) {
