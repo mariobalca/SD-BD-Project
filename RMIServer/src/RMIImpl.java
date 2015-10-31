@@ -241,11 +241,14 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ArrayList<Message> messages = new ArrayList<Message>();
         while(result.next())
         {
+            String subject = result.getString(3);
+            String question = result.getString(4);
+            String response = result.getString(5);
             ResultSet fromUserResult = statement.executeQuery("select * from Users where fromUserId = " + result.getInt(5));
             User fromUser = new User(fromUserResult.getString(2), fromUserResult.getString(3), fromUserResult.getDouble(4));
             fromUser.setId(fromUserResult.getInt(1));
 
-            Message m = new Message(result.getString(2), result.getString(3), result.getString(4), fromUser);
+            Message m = new Message(subject, question, response, fromUser);
             m.setId(result.getInt(1));
             messages.add(m);
         }
@@ -329,8 +332,9 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             while(result.next())
             {
                 int pledgerId = result.getInt(1);
+                double value = result.getDouble(2);
                 double balance = statement.executeQuery("select balance from users where id = " + pledgerId).getDouble(1);
-                statement.execute("update users set balance = " + (balance + result.getDouble(2)) + " where id = " + pledgerId);
+                statement.execute("update users set balance = " + (balance + value) + " where id = " + pledgerId);
             }
 
             statement.execute("update projects set active = 0 where id = " + projectId);
@@ -351,11 +355,13 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         double sum = statement.executeQuery("select sum(value) from transactions where projectId = " + projectId).getDouble(1);
         if(sum<objective) {
             result = statement.executeQuery("select UserId, Value from transactions where ProjectId = " + projectId);
+
             while(result.next())
             {
-                int userId = result.getInt(1);
-                double balance = statement.executeQuery("select balance from users where id = " + userId).getDouble(1);
-                statement.execute("update users set balance = " + (balance + result.getDouble(2)) + " where id = " + userId);
+                int pledgerId = result.getInt(1);
+                double value = result.getDouble(2);
+                double balance = statement.executeQuery("select balance from users where id = " + pledgerId).getDouble(1);
+                statement.execute("update users set balance = " + (balance + value) + " where id = " + pledgerId);
             }
 
             statement.execute("update projects set active = 0 where id = " + projectId);
@@ -364,16 +370,18 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             double balance = statement.executeQuery("select balance from users where id = " + ownerUserId).getDouble(1);
             statement.execute("update users set balance = " + (sum + balance) + " where id = " + ownerUserId);
             result = statement.executeQuery("select UserId, Value from transactions where ProjectId = " + projectId);
+            int userId = result.getInt(1);
+            double value = result.getDouble(2);
             while(result.next())
             {
-                ResultSet rewards = statement.executeQuery("select id from rewards where minValue = " + result.getDouble(2) + " and ProjectId = " + projectId);
+                ResultSet rewards = statement.executeQuery("select id from rewards where minValue = " + value + " and ProjectId = " + projectId);
                 if(rewards.next()){
-                    this.winReward(rewards.getInt(1), 0, result.getInt(1));
+                    this.winReward(rewards.getInt(1), 0, userId);
                 }
 
                 ResultSet extras = statement.executeQuery("select id from extras where minValue = " + sum + " and ProjectId = " + projectId);
                 if(rewards.next()){
-                    this.winExtraReward(extras.getInt(1), 0, result.getInt(1));
+                    this.winExtraReward(extras.getInt(1), 0, userId);
                 }
             }
         }
@@ -460,8 +468,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     public boolean answerMessage(int messageId, String response, int requestId, int userId) throws RemoteException, SQLException {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            ResultSet projectId = statement.executeQuery("select projectId from messages where id = " + messageId + ")");
-            result = statement.executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId.getInt(1));
+            int projectId = statement.executeQuery("select projectId from messages where id = " + messageId + ")").getInt(1);
+            result = statement.executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
 
             if(!result.next())
                 return false;
@@ -503,8 +511,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     public boolean deletePath(int pathId, int requestId, int userId) throws RemoteException, SQLException {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            ResultSet projectId = statement.executeQuery("select projectId from paths where id = " + pathId + ")");
-            result = statement.executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId.getInt(1));
+            int projectId = statement.executeQuery("select projectId from paths where id = " + pathId + ")").getInt(1);
+            result = statement.executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
 
             if(!result.next())
                 return false;
@@ -545,8 +553,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     public boolean removeReward(int rewardId, int requestId, int userId) throws RemoteException, SQLException {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            ResultSet projectId = statement.executeQuery("select projectId from rewards where id = " + rewardId + ")");
-            result = statement.executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId.getInt(1));
+            int projectId = statement.executeQuery("select projectId from rewards where id = " + rewardId + ")").getInt(1);
+            result = statement.executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
 
             if(!result.next())
                 return false;
@@ -616,8 +624,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     public boolean removeExtraReward(int extraId, int requestId, int userId) throws RemoteException, SQLException {
         ResultSet result = statement.executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            ResultSet projectId = statement.executeQuery("select projectId from rewards where id = " + extraId + ")");
-            result = statement.executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId.getInt(1));
+            int projectId = statement.executeQuery("select projectId from rewards where id = " + extraId + ")").getInt(1);
+            result = statement.executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
 
             if(!result.next())
                 return false;
