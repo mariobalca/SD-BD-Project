@@ -8,6 +8,7 @@ public class Reward implements Serializable {
     private double minValue;
     private String name;
     private String description;
+    private boolean flag;
 
     public Reward(double min, String n, String d){
         this.minValue = min;
@@ -49,5 +50,13 @@ public class Reward implements Serializable {
     }
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 }

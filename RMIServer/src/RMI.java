@@ -22,7 +22,6 @@ public interface RMI extends Remote, Serializable{
     ArrayList<Path> getProjectPaths(int projectId) throws java.rmi.RemoteException, SQLException;
     ArrayList<Message> getProjectMessages(int projectId) throws java.rmi.RemoteException, SQLException;
     ArrayList<Reward> getUserRewards(int userId) throws java.rmi.RemoteException, SQLException;
-    ArrayList<Extra> getUserExtraRewards(int userId) throws java.rmi.RemoteException, SQLException;
     public int[] loginUser(String username, String password) throws java.rmi.RemoteException, SQLException;
     public int registerUser(String username, String password) throws java.rmi.RemoteException, SQLException;
     public double getBalance(int userId) throws java.rmi.RemoteException, SQLException;
@@ -47,12 +46,11 @@ public interface RMI extends Remote, Serializable{
 
     public boolean createReward(Reward reward, int requestId, int projectId, int userId) throws java.rmi.RemoteException, SQLException;
     public boolean removeReward(int rewardId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
-    public boolean winReward(int rewardId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
-    public boolean giveReward(int rewardId, int requestId, int giverUserId, int receiverUserId) throws java.rmi.RemoteException, SQLException;
+    public boolean winReward(int rewardId, int requestId, int userId, int flag) throws java.rmi.RemoteException, SQLException;
+    public boolean giveReward(int rewardId, int requestId, int giverUserId, int receiverUserId, int flag) throws java.rmi.RemoteException, SQLException;
 
 
-    public boolean createExtraReward(Extra extra, int requestId, int projectId, int userId) throws java.rmi.RemoteException, SQLException;
-    public boolean removeExtraReward(int extraId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
-    public boolean winExtraReward(int  extraId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
+    public boolean createExtraLevel(Extra extra, int requestId, int projectId, int userId) throws java.rmi.RemoteException, SQLException;
+    public boolean removeExtraLevel(int extraId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
 
 }
