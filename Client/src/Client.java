@@ -30,7 +30,7 @@ public class Client {
             try{
                 socket = new Socket();
                 socket.connect(new InetSocketAddress(hosts[currentServer],ports[currentServer]), 3000);
-                socket.setKeepAlive(true);
+                //socket.setKeepAlive(true);
                 socket.setSoTimeout(5000);
                 System.out.println("Established connection with " + hosts[currentServer] + '/' + ports[currentServer]);
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
@@ -65,7 +65,7 @@ public class Client {
 
                         }
                     }
-                    catch (IOException e){
+                    catch (IOException ex){
                         System.out.println("Nao recebeu resposta o servidor");
                         break;
                     } catch (ClassNotFoundException e) {
@@ -136,7 +136,7 @@ public class Client {
 */
     public static void main(String[] args) {
         String[] hosts= {
-                "localhost",
+                "10.42.0.21",
                 "localhost"
         };
 

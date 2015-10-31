@@ -52,7 +52,7 @@ public class AddReward extends Request{
         catch (Exception e) {
             System.out.println("Erro de escrita.");
         }
-        requestId = ++Client.requestId;
+        requestId = Client.requestId;
 
     }
 }

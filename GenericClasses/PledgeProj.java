@@ -5,8 +5,8 @@ import java.io.InputStreamReader;
  * Created by Rui on 27/10/2015.
  */
 public class PledgeProj extends Request {
-    private int proj, path;
-    private double valor;
+    public int proj, path;
+    public double valor;
     public int requestId;
 
     public PledgeProj(){

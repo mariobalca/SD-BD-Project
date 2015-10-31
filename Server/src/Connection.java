@@ -91,7 +91,8 @@ class Connection extends Thread{
                 double value = rmi.getBalance(request.userId);
                 return new DoubleResponse("CheckBalance",value);
             case "PledgeProj":
-
+                PledgeProj proj = (PledgeProj)request;
+                return new BooleanResponse("PledgeProj",rmi.financeProject(proj.proj,proj.requestId,proj.userId,proj.path,proj.valor));
 
         }
         return null;

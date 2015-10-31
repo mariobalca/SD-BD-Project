@@ -8,5 +8,4 @@ public class Response implements Serializable{
     public Response(String response){
         this.tipo = response;
     }
-
 }

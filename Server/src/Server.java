@@ -20,7 +20,7 @@ public class Server{
     private String secondServerIP;
     private int secondServerPort;
     private int serverPort;
-    static String RMI_ADDRESS = "localhost";
+    static String RMI_ADDRESS = "10.42.0.21";
 
 
     private DatagramSocket udpSocket;
@@ -110,10 +110,10 @@ public class Server{
     }
 
     public static void main(String args[]) throws InterruptedException {
-        int udpPort = 8011;
+        int udpPort = 8012;
         int serverPort = 8002;
-        String secondServerIP = "localhost";
-        int secondServerPort = 8012;
+        String secondServerIP = "10.42.0.21";
+        int secondServerPort = 8011;
 
         new Server(serverPort,udpPort,secondServerIP,secondServerPort);
         //Thread.sleep(1000);

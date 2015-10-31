@@ -167,7 +167,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Reward> getProjectRewards(int projectId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = connection.createStatement().executeQuery("Select * from Rewards_Users, Rewards where ProjectId = " + projectId + " and RewardId = Rewards.id ");
+        ResultSet result = connection.createStatement().executeQuery("Select * from Rewards where ProjectId = " + projectId);
         ArrayList<Reward> rewards = new ArrayList<Reward>();
 
         while(result.next()){
@@ -392,14 +392,12 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     public boolean financeProject(int projectId, int requestId, int userId, int pathId, double value) throws RemoteException, SQLException {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            result = connection.createStatement().executeQuery("select balance from users where userId = " + userId);
+            result = connection.createStatement().executeQuery("select balance from users where id = " + userId);
             if(result.getDouble(1) < value)
                 return false;
             connection.createStatement().execute("update users set balance = " + (result.getDouble(1) - value) + " where id = " + userId);
-            connection.createStatement().execute("insert into transactions (UserId, ProjectId, Value) values (" + userId + ", " + projectId + ","  + ", " + value + ")");
-            result = connection.createStatement().executeQuery("select id from transactions where userId = " + userId);
-            result.last();
-            connection.createStatement().execute("insert into votes (TransactionId, PathId) values (" + result.getInt(1) + ", " + pathId + ")");
+            connection.createStatement().execute("insert into transactions (UserId, ProjectId,PathId, Value) values (" + userId + ", "+ +pathId+ ", " + projectId + ", " + value + ")");
+
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
