@@ -48,6 +48,9 @@ public class Reward implements Serializable {
     public String toString() {
         return "Id: " + id + " Value: " + minValue + " Name: " + name + " Description: " + description;
     }
+    public String toUser(){
+        return toString() + ((flag)?" - Recebido":" - Por Receber");
+    }
     public void setId(int id) {
         this.id = id;
     }

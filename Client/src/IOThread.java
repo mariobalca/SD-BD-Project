@@ -119,7 +119,7 @@ public class IOThread extends Thread {
                             else{
                                 System.out.println("Rewards:\n");
                                 for(Reward reward:rewardsResponse.rewards){
-                                    System.out.println(reward);
+                                    System.out.println(reward.toUser());
                                 }
 
                             }
