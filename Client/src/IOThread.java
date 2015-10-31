@@ -109,7 +109,20 @@ public class IOThread extends Thread {
                             break;
                         case 2:
                             schedule(new CheckRewards());
+                            RewardsResponse rewardsResponse;
+                            synchronized (Client.currentRequest.response){
+                                rewardsResponse = (RewardsResponse) Client.currentRequest.response;
+                            }
+                            if(rewardsResponse.rewards.size()== 0){
+                                System.out.println("Não tem rewards");
+                            }
+                            else{
+                                System.out.println("Rewards:\n");
+                                for(Reward reward:rewardsResponse.rewards){
+                                    System.out.println(reward);
+                                }
 
+                            }
                             break;
                         case 3:
                             schedule(new ListActualProj());
