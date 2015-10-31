@@ -149,7 +149,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Reward> getProjectRewards(int projectId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Rewards_Users where ProjectId = " + projectId);
+        ResultSet result = statement.executeQuery("Select * from Rewards_Users, Rewards where ProjectId = " + projectId + " and RewardId = Rewards.id ");
         ArrayList<Reward> rewards = new ArrayList<Reward>();
 
         while(result.next()){
@@ -162,7 +162,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Extra> getProjectExtraRewards(int projectId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = statement.executeQuery("Select * from Extras_Users where ProjectId = " + projectId);
+        ResultSet result = statement.executeQuery("Select * from Extras_Users, Extras where ProjectId = " + projectId + " and ExtraId = Extras.id ");
         ArrayList<Extra> extraRewards = new ArrayList<Extra>();
         while(result.next())
         {
