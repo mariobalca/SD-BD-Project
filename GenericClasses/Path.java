@@ -37,7 +37,7 @@ public class Path implements Serializable {
 
     @Override
     public String toString() {
-        return "Id: " + id + " Name: " + name + " Description: " + description;
+        return "Path Id: " + id + " Name: " + name + " Description: " + description;
     }
     public void setId(int id) {
         this.id = id;

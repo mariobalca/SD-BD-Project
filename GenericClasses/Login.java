@@ -14,7 +14,7 @@ public class Login extends Request {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         //add username;
-        System.out.println("Insira o Username: ");
+        System.out.println("Insert username: ");
         try{
             username = reader.readLine();
         }
@@ -22,7 +22,7 @@ public class Login extends Request {
             System.out.println("Erro de escrita.");
         }
         //add password;
-        System.out.println("Insira a Password: ");
+        System.out.println("Insert password: ");
         try{
             password = reader.readLine();
         }

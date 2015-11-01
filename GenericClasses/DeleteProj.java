@@ -12,7 +12,7 @@ public class DeleteProj extends Request{
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         //Definir o projeto a eliminar
-        System.out.println("Indique o ID do projeto a eliminar: ");
+        System.out.println("Write the project Id to delete: ");
         try {
             proj = Integer.parseInt(reader.readLine());
         } catch (Exception e) {

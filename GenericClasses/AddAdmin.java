@@ -14,7 +14,7 @@ public class AddAdmin extends Request{
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         //Definir o projeto a que adicionar o admin
-        System.out.println("Indique o ID do projeto: ");
+        System.out.println("Write project id: ");
         try{
             proj = Integer.parseInt(reader.readLine());
         }
@@ -24,7 +24,7 @@ public class AddAdmin extends Request{
 
 
         //Definir o username para nomear como admin
-        System.out.println("Indique o username para ser adicionado como admin: ");
+        System.out.println("Write the username of the new admin: ");
         try{
             admin = reader.readLine();
         }

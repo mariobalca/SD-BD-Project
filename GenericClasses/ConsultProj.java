@@ -11,7 +11,7 @@ public class ConsultProj extends Request{
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         //Definir o projeto a consultar
-        System.out.println("Indique o ID do projeto a consultar: ");
+        System.out.println("Write the project Id: ");
         try{
             proj = Integer.parseInt(reader.readLine());
         }

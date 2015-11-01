@@ -99,7 +99,7 @@ public class IOThread extends Thread {
                     e.printStackTrace();
                 }
             } else {
-                System.out.println("O que deseja?\n1.Check Balance\n2.Check Rewards\n3.List current projects\n4.List older projects\n5.Manage your projects\n6.Pledge Project\n7.Comment Project\n8.Create Project");
+                System.out.println("Select an option:\n1.Check Balance\n2.Check Rewards\n3.List current projects\n4.List older projects\n5.Manage your projects\n6.Pledge Project\n7.Comment Project\n8.Create Project");
                 int opc;
                 try {
                     try{
@@ -115,7 +115,7 @@ public class IOThread extends Thread {
                             synchronized (Client.currentRequest.response) {
                                 doubleResponse = (DoubleResponse) Client.currentRequest.response;
                             }
-                            System.out.println("Tem o saldo de " + doubleResponse.value + " euros\n");
+                            System.out.println("Your balance is: " + doubleResponse.value + " euros\n");
                             break;
                         case 2:
                             schedule(new CheckRewards());
@@ -124,7 +124,7 @@ public class IOThread extends Thread {
                                 rewardsResponse = (RewardsResponse) Client.currentRequest.response;
                             }
                             if(rewardsResponse.rewards.size()== 0){
-                                System.out.println("Não tem rewards");
+                                System.out.println("You don't have rewards.");
                             }
                             else{
                                 System.out.println("Rewards:\n");
@@ -132,7 +132,7 @@ public class IOThread extends Thread {
                                     System.out.println(reward.toUser());
                                 }
                                 System.out.println("Do you wish to donate a reward to a friend (name of the friend if yes, 0 if no)");
-                                schedule(new GiveReward());
+                                //schedule(new GiveReward());
 
                             }
                             break;
@@ -214,10 +214,10 @@ public class IOThread extends Thread {
                                 booleanResponse = (BooleanResponse)Client.currentRequest.response;
                             }
                             if(booleanResponse.status){
-                                System.out.println("Criado com sucesso");
+                                System.out.println("Sucessfully created.");
                             }
                             else{
-                                System.out.println("Já existe um projeto com esse nome");
+                                System.out.println("Name already in use.");
                             }
                             break;
                     }
