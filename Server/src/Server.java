@@ -26,7 +26,7 @@ public class Server{
     private int serverPort;
     private int timeout;
     static String RMI_ADDRESS;
-    private int rmiPort;
+    static int rmiPort;
 
 
     private DatagramSocket udpSocket;
