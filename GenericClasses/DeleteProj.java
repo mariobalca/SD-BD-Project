@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
  * Created by Rui on 27/10/2015.
  */
 public class DeleteProj extends Request{
-    private int proj;
+    public int proj;
     public int requestId;
     public DeleteProj() {
         super("DeleteProj");

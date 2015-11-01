@@ -109,7 +109,7 @@ class Connection extends Thread{
                 return new RewardsResponse("CheckRewards",rewardlist);
             case "ListMyProj":
                 ProjectListResponse projectListResponse = new ProjectListResponse("ListMyProj");
-                ArrayList<Project> arrayList = rmi.getAdminProjects(((ListMyProj) request).userId);
+                ArrayList<Project> arrayList = rmi.getAdminProjects(1);
                 for(Project p:arrayList){
                     projectListResponse.projects.add(p);
                 }
@@ -117,6 +117,8 @@ class Connection extends Thread{
             case "GiveReward":
                 GiveReward reward = (GiveReward)request;
                 return new BooleanResponse("GiveReward",rmi.giveReward(reward.rewardId,reward.requestId,reward.userId,reward.username,0));
+            case "DeleteProj":
+                return new BooleanResponse("DeleteProj",rmi.cancelProject(((DeleteProj)request).proj,((DeleteProj) request).requestId,request.userId));
 
         }
         return null;

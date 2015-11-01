@@ -188,6 +188,28 @@ public class IOThread extends Thread {
                                 for(Project p:projectListResponse.projects){
                                     System.out.println(p.detailed());
                                 }
+                                System.out.println("Which project do you want to manage?");
+                                int projectId = Integer.parseInt(reader.readLine());
+                                System.out.println("Select an option:\n1.Cancel Project");
+                                opc = Integer.parseInt(reader.readLine());
+                                switch (opc){
+                                    case 1:
+                                        System.out.println("Are you sure?(y|n)");
+                                        if(reader.readLine().equals("y")){
+                                            schedule(new DeleteProj());
+                                            BooleanResponse booleanResponse;
+                                            synchronized (Client.currentRequest.response){
+                                                booleanResponse = (BooleanResponse)Client.currentRequest.response;
+                                            }
+                                            if(booleanResponse.status){
+                                                System.out.println("Project deleted successfully");
+                                            }
+                                            else{
+                                                System.out.println("There was a problem deleting the project");
+                                            }
+                                        }
+                                        break;
+                                }
                             }
                             else{
                                 System.out.println("No projects to manage");
