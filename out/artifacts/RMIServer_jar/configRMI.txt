@@ -1,7 +1,0 @@
-localhost
-7000
-30000
-
-hostname
-port
-delta myTask
