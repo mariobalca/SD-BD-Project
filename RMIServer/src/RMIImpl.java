@@ -402,7 +402,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         }
     }
 
-    public boolean addAdmin(int projectId, int requestId, int userId, int newAdminId) throws RemoteException, SQLException {
+    public boolean addAdmin(int projectId, int requestId, int userId, String newAdminName) throws RemoteException, SQLException {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             result = connection.createStatement().executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
@@ -410,11 +410,17 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             if(!result.next())
                 return false;
 
+            ResultSet resultSet = connection.createStatement().executeQuery("select id from users where username = \"" + newAdminName + "\"");
+            if(!resultSet.next())
+                return false;
+
+            int newAdminId = resultSet.getInt(1);
+
             result = connection.createStatement().executeQuery("select * from administrators where userId = " + newAdminId + " and projectId= " + projectId);
             if(result.next())
                 return false;
 
-            connection.createStatement().execute("insert into administrators (UserId, ProjectId) = " + newAdminId + " and projectId = " + projectId);
+            connection.createStatement().execute("insert into administrators (UserId, ProjectId) values (" + newAdminId + ", " + projectId+ ")");
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
@@ -522,6 +528,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public boolean createReward(Reward reward, int requestId, int projectId, int userId) throws RemoteException, SQLException {
+        System.out.println(reward + " " + requestId + " " + projectId + " " + userId);
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0 || requestId == 0){
             result = connection.createStatement().executeQuery("select id from rewards where Name = \"" + reward.getName()+"\" and projectId = " + projectId);

@@ -7,30 +7,10 @@ import java.io.InputStreamReader;
 public class DeleteProj extends Request{
     public int proj;
     public int requestId;
-    public DeleteProj() {
+    public DeleteProj(int projectId) {
         super("DeleteProj");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-
-        int check = 0;
-        while(check == 0)
-        {
-            try {
-
-                //Definir o projeto a eliminar
-                System.out.println("Write the project Id to delete: ");
-                proj = Integer.parseInt(reader.readLine());
-                if (proj<=0){
-                    continue;
-                }
-
-            } catch (Exception e) {
-                continue;
-            }
-            check =1;
-        }
-
-
+        this.proj = projectId;
         requestId = ++Client.requestId;
     }
 }

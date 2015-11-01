@@ -7,25 +7,17 @@ import java.io.InputStreamReader;
 public class AddReward extends Request{
 
 
-    private int proj;
-    private double valor;
-    private String nome = "";
-    private String descricao = "";
-    private int requestId;
+    public int proj;
+    public double valor;
+    public String nome = "";
+    public String descricao = "";
+    public int requestId;
 
-    public AddReward(){
+    public AddReward(int proj){
         super("AddReward");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        //Definir o projeto a que adicionar a reward
-        System.out.println("Write the project Id: ");
-        try{
-            proj = Integer.parseInt(reader.readLine());
-        }
-        catch (Exception e) {
-            System.out.println("Erro de escrita.");
-        }
-
+        this.proj = proj;
         //Definir o valor minimo da reward
         System.out.println("Write the value of the reward: ");
         try{
@@ -52,7 +44,7 @@ public class AddReward extends Request{
         catch (Exception e) {
             System.out.println("Erro de escrita.");
         }
-        requestId = Client.requestId;
+        requestId = ++Client.requestId;
 
     }
 }
