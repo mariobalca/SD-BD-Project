@@ -1,6 +1,11 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -113,7 +118,30 @@ public class CreateProj extends Request{
         }
 
         requestId = ++Client.requestId;
+    }
 
+    @Override
+    public Response execute(RMI rmiServer){
+        boolean verifica = false;
+        while(!verifica){
+            try {
+                String dataAux = year + "-" + mon + "-" + day + " " + hour + ":" + min;
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                Date date = dateFormat.parse(dataAux);
 
+                Project project = new Project(name,date,goal,description,true);
+                project.setRewards(rewards);
+                project.setPaths(paths);
+                return new BooleanResponse("CreateProj",rmiServer.createProject(project,requestId,userId));
+            } catch (RemoteException e) {
+                verifica = false;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                verifica = false;
+            }
+        }
+
+        return new BooleanResponse("CreatProj", false);
     }
 }

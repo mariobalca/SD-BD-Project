@@ -40,7 +40,7 @@ class Connection extends Thread{
                 Response resposta;
                 if(!data.getTipo().equals("Ping")) {
                     System.out.println(data.getTipo());
-                    resposta = execute(data);
+                    resposta = data.execute(rmi);
                 }
                 else{
                     resposta = new Response("Ping");
@@ -50,86 +50,6 @@ class Connection extends Thread{
         }catch(EOFException e){System.out.println("EOF:" + e);
         }catch(IOException e){System.out.println("IO:" + e);} catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-    }
-
-    public Response execute(Request request) throws RemoteException, SQLException {
-        switch (request.tipo){
-            case "Login":
-                Login aux = (Login)request;
-                int[] login = rmi.loginUser(aux.username,aux.password);
-                return new IntResponse("Login",login);
-
-            case "Register":
-                Register aux2 = (Register)request;
-                int auth2 = rmi.registerUser(aux2.username,aux2.password);
-                return new IntResponse("Register",new int[]{auth2});
-
-            case "ListActualProj":
-                ProjectListResponse response = new ProjectListResponse("ListActualProj");
-                ArrayList<Project> projects = rmi.getProjects();
-                for(Project item : projects){
-                    response.projects.add(item);
-                }
-                return response;
-            case "ListOlderProj":
-                ProjectListResponse response2 = new ProjectListResponse("ListOlderProj");
-                ArrayList<Project> projects2 = rmi.getOlderProjects();
-                for(Project item : projects2){
-                    response2.projects.add(item);
-                }
-                return response2;
-            case "ConsultProj":
-                ProjectListResponse response1 = new ProjectListResponse("ConsultProj");
-                return response1;
-            case "CreateProj":
-                CreateProj aux3 = (CreateProj)request;
-                String dataAux = aux3.year + "-" + aux3.mon + "-" + aux3.day + " " + aux3.hour + ":" + aux3.min;
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                try {
-                    Date date = dateFormat.parse(dataAux);
-                    Project project = new Project(aux3.name,date,aux3.goal,aux3.description,true);
-                    project.setRewards(((CreateProj) request).rewards);
-                    project.setPaths(((CreateProj) request).paths);
-                    return new BooleanResponse("CreateProj",rmi.createProject(project,((CreateProj) request).requestId,aux3.userId));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            case "CheckBalance":
-                double value = rmi.getBalance(request.userId);
-                return new DoubleResponse("CheckBalance",value);
-            case "PledgeProj":
-                PledgeProj proj = (PledgeProj)request;
-                return new BooleanResponse("PledgeProj",rmi.financeProject(proj.proj,proj.requestId,proj.userId,proj.path,proj.valor));
-            case "CheckRewards":
-                ArrayList<Reward> rewardlist = rmi.getUserRewards(request.userId);
-                System.out.println(rewardlist.size());
-                return new RewardsResponse("CheckRewards",rewardlist);
-            case "ListMyProj":
-                ProjectListResponse projectListResponse = new ProjectListResponse("ListMyProj");
-                ArrayList<Project> arrayList = rmi.getAdminProjects(1);
-                for(Project p:arrayList){
-                    projectListResponse.projects.add(p);
-                }
-                return projectListResponse;
-            case "GiveReward":
-                GiveReward reward = (GiveReward)request;
-                return new BooleanResponse("GiveReward",rmi.giveReward(reward.rewardId,reward.requestId,reward.userId,reward.username,0));
-            case "DeleteProj":
-                return new BooleanResponse("DeleteProj",rmi.cancelProject(((DeleteProj)request).proj,((DeleteProj) request).requestId,request.userId));
-
-            case "CommentProj":
-                return new BooleanResponse("CommentProj", rmi.sendMessage(new Message(((CommentProj)request).subject,((CommentProj)request).question, ((CommentProj)request).userId), ((CommentProj)request).proj, ((CommentProj)request).requestId));
-
-            case "AddAdmin":
-                return new BooleanResponse("AddAdmin",rmi.addAdmin(((AddAdmin)request).proj,((AddAdmin) request).requestId,request.userId,((AddAdmin) request).admin));
-            case "AddReward":
-                AddReward reward1 = (AddReward)request;
-                return new BooleanResponse("AddReward",rmi.createReward(new Reward(reward1.valor,reward1.nome,reward1.descricao),((AddReward) request).requestId,reward1.proj,request.userId));
-
-        }
-        return null;
     }
 }

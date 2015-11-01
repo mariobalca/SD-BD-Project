@@ -25,6 +25,8 @@ public abstract class Request implements Serializable {
         return tipo;
     }
 
-    public void awnser(IOThread thread) {
+    public Response execute(RMI rmiServer){
+        System.out.println("executei");
+        return new Response("cona");
     }
 }

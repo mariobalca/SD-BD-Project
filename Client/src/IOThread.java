@@ -263,7 +263,7 @@ public class IOThread extends Thread {
                                 for(Project p:projectListResponse.projects){
                                     System.out.println(p);
                                 }
-                                schedule(new CommentProj());
+                                schedule(new CommentProj(projectListResponse.projects));
                             }
                             else{
                                 System.out.println("Nothing to show");

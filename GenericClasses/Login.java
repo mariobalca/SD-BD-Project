@@ -1,5 +1,8 @@
+import javax.management.remote.rmi.RMIServer;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 /**
  * Created by Rui on 26/10/2015.
@@ -29,6 +32,26 @@ public class Login extends Request {
         catch (Exception e) {
             System.out.println("Erro de escrita.");
         }
+    }
+
+
+
+    @Override
+    public Response execute(RMI rmiServer){
+        boolean verifica = false;
+        while(!verifica){
+            try {
+                int[] login = rmiServer.loginUser(username,password);
+                verifica = true;
+                return new IntResponse("Login",login);
+            } catch (RemoteException e) {
+                verifica = false;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return new IntResponse("Login", new int[]{0,0});
     }
 
 }

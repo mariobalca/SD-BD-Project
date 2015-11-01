@@ -5,9 +5,9 @@ import java.util.ArrayList;
  */
 public class ProjectListResponse extends Response{
     public ArrayList<Project> projects;
-    public ProjectListResponse(String response) {
+    public ProjectListResponse(String response, ArrayList<Project> projects) {
         super(response);
-        projects = new ArrayList<Project>();
+        this.projects = projects;
     }
 
 }
