@@ -234,6 +234,18 @@ public class IOThread extends Thread {
                                             System.out.println("There was a problem adding the reward");
                                         }
                                         break;
+                                    case 4:
+                                        schedule(new RemoveReward(projectId));
+                                        synchronized (Client.currentRequest.response){
+                                            booleanResponse = (BooleanResponse)Client.currentRequest.response;
+                                        }
+                                        if(booleanResponse.status){
+                                            System.out.println("Reward removed successfully");
+                                        }
+                                        else{
+                                            System.out.println("There was a problem removing the reward");
+                                        }
+                                        break;
 
                                 }
                             }
