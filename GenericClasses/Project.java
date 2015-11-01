@@ -121,6 +121,12 @@ public class Project implements Serializable {
                 s += m.toString() + "\n";
             }
         }
+        if(extras.size() > 0){
+            s+="Extras:\n";
+            for(Extra e:extras){
+                s += e.toString() + "\n";
+            }
+        }
         s += "Total value earned: " + totalEarned + ((totalEarned>objective)?(" Main objective accomplished"):(" ( " + (objective-totalEarned) + " to accomplish the objective )"));
         return s;
     }

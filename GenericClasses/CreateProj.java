@@ -123,43 +123,41 @@ public class CreateProj extends Request{
         catch (Exception e) {
         }
 
-        System.out.println("Add reward (0 if no)");
+        System.out.println("Add reward (At least one, 0 if enough)");
         try {
-            while(!reader.readLine().equals("0")){
+            while(!reader.readLine().equals("0") || rewards.size() == 0){
 
                 check = 0;
-                loop:
                 while(check == 0)
                 {
                     try {
                         System.out.println("Value of the Reward:");
                         int valor = Integer.parseInt(reader.readLine());
-                        if(valor<=0){
-                            continue loop;
+                        if(valor>0){
+                            System.out.println("Name of the Reward :");
+                            String nome = reader.readLine();
+                            System.out.println("Description: ");
+                            String d = reader.readLine();
+                            rewards.add(new Reward(valor,nome,d));
+                            System.out.println("Add reward (0 if no)");
+                            check =1;
                         }
-                        System.out.println("Name of the Reward :");
-                        String nome = reader.readLine();
-                        System.out.println("Description: ");
-                        String d = reader.readLine();
-                        rewards.add(new Reward(valor,nome,d));
-                        System.out.println("Add reward (0 if no)");
 
                     } catch (Exception e) {
                         continue;
                     }
-                    check =1;
                 }
 
 
             }
-            System.out.println("Add path (0 if no)");
-            while(!reader.readLine().equals("0")){
+            System.out.println("Add path (At least one, 0 if enough)");
+            while(!reader.readLine().equals("0") || paths.size()==0){
                 System.out.println("Name of the path :");
                 String nome = reader.readLine();
                 System.out.println("Description of the path: ");
                 String d = reader.readLine();
                 paths.add(new Path(nome,d,0));
-                System.out.println("Add path (0 if no)");
+                System.out.println("Add path (At least one, 0 if enough)");
             }
         } catch (IOException e) {
             e.printStackTrace();

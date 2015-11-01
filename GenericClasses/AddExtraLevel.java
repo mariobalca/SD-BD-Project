@@ -16,7 +16,7 @@ public class AddExtraLevel extends Request{
     public String descricao = "";
     public int requestId;
 
-    public AddExtraLevel(int proj){
+    public AddExtraLevel(int proj,double sum){
         super("AddExtraLevel");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -28,7 +28,7 @@ public class AddExtraLevel extends Request{
             System.out.println("Write the value of the extra: ");
             try {
                 valor = Double.parseDouble(reader.readLine());
-                if(valor < 0){
+                if(valor > sum){
                     //Definir o nome da reward
                     System.out.println("Write the extra's name: ");
                     try {

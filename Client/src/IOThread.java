@@ -150,7 +150,7 @@ public class IOThread extends Thread {
                                 for(Reward reward:rewardsResponse.rewards){
                                     System.out.println(reward.toUser());
                                 }
-                                System.out.println("Do you wish to donate a reward to a friend (name of the friend if yes, 0 if no)");
+                                System.out.println("Do you wish to donate a reward to a friend (0 if no)");
                                 String aux = reader.readLine();
                                 if(!aux.equals("0"))
                                     schedule(new GiveReward(rewardsResponse.rewards));
@@ -225,7 +225,7 @@ public class IOThread extends Thread {
                             }
                             if(projectListResponse.projects.size()> 0){
                                 for(Project p:projectListResponse.projects){
-                                    System.out.println(p.detailed());
+                                    System.out.println(p.detailed() + "\n");
                                 }
                                 System.out.println("Which project do you want to manage?");
                                 try {
@@ -337,13 +337,25 @@ public class IOThread extends Thread {
                                             synchronized (Client.currentRequest.response){
                                                 booleanResponse = (BooleanResponse)Client.currentRequest.response;
                                             }
+                                            if(booleanResponse.status){
+                                                System.out.println("Commented with success;");
+                                            }
+                                            else {
+                                                System.out.println("Error commenting");
+                                            }
                                         }
                                         break;
                                     case 6:
                                         if(sum>=projectToManage.getObjective()){
-                                            schedule(new AddExtraLevel(projectId));
+                                            schedule(new AddExtraLevel(projectId,sum));
                                             synchronized (Client.currentRequest.response){
                                                 booleanResponse = (BooleanResponse)Client.currentRequest.response;
+                                            }
+                                            if(booleanResponse.status){
+                                                System.out.println("Extra Level added");
+                                            }
+                                            else {
+                                                System.out.println("Error adding level");
                                             }
                                         }
 
@@ -362,6 +374,12 @@ public class IOThread extends Thread {
                                                 schedule(new RemoveExtraLevel(projectId));
                                                 synchronized (Client.currentRequest.response){
                                                     booleanResponse = (BooleanResponse)Client.currentRequest.response;
+                                                }
+                                                if(booleanResponse.status){
+                                                    System.out.println("Removed with success");
+                                                }
+                                                else{
+                                                    System.out.println("Error removing");
                                                 }
                                             }
                                         }
@@ -386,7 +404,7 @@ public class IOThread extends Thread {
                             }
                             else {
                                 for(Project p:projectListResponse.projects){
-                                    System.out.println(p.detailed());
+                                    System.out.println(p.detailed() + "\n");
                                 }
                                 schedule(new PledgeProj(projectListResponse.projects));
                             }

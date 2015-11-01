@@ -39,6 +39,11 @@ public class Extra implements Serializable {
         return description;
     }
 
+    @Override
+    public String toString() {
+        return "Extra Id: " + id + " Name: " + name + " Description: " + description + " Value: " + minValue;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }

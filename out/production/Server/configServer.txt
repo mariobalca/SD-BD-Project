@@ -3,10 +3,7 @@
 10.42.0.1
 8012
 localhost
-<<<<<<< HEAD
-=======
 7000
->>>>>>> e3fb719e974a2334416a9c1e3e0029c75159adb4
 1000
 
 
@@ -15,8 +12,5 @@ udpport
 secondserverIP
 secondServerUdpPort
 RMIadress
-<<<<<<< HEAD
-=======
 rmiPort
->>>>>>> e3fb719e974a2334416a9c1e3e0029c75159adb4
 timeout
