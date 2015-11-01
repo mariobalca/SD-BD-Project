@@ -25,7 +25,7 @@ public class RMIServer{
         try {
 
             try {
-                BufferedReader fR = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream ("configRMI.txt")));
+                BufferedReader fR = new BufferedReader(new FileReader("config/configRMI.txt"));
                 hostname = fR.readLine();
                 port = Integer.parseInt(fR.readLine());
                 delta = Integer.parseInt(fR.readLine());

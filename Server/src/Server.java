@@ -36,7 +36,7 @@ public class Server{
     public Server(){
 
         try {
-            BufferedReader fR = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream ("configServer.txt")));
+            BufferedReader fR = new BufferedReader(new FileReader("config/configServer.txt"));
 
             serverPort = Integer.parseInt(fR.readLine());
             udpPort=Integer.parseInt(fR.readLine());
