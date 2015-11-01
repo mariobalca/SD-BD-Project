@@ -216,10 +216,7 @@ public class IOThread extends Thread {
                                     System.out.println(p.detailed());
                                 }
                                 System.out.println("Which project do you want to manage?");
-<<<<<<< HEAD
                                 try {
-                                    int projectId = Integer.parseInt(reader.readLine());
-=======
                                 int projectId = Integer.parseInt(reader.readLine());
                                 boolean found = false;
                                 if (projectId != 0) {
@@ -236,7 +233,6 @@ public class IOThread extends Thread {
                                     }
                                 }
 
->>>>>>> ffb23898d89caf3d12ad61dc343f62876ccae782
                                 System.out.println("Select an option:\n1.Cancel Project\n2.Add Admin\n3.Add Reward\n4.Remove Reward\n5.Answer Questions");
                                 Project projectToManage = null;
                                 for (Project p : projectListResponse.projects){

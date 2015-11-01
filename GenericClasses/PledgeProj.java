@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -97,6 +99,13 @@ public class PledgeProj extends Request {
                 return new BooleanResponse("PledgeProj",rmiServer.financeProject(proj,requestId,userId,path,valor));
             } catch (RemoteException e) {
                 verifica = false;
+                try {
+                    rmiServer = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS, 7000).lookup("rmi");
+                } catch (RemoteException e1) {
+
+                } catch (NotBoundException e1) {
+                    e1.printStackTrace();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
