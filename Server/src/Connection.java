@@ -107,6 +107,13 @@ class Connection extends Thread{
                 ArrayList<Reward> rewardlist = rmi.getUserRewards(request.userId);
                 System.out.println(rewardlist.size());
                 return new RewardsResponse("CheckRewards",rewardlist);
+            case "ListMyProj":
+                ProjectListResponse projectListResponse = new ProjectListResponse("ListMyProj");
+                ArrayList<Project> arrayList = rmi.getAdminProjects(((ListMyProj) request).userId);
+                for(Project p:arrayList){
+                    projectListResponse.projects.add(p);
+                }
+                return projectListResponse;
 
         }
         return null;

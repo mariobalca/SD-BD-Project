@@ -99,7 +99,7 @@ public class IOThread extends Thread {
                     e.printStackTrace();
                 }
             } else {
-                System.out.println("O que deseja?\n1.Check Balance\n2.Check Rewards\n3.List current projects\n4.List older projects\n5.Consult project\n6.Pledge Project\n7.Comment Project\n8.Create Project");
+                System.out.println("O que deseja?\n1.Check Balance\n2.Check Rewards\n3.List current projects\n4.List older projects\n5.Manage your projects\n6.Pledge Project\n7.Comment Project\n8.Create Project");
                 int opc;
                 try {
                     try{
@@ -131,6 +131,8 @@ public class IOThread extends Thread {
                                 for(Reward reward:rewardsResponse.rewards){
                                     System.out.println(reward.toUser());
                                 }
+                                System.out.println("Do you wish to donate a reward to a friend (name of the friend if yes, 0 if no)");
+                                schedule(new GiveReward());
 
                             }
                             break;
@@ -176,7 +178,18 @@ public class IOThread extends Thread {
 
                             break;
                         case 5:
-                            schedule(new ConsultProj());
+                            schedule(new ListMyProj());
+                            synchronized (Client.currentRequest.response) {
+                                projectListResponse = (ProjectListResponse) Client.currentRequest.response;
+                            }
+                            if(projectListResponse.projects.size()> 0){
+                                for(Project p:projectListResponse.projects){
+                                    System.out.println(p.detailed());
+                                }
+                            }
+                            else{
+                                System.out.println("No projects to manage");
+                            }
                             break;
                         case 6:
                             schedule(new ListActualProj());
