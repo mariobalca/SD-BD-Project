@@ -36,7 +36,7 @@ public class RMIServer{
                 System.exit(1);
             }
             //Connection connection = DriverManager.getConnection("jdbc:sqlite:RMIServer/src/db/db.db");
-            Connection connection = DriverManager.getConnection("jdbc:sqlite::resource:db/db.db");
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:db/db.db");
             System.setProperty("java.rmi.server.hostname",hostname);
             RMIImpl rmiServer = new RMIImpl(connection);
             Registry r = LocateRegistry.createRegistry(port);

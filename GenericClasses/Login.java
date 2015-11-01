@@ -52,7 +52,6 @@ public class Login extends Request {
                 } catch (RemoteException e1) {
 
                 } catch (NotBoundException e1) {
-                    e1.printStackTrace();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
