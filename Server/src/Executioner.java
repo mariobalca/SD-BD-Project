@@ -11,7 +11,7 @@ public class Executioner extends Thread{
     public Executioner(Connection connection) {
         this.connection = connection;
         try {
-            rmi = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS,7000).lookup("rmi");
+            rmi = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS,Server.rmiPort).lookup("rmi");
         } catch (RemoteException e) {
         } catch (NotBoundException e) {
         }
