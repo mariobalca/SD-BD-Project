@@ -80,7 +80,7 @@ public class Project implements Serializable {
 
     @Override
     public String toString() {
-        return "Nome: " + name + "\nDeadline: " + deadline + "\nObjective: " + objective + "\nDescription: " + description + "\nId: " + id;
+        return "Project's name: " + name + " Id: " + id;
     }
 
     public String getName() {
@@ -101,10 +101,12 @@ public class Project implements Serializable {
 
     public String detailed() {
         String s = "Project's name: " + name + "\nDeadline: " + deadline + "\nObjective: " + objective + "\nDescription: " + description + "\nId: " + id + "\n";
+        double totalEarned = 0.0;
         if (paths.size() > 0) {
             s += "Paths:\n";
             for (Path path : paths) {
                 s += path.toString() + "\n";
+                totalEarned+=path.getValue();
             }
         }
         if (rewards.size() > 0) {
@@ -119,6 +121,7 @@ public class Project implements Serializable {
                 s += m.toString() + "\n";
             }
         }
+        s += "Total value earned: " + totalEarned;
         return s;
     }
     public ArrayList<Extra> getExtras() {
