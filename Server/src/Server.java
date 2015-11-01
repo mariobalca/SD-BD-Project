@@ -26,6 +26,7 @@ public class Server{
     private int serverPort;
     private int timeout;
     static String RMI_ADDRESS;
+    private int rmiPort;
 
 
     private DatagramSocket udpSocket;
@@ -42,6 +43,7 @@ public class Server{
             secondServerIP = fR.readLine();
             secondServerPort = Integer.parseInt(fR.readLine());
             RMI_ADDRESS = fR.readLine();
+            rmiPort = Integer.parseInt(fR.readLine());
             timeout = Integer.parseInt(fR.readLine());
             fR.close();
         }
