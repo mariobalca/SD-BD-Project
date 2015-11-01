@@ -111,7 +111,7 @@ class Connection extends Thread{
                 ProjectListResponse projectListResponse = new ProjectListResponse("ListMyProj");
                 ArrayList<Project> arrayList = rmi.getAdminProjects(((ListMyProj) request).userId);
                 for(Project p:arrayList){
-                    arrayList.add(p);
+                    projectListResponse.projects.add(p);
                 }
                 return projectListResponse;
 
