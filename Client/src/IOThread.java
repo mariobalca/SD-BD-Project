@@ -61,6 +61,7 @@ public class IOThread extends Thread {
                                     System.out.println(project);
                                 }
                                 System.out.println("Which project do you want to see? (0 if none)");
+                                try{
                                 int aux = Integer.parseInt(reader.readLine());
                                 boolean found = false;
                                 if (aux != 0) {
@@ -74,6 +75,9 @@ public class IOThread extends Thread {
                                     if(!found){
                                         System.out.println("You can't see that project");
                                     }
+                                }
+                                }catch (Exception e){
+                                    System.out.println("Input error");
                                 }
                             }
                             break;
@@ -163,19 +167,23 @@ public class IOThread extends Thread {
                                     System.out.println(project);
                                 }
                                 System.out.println("Which project do you want to see? (0 if none)");
-                                int aux = Integer.parseInt(reader.readLine());
-                                boolean found = false;
-                                if (aux != 0) {
-                                    for (Project project : projectListResponse.projects) {
-                                        if (project.getId() == aux) {
-                                            System.out.println(project.detailed());
-                                            found = true;
-                                            break;
+                                try {
+                                    int aux = Integer.parseInt(reader.readLine());
+                                    boolean found = false;
+                                    if (aux != 0) {
+                                        for (Project project : projectListResponse.projects) {
+                                            if (project.getId() == aux) {
+                                                System.out.println(project.detailed());
+                                                found = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!found) {
+                                            System.out.println("You can't see that project");
                                         }
                                     }
-                                    if(!found){
-                                        System.out.println("You can't see that project");
-                                    }
+                                }catch (Exception e){
+                                    System.out.println("Input error");
                                 }
                             }
                             break;
@@ -189,19 +197,23 @@ public class IOThread extends Thread {
                                     System.out.println(project);
                                 }
                                 System.out.println("Which project do you want to see? (0 if none)");
-                                int aux = Integer.parseInt(reader.readLine());
-                                boolean found = false;
-                                if (aux != 0) {
-                                    for (Project project : projectListResponse.projects) {
-                                        if (project.getId() == aux) {
-                                            System.out.println(project.detailed());
-                                            found = true;
-                                            break;
+                                try {
+                                    int aux = Integer.parseInt(reader.readLine());
+                                    boolean found = false;
+                                    if (aux != 0) {
+                                        for (Project project : projectListResponse.projects) {
+                                            if (project.getId() == aux) {
+                                                System.out.println(project.detailed());
+                                                found = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!found) {
+                                            System.out.println("You can't see that project");
                                         }
                                     }
-                                    if(!found){
-                                        System.out.println("You can't see that project");
-                                    }
+                                }catch (Exception e){
+                                    System.out.println("Input error");
                                 }
                             }
 
