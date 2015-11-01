@@ -628,7 +628,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     public boolean removeExtraLevel(int extraId, int requestId, int userId) throws RemoteException, SQLException {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            int projectId = connection.createStatement().executeQuery("select projectId from rewards where id = " + extraId + ")").getInt(1);
+            int projectId = connection.createStatement().executeQuery("select projectId from extras where id = " + extraId).getInt(1);
             result = connection.createStatement().executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
 
             if(!result.next())

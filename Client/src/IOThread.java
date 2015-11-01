@@ -197,6 +197,25 @@ public class IOThread extends Thread {
                                 System.out.println("Which project do you want to manage?");
                                 int projectId = Integer.parseInt(reader.readLine());
                                 System.out.println("Select an option:\n1.Cancel Project\n2.Add Admin\n3.Add Reward\n4.Remove Reward\n5.Answer Questions");
+                                Project projectToManage = null;
+                                for (Project p : projectListResponse.projects){
+                                    if(p.getId() == projectId)
+                                        projectToManage = p;
+                                }
+                                schedule(new ListProjectPaths(projectId));
+                                PathListResponse pathListResponse;
+                                synchronized (Client.currentRequest.response) {
+                                    pathListResponse = (PathListResponse) Client.currentRequest.response;
+                                }
+                                double sum = 0;
+                                if(pathListResponse.paths.size()> 0){
+                                    for (Path p : pathListResponse.paths){
+                                        sum += p.getValue();
+                                    }
+                                    if(sum>=projectToManage.getObjective())
+                                        System.out.println("6.Add Extra Level\n7.Remove Extra Level");
+                                }
+
                                 opc = Integer.parseInt(reader.readLine());
                                 switch (opc){
                                     case 1:
@@ -265,6 +284,33 @@ public class IOThread extends Thread {
                                             schedule(new CommentResponse());
                                             synchronized (Client.currentRequest.response){
                                                 booleanResponse = (BooleanResponse)Client.currentRequest.response;
+                                            }
+                                        }
+                                        break;
+                                    case 6:
+                                        if(sum>=projectToManage.getObjective()){
+                                            schedule(new AddExtraLevel(projectId));
+                                            synchronized (Client.currentRequest.response){
+                                                booleanResponse = (BooleanResponse)Client.currentRequest.response;
+                                            }
+                                        }
+
+                                        break;
+                                    case 7:
+                                        if(sum>=projectToManage.getObjective()){
+                                            schedule(new ListProjectExtraLevels(projectId));
+                                            ExtraLevelListResponse extraLevelListResponse = (ExtraLevelListResponse) Client.currentRequest.response;
+                                            if(extraLevelListResponse.extras.size()==0){
+                                                System.out.println("Nothing to show");
+                                            }
+                                            else {
+                                                for(Extra e : extraLevelListResponse.extras){
+                                                    System.out.println(e);
+                                                }
+                                                schedule(new RemoveExtraLevel(projectId));
+                                                synchronized (Client.currentRequest.response){
+                                                    booleanResponse = (BooleanResponse)Client.currentRequest.response;
+                                                }
                                             }
                                         }
                                         break;

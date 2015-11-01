@@ -7,8 +7,6 @@ import java.sql.SQLException;
  * Created by Rui on 26/10/2015.
  */
 public class AddReward extends Request{
-
-
     public int proj;
     public double valor;
     public String nome = "";
