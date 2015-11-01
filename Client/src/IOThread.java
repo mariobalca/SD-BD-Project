@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.spec.ECField;
 
 /**
  * Created by pedro on 27-10-2015.
@@ -61,11 +62,17 @@ public class IOThread extends Thread {
                                 }
                                 System.out.println("Which project do you want to see? (0 if none)");
                                 int aux = Integer.parseInt(reader.readLine());
+                                boolean found = false;
                                 if (aux != 0) {
                                     for (Project project : projectListResponse.projects) {
                                         if (project.getId() == aux) {
                                             System.out.println(project.detailed());
+                                            found = true;
+                                            break;
                                         }
+                                    }
+                                    if(!found){
+                                        System.out.println("You can't see that project");
                                     }
                                 }
                             }
@@ -82,12 +89,18 @@ public class IOThread extends Thread {
                                 System.out.println("Which project do you want to see? (0 if none)");
                                 try {
                                     int aux = Integer.parseInt(reader.readLine());
+                                    boolean found = false;
                                     if (aux != 0) {
                                         for (Project project : projectListResponse.projects) {
                                             if (project.getId() == aux) {
                                                 System.out.println(project.detailed());
+                                                found = true;
+                                                break;
                                             }
                                         }
+                                    }
+                                    if(!found){
+                                        System.out.println("You can't see that project");
                                     }
                                 }catch (Exception e){
                                     System.out.println("Error in input");
@@ -136,7 +149,7 @@ public class IOThread extends Thread {
                                 System.out.println("Do you wish to donate a reward to a friend (name of the friend if yes, 0 if no)");
                                 String aux = reader.readLine();
                                 if(!aux.equals("0"))
-                                    schedule(new GiveReward());
+                                    schedule(new GiveReward(rewardsResponse.rewards));
 
                             }
                             break;
@@ -151,11 +164,17 @@ public class IOThread extends Thread {
                                 }
                                 System.out.println("Which project do you want to see? (0 if none)");
                                 int aux = Integer.parseInt(reader.readLine());
+                                boolean found = false;
                                 if (aux != 0) {
                                     for (Project project : projectListResponse.projects) {
                                         if (project.getId() == aux) {
                                             System.out.println(project.detailed());
+                                            found = true;
+                                            break;
                                         }
+                                    }
+                                    if(!found){
+                                        System.out.println("You can't see that project");
                                     }
                                 }
                             }
@@ -171,11 +190,17 @@ public class IOThread extends Thread {
                                 }
                                 System.out.println("Which project do you want to see? (0 if none)");
                                 int aux = Integer.parseInt(reader.readLine());
+                                boolean found = false;
                                 if (aux != 0) {
                                     for (Project project : projectListResponse.projects) {
                                         if (project.getId() == aux) {
                                             System.out.println(project.detailed());
+                                            found = true;
+                                            break;
                                         }
+                                    }
+                                    if(!found){
+                                        System.out.println("You can't see that project");
                                     }
                                 }
                             }
@@ -191,7 +216,27 @@ public class IOThread extends Thread {
                                     System.out.println(p.detailed());
                                 }
                                 System.out.println("Which project do you want to manage?");
+<<<<<<< HEAD
+                                try {
+                                    int projectId = Integer.parseInt(reader.readLine());
+=======
                                 int projectId = Integer.parseInt(reader.readLine());
+                                boolean found = false;
+                                if (projectId != 0) {
+                                    for (Project project : projectListResponse.projects) {
+                                        if (project.getId() == projectId) {
+                                            System.out.println(project.detailed());
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                    if(!found){
+                                        System.out.println("You can't manage that project");
+                                        break;
+                                    }
+                                }
+
+>>>>>>> ffb23898d89caf3d12ad61dc343f62876ccae782
                                 System.out.println("Select an option:\n1.Cancel Project\n2.Add Admin\n3.Add Reward\n4.Remove Reward\n5.Answer Questions");
                                 Project projectToManage = null;
                                 for (Project p : projectListResponse.projects){
@@ -211,8 +256,10 @@ public class IOThread extends Thread {
                                     if(sum>=projectToManage.getObjective())
                                         System.out.println("6.Add Extra Level\n7.Remove Extra Level");
                                 }
-
+                                try{
                                 opc = Integer.parseInt(reader.readLine());
+
+
                                 switch (opc){
                                     case 1:
                                         System.out.println("Are you sure?(y|n)");
@@ -310,6 +357,12 @@ public class IOThread extends Thread {
                                             }
                                         }
                                         break;
+                                    }
+                                }catch (Exception e){
+                                    System.out.println("Input Error");
+                                }
+                                }catch (Exception e){
+                                    System.out.println("Input Error");
                                 }
                             }
                             else{

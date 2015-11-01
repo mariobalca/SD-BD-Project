@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by pedro on 01-11-2015.
@@ -12,7 +13,7 @@ public class GiveReward extends Request {
     public int rewardId,requestId;
     public String username;
 
-    public GiveReward() {
+    public GiveReward(ArrayList<Reward> rewards) {
         super("GiveReward");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -23,13 +24,19 @@ public class GiveReward extends Request {
         {
             try {
                 rewardId = Integer.parseInt(reader.readLine());
-                if (rewardId <= 0)
-                    continue;
+                if (rewardId > 0){
+                    for (Reward reward : rewards) {
+                        if (reward.getId() == rewardId) {
+                            check = 1;
+                        }
+                    }
+                }
+                if(check == 0)
+                    System.out.println("Insert a valid reward");
 
             } catch (Exception e) {
                 continue;
             }
-            check =1;
         }
 
         System.out.println("Which user do you want to give to?");
