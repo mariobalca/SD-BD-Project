@@ -195,7 +195,7 @@ public class IOThread extends Thread {
                                 }
                                 System.out.println("Which project do you want to manage?");
                                 int projectId = Integer.parseInt(reader.readLine());
-                                System.out.println("Select an option:\n1.Cancel Project\n2.Add Admin\n3.Add Reward");
+                                System.out.println("Select an option:\n1.Cancel Project\n2.Add Admin\n3.Add Reward\n4.Remove Reward");
                                 opc = Integer.parseInt(reader.readLine());
                                 switch (opc){
                                     case 1:
