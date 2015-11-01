@@ -115,7 +115,7 @@ public class IOThread extends Thread {
                             break;
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+
                 }
             } else {
                 System.out.println("Select an option:\n1.Check Balance\n2.Check Rewards\n3.List current projects\n4.List older projects\n5.Manage your projects\n6.Pledge Project\n7.Comment Project\n8.Create Project");
@@ -440,7 +440,7 @@ public class IOThread extends Thread {
                             break;
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+
                 }
             }
         }
@@ -457,7 +457,7 @@ public class IOThread extends Thread {
             try {
                 wait();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+
             }
         }
 

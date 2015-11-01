@@ -32,9 +32,7 @@ public class Client {
             try{
                 socket = new Socket();
                 socket.connect(new InetSocketAddress(hosts[currentServer],ports[currentServer]), 3000);
-                //socket.setKeepAlive(true);
                 socket.setSoTimeout(timeout);
-                System.out.println("Established connection with " + hosts[currentServer] + '/' + ports[currentServer]);
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 Request input;
@@ -67,10 +65,8 @@ public class Client {
                         }
                     }
                     catch (IOException ex){
-                        System.out.println("Nao recebeu resposta o servidor");
                         break;
                     } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
                     }
 
                 }
@@ -78,7 +74,6 @@ public class Client {
                 try {
                     socket.close();
                 } catch (IOException e1) {
-                    e1.printStackTrace();
                 }
                 currentServer = ((currentServer==1)?0:1);
             }
@@ -103,7 +98,7 @@ public class Client {
             fR.close();
         }
         catch (Exception e){
-            System.out.println("Erro ao abrir ficheiro client_config");
+            System.out.println("Erro ao abrir ficheiro configClient");
             System.exit(1);
         }
     }

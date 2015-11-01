@@ -36,7 +36,6 @@ class Connection extends Thread{
             this.executioner = new Executioner(this);
             System.out.println("Connected to RMI and Client");
         } catch (IOException e) {
-            e.printStackTrace();
         }
         start();
     }
@@ -77,7 +76,6 @@ class Connection extends Thread{
             }
         }catch(EOFException e){System.out.println("EOF:" + e);
         }catch(IOException e){System.out.println("IO:" + e);} catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 

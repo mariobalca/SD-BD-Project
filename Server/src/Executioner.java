@@ -13,9 +13,7 @@ public class Executioner extends Thread{
         try {
             rmi = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS,7000).lookup("rmi");
         } catch (RemoteException e) {
-            e.printStackTrace();
         } catch (NotBoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -29,7 +27,6 @@ public class Executioner extends Thread{
                 try {
                     wait();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
             }
         }

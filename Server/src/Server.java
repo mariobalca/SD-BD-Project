@@ -59,7 +59,6 @@ public class Server{
             this.udpSocket = new DatagramSocket(udpPort);
             this.udpSocket.setSoTimeout(timeout);
         } catch (SocketException e) {
-            e.printStackTrace();
         }
         listener = new Listener(serverPort);
         tradeUdp();
