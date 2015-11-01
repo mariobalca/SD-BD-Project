@@ -34,11 +34,15 @@ public class CreateProj extends Request{
         }
         int check =0;
         while(check == 0) {
+            Date data = new Date();
             //Definir a deadline do projeto
             System.out.println("Write the deadline of the projet: \nYEAR: ");
 
             try {
                 year = (Integer.parseInt(reader.readLine()));
+                if(year < 1){
+                    continue;
+                }
 
             } catch (Exception e) {
                 continue;
@@ -46,38 +50,64 @@ public class CreateProj extends Request{
             System.out.println("MONTH: ");
             try {
                 mon = (Integer.parseInt(reader.readLine()));
+                if(mon> 12 || mon <1){
+                    continue;
+                }else
+                    mon -=1;
             } catch (Exception e) {
                 continue;
             }
             System.out.println("DAY: ");
             try {
                 day = (Integer.parseInt(reader.readLine()));
+                if(day<1 || day >31){
+                    continue;
+                }
             } catch (Exception e) {
                 continue;
             }
-            System.out.println("HOUR: ");
+            System.out.println("HOUR (0-23): ");
             try {
                 hour = (Integer.parseInt(reader.readLine()));
+                if(hour >23 || hour < 0){
+                    continue;
+                }
+
             } catch (Exception e) {
                 continue;
             }
             System.out.println("MINUTE: ");
             try {
                 min = (Integer.parseInt(reader.readLine()));
+                if(min >60 || min < 0){
+                    continue;
+                }
             } catch (Exception e) {
+                continue;
+            }
+            Date dataInserida = new Date(year-1900,mon,day,hour,min);
+            System.out.println(data);
+            System.out.println(dataInserida);
+            if(dataInserida.after(data))
+                check =1;
+            System.out.println("Data anterior à atual!");
+        }
+
+        //Definir o objetivo monetário
+        check = 0;
+        while (check ==0) {
+            System.out.println("Write the goal of the project: ");
+            try {
+                goal = (Double.parseDouble(reader.readLine()));
+                if(goal<= 0){
+                    continue;
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid goal");
                 continue;
             }
             check =1;
         }
-
-        //Definir o objetivo monetário
-        System.out.println("Write the goal of the project: ");
-        try{
-           goal = (Double.parseDouble(reader.readLine()));
-        }
-        catch (Exception e) {
-        }
-
 
         //Definir a descrição do projeto
         System.out.println("Write the description of the projet: ");
@@ -90,14 +120,27 @@ public class CreateProj extends Request{
         System.out.println("Add reward (0 if no)");
         try {
             while(!reader.readLine().equals("0")){
-                System.out.println("Value of the Reward:");
-                int valor = Integer.parseInt(reader.readLine());
-                System.out.println("Name of the Reward :");
-                String nome = reader.readLine();
-                System.out.println("Description: ");
-                String d = reader.readLine();
-                rewards.add(new Reward(valor,nome,d));
-                System.out.println("Add reward (0 if no)");
+
+                check = 0;
+                while(check == 0)
+                {
+                    try {
+                        System.out.println("Value of the Reward:");
+                        int valor = Integer.parseInt(reader.readLine());
+                        System.out.println("Name of the Reward :");
+                        String nome = reader.readLine();
+                        System.out.println("Description: ");
+                        String d = reader.readLine();
+                        rewards.add(new Reward(valor,nome,d));
+                        System.out.println("Add reward (0 if no)");
+
+                    } catch (Exception e) {
+                        continue;
+                    }
+                    check =1;
+                }
+
+
             }
             System.out.println("Add path (0 if no)");
             while(!reader.readLine().equals("0")){

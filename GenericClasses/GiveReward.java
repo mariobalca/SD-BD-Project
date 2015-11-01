@@ -14,12 +14,22 @@ public class GiveReward extends Request {
         super("GiveReward");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        System.out.println("What reward do you want to give?");
-        try {
-            rewardId = Integer.parseInt(reader.readLine());
+        System.out.println("What reward do you want to give? (Insert ID)");
+
+        int check = 0;
+        while(check == 0)
+        {
+            try {
+                rewardId = Integer.parseInt(reader.readLine());
+                if (rewardId <= 0)
+                    continue;
+
+            } catch (Exception e) {
+                continue;
+            }
+            check =1;
         }
-        catch (Exception e) {
-        }
+
         System.out.println("Which user do you want to give to?");
         try {
             username = reader.readLine();
