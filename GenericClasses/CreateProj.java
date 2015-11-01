@@ -86,11 +86,10 @@ public class CreateProj extends Request{
                 continue;
             }
             Date dataInserida = new Date(year-1900,mon,day,hour,min);
-            System.out.println(data);
-            System.out.println(dataInserida);
-            if(dataInserida.after(data))
-                check =1;
-            System.out.println("Data anterior à atual!");
+            if(dataInserida.after(data)) {
+                check = 1;
+            }else
+                System.out.println("Data anterior à atual!");
         }
 
         //Definir o objetivo monetário
@@ -101,12 +100,12 @@ public class CreateProj extends Request{
                 goal = (Double.parseDouble(reader.readLine()));
                 if(goal<= 0){
                     continue;
-                }
+                }else
+                    check =1;
             } catch (Exception e) {
                 System.out.println("Invalid goal");
                 continue;
             }
-            check =1;
         }
 
         //Definir a descrição do projeto
@@ -122,11 +121,15 @@ public class CreateProj extends Request{
             while(!reader.readLine().equals("0")){
 
                 check = 0;
+                loop:
                 while(check == 0)
                 {
                     try {
                         System.out.println("Value of the Reward:");
                         int valor = Integer.parseInt(reader.readLine());
+                        if(valor<=0){
+                            continue loop;
+                        }
                         System.out.println("Name of the Reward :");
                         String nome = reader.readLine();
                         System.out.println("Description: ");

@@ -17,6 +17,10 @@ class Connection extends Thread{
     ObjectOutputStream outputStream;
     Socket socket;
     RMI rmi;
+
+    public Response response;
+    public boolean requestToProcess;
+
     public Connection(Socket socket){
         this.socket = socket;
         try {
@@ -39,8 +43,7 @@ class Connection extends Thread{
                 Request data = (Request)inputStream.readObject();
                 Response resposta;
                 if(!data.getTipo().equals("Ping")) {
-                    System.out.println(data.getTipo());
-                    resposta = execute(data);
+
                 }
                 else{
                     resposta = new Response("Ping");
@@ -109,7 +112,7 @@ class Connection extends Thread{
                 return new RewardsResponse("CheckRewards",rewardlist);
             case "ListMyProj":
                 ProjectListResponse projectListResponse = new ProjectListResponse("ListMyProj");
-                ArrayList<Project> arrayList = rmi.getAdminProjects(1);
+                ArrayList<Project> arrayList = rmi.getAdminProjects(request.userId);
                 for(Project p:arrayList){
                     projectListResponse.projects.add(p);
                 }

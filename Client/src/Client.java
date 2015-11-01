@@ -66,7 +66,6 @@ public class Client {
                             synchronized (ioThread) {
                                 ioThread.notify();
                             }
-
                         }
                     }
                     catch (IOException ex){
