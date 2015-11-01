@@ -28,6 +28,7 @@ public class CheckBalance extends  Request{
                 } catch (NotBoundException e1) {
                     e1.printStackTrace();
                 }
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }

@@ -47,13 +47,13 @@ public class Login extends Request {
                 return new IntResponse("Login",login);
             } catch (RemoteException e) {
                 verifica = false;
-                /*try {
+                try {
                     rmiServer = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS, 7000).lookup("rmi");
                 } catch (RemoteException e1) {
 
                 } catch (NotBoundException e1) {
                     e1.printStackTrace();
-                }*/
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }

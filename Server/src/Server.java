@@ -46,7 +46,8 @@ public class Server{
             fR.close();
         }
         catch (Exception e){
-            System.out.println("Erro ao abrir ficheiro client_config");
+
+            System.out.println("Erro ao abrir ficheiro configServer.txt");
             System.exit(1);
         }
 

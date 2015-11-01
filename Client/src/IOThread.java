@@ -217,6 +217,7 @@ public class IOThread extends Thread {
                                 }
                                 System.out.println("Which project do you want to manage?");
                                 try {
+
                                     int projectId = Integer.parseInt(reader.readLine());
 
                                 boolean found = false;
