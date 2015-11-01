@@ -190,13 +190,13 @@ public class IOThread extends Thread {
                                 }
                                 System.out.println("Which project do you want to manage?");
                                 int projectId = Integer.parseInt(reader.readLine());
-                                System.out.println("Select an option:\n1.Cancel Project");
+                                System.out.println("Select an option:\n1.Cancel Project\n2.Add Admin\n3.Add Reward");
                                 opc = Integer.parseInt(reader.readLine());
                                 switch (opc){
                                     case 1:
                                         System.out.println("Are you sure?(y|n)");
                                         if(reader.readLine().equals("y")){
-                                            schedule(new DeleteProj());
+                                            schedule(new DeleteProj(projectId));
                                             BooleanResponse booleanResponse;
                                             synchronized (Client.currentRequest.response){
                                                 booleanResponse = (BooleanResponse)Client.currentRequest.response;
@@ -209,6 +209,32 @@ public class IOThread extends Thread {
                                             }
                                         }
                                         break;
+                                    case 2:
+                                        schedule(new AddAdmin(projectId));
+                                        BooleanResponse booleanResponse;
+                                        synchronized (Client.currentRequest.response){
+                                            booleanResponse = (BooleanResponse)Client.currentRequest.response;
+                                        }
+                                        if(booleanResponse.status){
+                                            System.out.println("Admin added successfully");
+                                        }
+                                        else{
+                                            System.out.println("There was a problem adding the admin");
+                                        }
+                                        break;
+                                    case 3:
+                                        schedule(new AddReward(projectId));
+                                        synchronized (Client.currentRequest.response){
+                                            booleanResponse = (BooleanResponse)Client.currentRequest.response;
+                                        }
+                                        if(booleanResponse.status){
+                                            System.out.println("Reward added successfully");
+                                        }
+                                        else{
+                                            System.out.println("There was a problem adding the reward");
+                                        }
+                                        break;
+
                                 }
                             }
                             else{

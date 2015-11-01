@@ -5,22 +5,14 @@ import java.io.InputStreamReader;
  * Created by Rui on 26/10/2015.
  */
 public class AddAdmin extends Request{
-    private int proj;
-    private String admin = "";
+    public int proj;
+    public String admin = "";
     public int requestId;
 
-    public AddAdmin(){
+    public AddAdmin(int proj){
         super("AddAdmin");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
-        //Definir o projeto a que adicionar o admin
-        System.out.println("Write project id: ");
-        try{
-            proj = Integer.parseInt(reader.readLine());
-        }
-        catch (Exception e) {
-            System.out.println("Erro de escrita.");
-        }
+        this.proj = proj;
 
 
         //Definir o username para nomear como admin
