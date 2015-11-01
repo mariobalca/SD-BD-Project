@@ -20,11 +20,16 @@ public class IOThread extends Thread {
         IntResponse intResponse;
         while (true) {
             if (Client.userId <= 0) {
-                System.out.println("O que deseja?\n1.Login\n2.Register\n3.List current projects\n4.List older projects\n");
+                System.out.println("Select an option please:\n1.Login\n2.Register\n3.List current projects\n4.List older projects\n");
                 int opc;
 
                 try {
-                    opc = Integer.parseInt(reader.readLine());
+                    try{
+                        opc = Integer.parseInt(reader.readLine());
+                    }catch(NumberFormatException nfe){
+                        continue;
+                    }
+
                     switch (opc) {
                         case 1:
                             schedule(new Login());
@@ -97,7 +102,12 @@ public class IOThread extends Thread {
                 System.out.println("O que deseja?\n1.Check Balance\n2.Check Rewards\n3.List current projects\n4.List older projects\n5.Manage your projects\n6.Pledge Project\n7.Comment Project\n8.Create Project");
                 int opc;
                 try {
-                    opc = Integer.parseInt(reader.readLine());
+                    try{
+                        opc = Integer.parseInt(reader.readLine());
+                    }catch(NumberFormatException nfe){
+                        continue;
+                    }
+
                     switch (opc) {
                         case 1:
                             schedule(new CheckBalance());
