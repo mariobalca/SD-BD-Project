@@ -28,7 +28,8 @@ public class Listener extends Thread {
 
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Port already in use");
+            System.exit(0);
         }
     }
 
