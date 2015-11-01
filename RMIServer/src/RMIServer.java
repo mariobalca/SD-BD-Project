@@ -32,7 +32,7 @@ public class RMIServer{
                 fR.close();
             }
             catch (Exception e){
-                System.out.println("Erro ao abrir ficheiro client_config");
+                System.out.println("Erro ao abrir ficheiro configRMI");
                 System.exit(1);
             }
             Connection connection = DriverManager.getConnection("jdbc:sqlite:RMIServer/src/db/db.db");
@@ -51,7 +51,6 @@ public class RMIServer{
             System.out.println("Port already in use");
             System.exit(1);
         } catch (SQLException e){
-            e.printStackTrace();
         }
     }
 
