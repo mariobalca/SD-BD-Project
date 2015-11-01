@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 /**
  * Created by Rui on 26/10/2015.
@@ -24,5 +26,21 @@ public class AddAdmin extends Request{
             System.out.println("Erro de escrita.");
         }
         requestId = ++Client.requestId;
+    }
+
+    @Override
+    public Response execute(RMI rmiServer){
+        boolean verifica = false;
+        while(!verifica){
+            try {
+                return new BooleanResponse("AddAdmin",rmiServer.addAdmin(proj,requestId,userId,admin));
+            } catch (RemoteException e) {
+                verifica = false;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return new BooleanResponse("AddAdmin", false);
     }
 }

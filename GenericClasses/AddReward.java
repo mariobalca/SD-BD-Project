@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 /**
  * Created by Rui on 26/10/2015.
@@ -46,5 +48,21 @@ public class AddReward extends Request{
         }
         requestId = ++Client.requestId;
 
+    }
+
+    @Override
+    public Response execute(RMI rmiServer){
+        boolean verifica = false;
+        while(!verifica){
+            try {
+                return new BooleanResponse("AddReward",rmiServer.createReward(new Reward(valor,nome,descricao),requestId,proj,userId));
+            } catch (RemoteException e) {
+                verifica = false;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return new BooleanResponse("AddReward", false);
     }
 }
