@@ -20,19 +20,31 @@ public class Server{
     private String secondServerIP;
     private int secondServerPort;
     private int serverPort;
-    static String RMI_ADDRESS = "localhost";
+    static String RMI_ADDRESS;
 
 
     private DatagramSocket udpSocket;
 
     private Listener listener;
 
-    public Server(int port, int udpPort,String secondServerIP,int secondServerUdpPort){
+    public Server(){
+
+        try {
+            BufferedReader fR = new BufferedReader(new FileReader("Server/config.txt"));
+
+            serverPort = Integer.parseInt(fR.readLine());
+            udpPort=Integer.parseInt(fR.readLine());
+            secondServerIP = fR.readLine();
+            secondServerPort = Integer.parseInt(fR.readLine());
+            RMI_ADDRESS = fR.readLine();
+            fR.close();
+        }
+        catch (Exception e){
+            System.out.println("Erro ao abrir ficheiro client_config");
+        }
+
         state = SERVER_STATE.NOT_LISTENING;
-        this.secondServerIP = secondServerIP;
-        this.serverPort = port;
-        this.secondServerPort = secondServerUdpPort;
-        this.udpPort = udpPort;
+
         try {
             this.udpSocket = new DatagramSocket(udpPort);
             this.udpSocket.setSoTimeout(1000);
@@ -110,14 +122,16 @@ public class Server{
     }
 
     public static void main(String args[]) throws InterruptedException {
-        int udpPort = 8011;
-        int serverPort = 8001;
-        String secondServerIP = "10.42.0.1";
-        int secondServerPort = 8012;
 
-        new Server(serverPort,udpPort,secondServerIP,secondServerPort);
+
+
+    new Server();
+
         //Thread.sleep(1000);
         //new Server(8001,8011,"localhost",8012);
     }
 
+
+    public void loadFile(){
+    }
 }

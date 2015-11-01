@@ -2,6 +2,8 @@
  * Created by mariobalca on 24-10-2015.
  */
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -11,11 +13,20 @@ import java.sql.SQLException;
 import java.util.Timer;
 
 public class RMIServer{
-
+    String hostname;
     public RMIServer(){
         try {
+
+            try {
+                BufferedReader fR = new BufferedReader(new FileReader("RMIServer/config.txt"));
+                hostname = fR.readLine();
+                fR.close();
+            }
+            catch (Exception e){
+                System.out.println("Erro ao abrir ficheiro client_config");
+            }
             Connection connection = DriverManager.getConnection("jdbc:sqlite:RMIServer/src/Database/db.db");
-            System.setProperty("java.rmi.server.hostname","localhost");
+            System.setProperty("java.rmi.server.hostname",hostname);
             RMIImpl rmiServer = new RMIImpl(connection);
             Registry r = LocateRegistry.createRegistry(7000);
             r.rebind("rmi", rmiServer);
