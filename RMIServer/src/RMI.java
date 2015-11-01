@@ -47,7 +47,7 @@ public interface RMI extends Remote, Serializable{
     public boolean createReward(Reward reward, int requestId, int projectId, int userId) throws java.rmi.RemoteException, SQLException;
     public boolean removeReward(int rewardId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
     public boolean winReward(int rewardId, int requestId, int userId, int flag) throws java.rmi.RemoteException, SQLException;
-    public boolean giveReward(int rewardId, int requestId, int giverUserId, int receiverUserId, int flag) throws java.rmi.RemoteException, SQLException;
+    public boolean giveReward(int rewardId, int requestId, int giverUserId, String receiverUserName, int flag) throws java.rmi.RemoteException, SQLException;
 
 
     public boolean createExtraLevel(Extra extra, int requestId, int projectId, int userId) throws java.rmi.RemoteException, SQLException;

@@ -121,8 +121,10 @@ public class IOThread extends Thread {
                                 for(Reward reward:rewardsResponse.rewards){
                                     System.out.println(reward.toUser());
                                 }
-                                System.out.println("Do you wish to donate a reward to a friend (name of the friend if yes, 0 if no)");
-                                schedule(new GiveReward());
+                                System.out.println("Do you wish to donate a reward to a friend (0 if no)");
+                                String aux = reader.readLine();
+                                if(!aux.equals("0"))
+                                    schedule(new GiveReward());
 
                             }
                             break;

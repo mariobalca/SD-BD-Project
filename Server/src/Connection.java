@@ -114,6 +114,9 @@ class Connection extends Thread{
                     projectListResponse.projects.add(p);
                 }
                 return projectListResponse;
+            case "GiveReward":
+                GiveReward reward = (GiveReward)request;
+                return new BooleanResponse("GiveReward",rmi.giveReward(reward.rewardId,reward.requestId,reward.userId,reward.username,0));
 
         }
         return null;
