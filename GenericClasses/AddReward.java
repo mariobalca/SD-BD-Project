@@ -18,31 +18,43 @@ public class AddReward extends Request{
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         this.proj = proj;
-        //Definir o valor minimo da reward
-        System.out.println("Write the value of the reward: ");
-        try{
-            valor = Double.parseDouble(reader.readLine());
-        }
-        catch (Exception e) {
-            System.out.println("Erro de escrita do double.");
-        }
 
-        //Definir o nome da reward
-        System.out.println("Write the reward's name: ");
-        try{
-           nome = (reader.readLine());
-        }
-        catch (Exception e) {
-            System.out.println("Erro de escrita.");
-        }
+        boolean check = true;
 
-        //Definir a descricao da reward
-        System.out.println("Write the reward's description: ");
-        try{
-           descricao = (reader.readLine());
-        }
-        catch (Exception e) {
-            System.out.println("Erro de escrita.");
+        while(check) {
+            //Definir o valor minimo da reward
+            System.out.println("Write the value of the reward: ");
+            try {
+                valor = Double.parseDouble(reader.readLine());
+                if(valor > 0) {
+
+                    System.out.println("Write the reward's name: ");
+                    try {
+                        nome = (reader.readLine());
+                    } catch (Exception e) {
+                        System.out.println("Erro de escrita.");
+                        continue;
+                    }
+
+                    //Definir a descricao da reward
+                    System.out.println("Write the reward's description: ");
+                    try {
+                        descricao = (reader.readLine());
+                    } catch (Exception e) {
+                        System.out.println("Erro de escrita.");
+                        continue;
+                    }
+
+                    check = false;
+                }
+            } catch (Exception e) {
+                System.out.println("Erro de escrita do double.");
+                continue;
+            }
+
+
+
+
         }
         requestId = ++Client.requestId;
 

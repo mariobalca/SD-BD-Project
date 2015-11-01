@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -33,7 +34,7 @@ public class Server{
     public Server(){
 
         try {
-            BufferedReader fR = new BufferedReader(new FileReader("Server/config.txt"));
+            BufferedReader fR = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream ("configServer.txt")));
 
             serverPort = Integer.parseInt(fR.readLine());
             udpPort=Integer.parseInt(fR.readLine());

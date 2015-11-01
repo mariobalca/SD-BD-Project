@@ -15,13 +15,17 @@ public class CommentResponse extends Request{
         super("CommentResponse");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-
-        //Perguntar o ID da mensagem a que estamos a responder
-        System.out.println("Write the question Id: ");
-        try{
-            id = Integer.parseInt(reader.readLine());
-        }
-        catch (Exception e) {
+        int check = 0;
+        while (check == 0) {
+            //Perguntar o ID da mensagem a que estamos a responder
+            System.out.println("Write the question Id: ");
+            try {
+                id = Integer.parseInt(reader.readLine());
+            } catch (Exception e) {
+                System.out.println("Input Error");
+                continue;
+            }
+            check = 1;
         }
 
         //Escrever a resposta
