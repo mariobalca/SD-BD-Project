@@ -83,14 +83,19 @@ public class IOThread extends Thread {
                                     System.out.println(project);
                                 }
                                 System.out.println("Which project do you want to see? (0 if none)");
-                                int aux = Integer.parseInt(reader.readLine());
-                                if (aux != 0) {
-                                    for (Project project : projectListResponse.projects) {
-                                        if (project.getId() == aux) {
-                                            System.out.println(project.detailed());
+                                try {
+                                    int aux = Integer.parseInt(reader.readLine());
+                                    if (aux != 0) {
+                                        for (Project project : projectListResponse.projects) {
+                                            if (project.getId() == aux) {
+                                                System.out.println(project.detailed());
+                                            }
                                         }
                                     }
+                                }catch (Exception e){
+                                    System.out.println("Error in input");
                                 }
+
 
                             }
                             break;
