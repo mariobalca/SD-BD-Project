@@ -39,18 +39,14 @@ public class Register extends Request{
         boolean verifica = false;
         while(!verifica){
             try {
+                rmiServer = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS, Server.rmiPort).lookup("rmi");
                 int auth2 = rmiServer.registerUser(username,password);
                 return new IntResponse("Register",new int[]{auth2});
             } catch (RemoteException e) {
                 verifica = false;
-                try {
-                    rmiServer = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS, Server.rmiPort).lookup("rmi");
-                } catch (RemoteException e1) {
-
-                } catch (NotBoundException e1) {
-                    e1.printStackTrace();
-                }
             } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (NotBoundException e) {
                 e.printStackTrace();
             }
         }

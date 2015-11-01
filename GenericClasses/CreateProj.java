@@ -178,20 +178,15 @@ public class CreateProj extends Request{
                 Project project = new Project(name,date,goal,description,true);
                 project.setRewards(rewards);
                 project.setPaths(paths);
+                rmiServer = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS, Server.rmiPort).lookup("rmi");
                 return new BooleanResponse("CreateProj",rmiServer.createProject(project,requestId,userId));
             } catch (RemoteException e) {
                 verifica = false;
-                try {
-                    rmiServer = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS, Server.rmiPort).lookup("rmi");
-                } catch (RemoteException e1) {
-
-                } catch (NotBoundException e1) {
-                    e1.printStackTrace();
-                }
             } catch (SQLException e) {
-                e.printStackTrace();
             } catch (ParseException e) {
                 verifica = false;
+            } catch (NotBoundException e) {
+
             }
         }
 
