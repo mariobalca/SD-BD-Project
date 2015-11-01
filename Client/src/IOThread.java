@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.nio.channels.CancelledKeyException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -195,7 +196,7 @@ public class IOThread extends Thread {
                                 }
                                 System.out.println("Which project do you want to manage?");
                                 int projectId = Integer.parseInt(reader.readLine());
-                                System.out.println("Select an option:\n1.Cancel Project\n2.Add Admin\n3.Add Reward\n4.Remove Reward");
+                                System.out.println("Select an option:\n1.Cancel Project\n2.Add Admin\n3.Add Reward\n4.Remove Reward\n5.Answer Questions");
                                 opc = Integer.parseInt(reader.readLine());
                                 switch (opc){
                                     case 1:
@@ -251,7 +252,22 @@ public class IOThread extends Thread {
                                             System.out.println("There was a problem removing the reward");
                                         }
                                         break;
-
+                                    case 5:
+                                        schedule(new ListProjectMessages(projectId));
+                                        MessageListResponse messagesListResponse = (MessageListResponse) Client.currentRequest.response;
+                                        if(messagesListResponse.messages.size()==0){
+                                            System.out.println("Nothing to answer to");
+                                        }
+                                        else {
+                                            for(Message m : messagesListResponse.messages){
+                                                System.out.println(m);
+                                            }
+                                            schedule(new CommentResponse());
+                                            synchronized (Client.currentRequest.response){
+                                                booleanResponse = (BooleanResponse)Client.currentRequest.response;
+                                            }
+                                        }
+                                        break;
                                 }
                             }
                             else{
