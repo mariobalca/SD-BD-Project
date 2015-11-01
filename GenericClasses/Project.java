@@ -121,7 +121,7 @@ public class Project implements Serializable {
                 s += m.toString() + "\n";
             }
         }
-        s += "Total value earned: " + totalEarned;
+        s += "Total value earned: " + totalEarned + ((totalEarned>objective)?(" Main objective accomplished"):(" ( " + (objective-totalEarned) + " to accomplish the objective )"));
         return s;
     }
     public ArrayList<Extra> getExtras() {

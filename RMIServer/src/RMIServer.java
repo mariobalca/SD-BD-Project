@@ -48,7 +48,8 @@ public class RMIServer{
             t.scheduleAtFixedRate(mTask, 0, delta);
             System.out.println("RMI Server ready.");
         } catch (RemoteException re) {
-            System.out.println("Exception in RMIServer.main: " + re);
+            System.out.println("Port already in use");
+            System.exit(1);
         } catch (SQLException e){
             e.printStackTrace();
         }
