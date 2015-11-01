@@ -128,6 +128,8 @@ class Connection extends Thread{
             case "AddReward":
                 AddReward reward1 = (AddReward)request;
                 return new BooleanResponse("AddReward",rmi.createReward(new Reward(reward1.valor,reward1.nome,reward1.descricao),((AddReward) request).requestId,reward1.proj,request.userId));
+            case "RemoveReward":
+                return new BooleanResponse("RemoveReward",rmi.removeReward(((RemoveReward)request).rewardId,((RemoveReward) request).requestId,request.userId));
 
         }
         return null;
