@@ -91,7 +91,7 @@ public class Client {
 
     public void loadFile(){
         try {
-            BufferedReader fR = new BufferedReader(new FileReader("Client/config.txt"));
+            BufferedReader fR = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream ("configClient.txt")));
 
             hosts[0]=fR.readLine();
             hosts[1]=fR.readLine();

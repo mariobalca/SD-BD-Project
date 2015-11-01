@@ -3,7 +3,12 @@
  */
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -18,14 +23,15 @@ public class RMIServer{
         try {
 
             try {
-                BufferedReader fR = new BufferedReader(new FileReader("RMIServer/config.txt"));
+                BufferedReader fR = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream ("configRMI.txt")));
                 hostname = fR.readLine();
                 fR.close();
             }
             catch (Exception e){
                 System.out.println("Erro ao abrir ficheiro client_config");
             }
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:RMIServer/src/Database/db.db");
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:RMIServer/src/db/db.db");
+            //Connection connection = DriverManager.getConnection("jdbc:sqlite::resource:db/db.db");
             System.setProperty("java.rmi.server.hostname",hostname);
             RMIImpl rmiServer = new RMIImpl(connection);
             Registry r = LocateRegistry.createRegistry(7000);

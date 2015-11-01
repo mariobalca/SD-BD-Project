@@ -197,10 +197,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ArrayList<Reward> rewards = new ArrayList<Reward>();
 
         while(result.next()){
-            ResultSet rewardRS = connection.createStatement().executeQuery("select * from rewards where id = " + result.getInt(1));
+            ResultSet rewardRS = connection.createStatement().executeQuery("select rewards.*, id from rewards rewards_users where id = " + result.getInt(1) + "and rewardId = " + result.getInt(1));
             Reward r = new Reward(rewardRS.getDouble(2), rewardRS.getString(3), rewardRS.getString(4));
             r.setFlag(result.getBoolean(2));
-            r.setId(rewardRS.getInt(1));
+            r.setId(rewardRS.getInt(6));
             rewards.add(r);
         }
         System.out.println("Get User Rewards executed");
@@ -584,14 +584,14 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         }
     }
 
-    public boolean giveReward(int rewardId, int requestId, int userId, String receiverUserName, int flag) throws RemoteException, SQLException {
+    public boolean giveReward(int rewardUserId, int requestId, int userId, String receiverUserName, int flag) throws RemoteException, SQLException {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0 || requestId == 0){
             ResultSet resultSet = connection.createStatement().executeQuery("select id from users where username = \"" + receiverUserName + "\"");
             if(!resultSet.next())
                 return false;
             int receiverUserId = resultSet.getInt(1);
-            connection.createStatement().execute("update rewards_users set OwnerUserId = " + receiverUserId + " where RewardId = " + rewardId);
+            connection.createStatement().execute("update rewards_users set OwnerUserId = " + receiverUserId + " where id = " + rewardUserId);
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
             return true;
