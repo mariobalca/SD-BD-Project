@@ -260,7 +260,20 @@ public class IOThread extends Thread {
                             }
                             break;
                         case 7:
-                            schedule(new CommentProj());
+                            schedule(new ListActualProj());
+                            synchronized (Client.currentRequest.response) {
+                                projectListResponse = (ProjectListResponse) Client.currentRequest.response;
+                            }
+                            if(projectListResponse.projects.size()> 0){
+                                for(Project p:projectListResponse.projects){
+                                    System.out.println(p);
+                                }
+                                schedule(new CommentProj());
+                            }
+                            else{
+                                System.out.println("Nothing to show");
+                            }
+
                             break;
                         case 8:
                             schedule(new CreateProj(Client.userId));

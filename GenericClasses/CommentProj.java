@@ -5,8 +5,8 @@ import java.io.InputStreamReader;
  * Created by Rui on 27/10/2015.
  */
 public class CommentProj extends Request{
-    private int proj;
-    private String subject = "", question = "";
+    public int proj;
+    public String subject = "", question = "";
     public int requestId;
 
     public CommentProj(){

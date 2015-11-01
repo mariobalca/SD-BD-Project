@@ -113,6 +113,12 @@ public class Project implements Serializable {
                 s += reward.toString() + "\n";
             }
         }
+        if (messages.size() > 0) {
+            s += "Messages:\n";
+            for (Message m : messages) {
+                s += m.toString() + "\n";
+            }
+        }
         return s;
     }
     public ArrayList<Extra> getExtras() {
