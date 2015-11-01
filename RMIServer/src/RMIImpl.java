@@ -2,16 +2,15 @@
  * Created by mariobalca on 24-10-2015.
  */
 
-import javax.lang.model.type.ArrayType;
-import javax.xml.transform.Result;
-import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class RMIImpl extends UnicastRemoteObject implements RMI  {

@@ -1,6 +1,5 @@
 import java.rmi.RemoteException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * Created by Rui on 27/10/2015.

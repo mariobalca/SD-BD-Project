@@ -1,5 +1,3 @@
-import java.sql.ClientInfoStatus;
-
 /**
  * Created by pedro on 27-10-2015.
  */

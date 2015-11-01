@@ -3,11 +3,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by Rui on 26/10/2015.
+ * Created by mariobalca on 01-11-2015.
  */
-public class ListActualProj extends Request{
-    public ListActualProj(){
-        super("ListActualProj");
+public class ListProjectPaths extends Request {
+    public int proj;
+
+    public ListProjectPaths(int proj){
+        super("ListProjectPaths");
+        this.proj = proj;
     }
 
     @Override
@@ -15,8 +18,8 @@ public class ListActualProj extends Request{
         boolean verifica = false;
         while(!verifica){
             try {
-                ArrayList<Project> projects = rmiServer.getProjects();
-                ProjectListResponse response = new ProjectListResponse("ListActualProj", projects);
+                ArrayList<Path> paths = rmiServer.getProjectPaths(proj);
+                PathListResponse response = new PathListResponse("ListProjectPaths", paths);
                 return response;
             } catch (RemoteException e) {
                 verifica = false;
@@ -25,6 +28,6 @@ public class ListActualProj extends Request{
             }
         }
 
-        return new ProjectListResponse("ListActualProj", new ArrayList<Project>());
+        return new PathListResponse("ListProjectPaths", new ArrayList<Path>());
     }
 }

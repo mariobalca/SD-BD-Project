@@ -1,10 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
-import java.nio.channels.CancelledKeyException;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Created by pedro on 27-10-2015.

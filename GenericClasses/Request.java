@@ -1,13 +1,8 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  * Created by Rui on 26/10/2015.
  */
-
-import java.util.ArrayList;
 
 
 public abstract class Request implements Serializable {
