@@ -35,21 +35,16 @@ public interface RMI extends Remote, Serializable{
     public boolean financeProject(int projectId, int requestId, int userId, int pathId, double value) throws java.rmi.RemoteException, SQLException;
 
     public boolean addAdmin(int projectId, int requestId, int userId, String newAdminName) throws java.rmi.RemoteException, SQLException;
-    public boolean removeAdmin(int projectId, int requestId, int userId, int newAdminId) throws java.rmi.RemoteException, SQLException;
 
     public boolean sendMessage(Message message, int projectId, int requestId) throws java.rmi.RemoteException, SQLException;
     public boolean answerMessage(int messageId, String response, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
 
-
     public boolean createPath(Path path, int requestId, int userId, int projectId) throws java.rmi.RemoteException, SQLException;
-    public boolean deletePath(int pathId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
-
 
     public boolean createReward(Reward reward, int requestId, int projectId, int userId) throws java.rmi.RemoteException, SQLException;
     public boolean removeReward(int rewardId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
     public boolean winReward(int rewardId, int requestId, int userId, int flag) throws java.rmi.RemoteException, SQLException;
     public boolean giveReward(int rewardId, int requestId, int giverUserId, String receiverUserName, int flag) throws java.rmi.RemoteException, SQLException;
-
 
     public boolean createExtraLevel(Extra extra, int requestId, int projectId, int userId) throws java.rmi.RemoteException, SQLException;
     public boolean removeExtraLevel(int extraId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;

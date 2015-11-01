@@ -1,0 +1,12 @@
+8001
+8011
+10.42.0.1
+8012
+localhost
+
+
+port
+udpport
+secondserverIP
+secondServerUdpPort
+RMIadress
