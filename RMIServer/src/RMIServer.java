@@ -35,8 +35,8 @@ public class RMIServer{
                 System.out.println("Erro ao abrir ficheiro configRMI");
                 System.exit(1);
             }
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:RMIServer/src/db/db.db");
-            //Connection connection = DriverManager.getConnection("jdbc:sqlite::resource:db/db.db");
+            //Connection connection = DriverManager.getConnection("jdbc:sqlite:RMIServer/src/db/db.db");
+            Connection connection = DriverManager.getConnection("jdbc:sqlite::resource:db/db.db");
             System.setProperty("java.rmi.server.hostname",hostname);
             RMIImpl rmiServer = new RMIImpl(connection);
             Registry r = LocateRegistry.createRegistry(port);
@@ -45,7 +45,7 @@ public class RMIServer{
             MyTask mTask = new MyTask(rmiServer);
             // This task is scheduled to run every 10 seconds
 
-            t.scheduleAtFixedRate(mTask, 0, 30000);
+            t.scheduleAtFixedRate(mTask, 0, delta);
             System.out.println("RMI Server ready.");
         } catch (RemoteException re) {
             System.out.println("Port already in use");
