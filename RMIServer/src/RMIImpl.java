@@ -283,6 +283,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public boolean createProject(Project project, int requestId, int userId) throws RemoteException, SQLException {
+        System.out.println(project + " " + requestId + " " + userId);
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
