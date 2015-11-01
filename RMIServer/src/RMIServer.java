@@ -45,7 +45,7 @@ public class RMIServer{
             MyTask mTask = new MyTask(rmiServer);
             // This task is scheduled to run every 10 seconds
 
-            t.scheduleAtFixedRate(mTask, 0, delta);
+            t.scheduleAtFixedRate(mTask, 0, 30000);
             System.out.println("RMI Server ready.");
         } catch (RemoteException re) {
             System.out.println("Port already in use");
