@@ -104,6 +104,7 @@ public class Client {
         }
         catch (Exception e){
             System.out.println("Erro ao abrir ficheiro client_config");
+            System.exit(1);
         }
     }
 }

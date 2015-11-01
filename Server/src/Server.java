@@ -24,6 +24,7 @@ public class Server{
     private String secondServerIP;
     private int secondServerPort;
     private int serverPort;
+    private int timeout;
     static String RMI_ADDRESS;
 
 
@@ -41,17 +42,19 @@ public class Server{
             secondServerIP = fR.readLine();
             secondServerPort = Integer.parseInt(fR.readLine());
             RMI_ADDRESS = fR.readLine();
+            timeout = Integer.parseInt(fR.readLine());
             fR.close();
         }
         catch (Exception e){
             System.out.println("Erro ao abrir ficheiro client_config");
+            System.exit(1);
         }
 
         state = SERVER_STATE.NOT_LISTENING;
 
         try {
             this.udpSocket = new DatagramSocket(udpPort);
-            this.udpSocket.setSoTimeout(1000);
+            this.udpSocket.setSoTimeout(timeout);
         } catch (SocketException e) {
             e.printStackTrace();
         }

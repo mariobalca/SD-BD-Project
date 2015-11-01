@@ -19,28 +19,33 @@ import java.util.Timer;
 
 public class RMIServer{
     String hostname;
+    int port;
+    int delta;
     public RMIServer(){
         try {
 
             try {
                 BufferedReader fR = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream ("configRMI.txt")));
                 hostname = fR.readLine();
+                port = Integer.parseInt(fR.readLine());
+                delta = Integer.parseInt(fR.readLine());
                 fR.close();
             }
             catch (Exception e){
                 System.out.println("Erro ao abrir ficheiro client_config");
+                System.exit(1);
             }
             Connection connection = DriverManager.getConnection("jdbc:sqlite:RMIServer/src/db/db.db");
             //Connection connection = DriverManager.getConnection("jdbc:sqlite::resource:db/db.db");
             System.setProperty("java.rmi.server.hostname",hostname);
             RMIImpl rmiServer = new RMIImpl(connection);
-            Registry r = LocateRegistry.createRegistry(7000);
+            Registry r = LocateRegistry.createRegistry(port);
             r.rebind("rmi", rmiServer);
             Timer t = new Timer();
             MyTask mTask = new MyTask(rmiServer);
             // This task is scheduled to run every 10 seconds
 
-            t.scheduleAtFixedRate(mTask, 0, 30000);
+            t.scheduleAtFixedRate(mTask, 0, delta);
             System.out.println("RMI Server ready.");
         } catch (RemoteException re) {
             System.out.println("Exception in RMIServer.main: " + re);
