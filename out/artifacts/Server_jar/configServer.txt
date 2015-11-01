@@ -3,6 +3,8 @@
 10.42.0.1
 8012
 localhost
+7000
+1000
 
 
 port
@@ -10,3 +12,5 @@ udpport
 secondserverIP
 secondServerUdpPort
 RMIadress
+rmiPort
+timeout
