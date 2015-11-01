@@ -33,7 +33,7 @@ public interface RMI extends Remote, Serializable{
     public boolean cancelProject(int projectId, int requestId, int userId) throws java.rmi.RemoteException, SQLException;
     public boolean financeProject(int projectId, int requestId, int userId, int pathId, double value) throws java.rmi.RemoteException, SQLException;
 
-    public boolean addAdmin(int projectId, int requestId, int userId, int newAdminId) throws java.rmi.RemoteException, SQLException;
+    public boolean addAdmin(int projectId, int requestId, int userId, String newAdminName) throws java.rmi.RemoteException, SQLException;
     public boolean removeAdmin(int projectId, int requestId, int userId, int newAdminId) throws java.rmi.RemoteException, SQLException;
 
     public boolean sendMessage(Message message, int projectId, int requestId) throws java.rmi.RemoteException, SQLException;
