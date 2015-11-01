@@ -50,7 +50,7 @@ public class CommentResponse extends Request{
             } catch (RemoteException e) {
                 verifica = false;
                 try {
-                    rmiServer = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS, 7000).lookup("rmi");
+                    rmiServer = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS, Server.rmiPort).lookup("rmi");
                 } catch (RemoteException e1) {
 
                 } catch (NotBoundException e1) {
