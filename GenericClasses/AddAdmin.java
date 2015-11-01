@@ -35,18 +35,15 @@ public class AddAdmin extends Request{
         boolean verifica = false;
         while(!verifica){
             try {
+                rmiServer = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS, Server.rmiPort).lookup("rmi");
                 return new BooleanResponse("AddAdmin",rmiServer.addAdmin(proj,requestId,userId,admin));
             } catch (RemoteException e) {
                 verifica = false;
-                try {
-                    rmiServer = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS, Server.rmiPort).lookup("rmi");
-                } catch (RemoteException e1) {
 
-                } catch (NotBoundException e1) {
-                    e1.printStackTrace();
-                }
             } catch (SQLException e) {
-                e.printStackTrace();
+
+            } catch (NotBoundException e) {
+
             }
         }
 

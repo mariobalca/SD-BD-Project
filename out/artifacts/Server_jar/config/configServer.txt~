@@ -1,0 +1,16 @@
+8002
+8012
+10.42.0.21
+8011
+10.42.0.21
+7000
+1000
+
+
+port
+udpport
+secondserverIP
+secondServerUdpPort
+RMIadress
+rmiPort
+timeout

@@ -1,0 +1,11 @@
+localhost
+10.42.0.21
+8002
+8001
+5000
+
+hosts[0]
+hosts[1]
+ports[0]
+ports[1]
+timeout

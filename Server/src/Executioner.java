@@ -11,9 +11,11 @@ public class Executioner extends Thread{
     public Executioner(Connection connection) {
         this.connection = connection;
         try {
-            rmi = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS,7000).lookup("rmi");
+            rmi = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS,Server.rmiPort).lookup("rmi");
         } catch (RemoteException e) {
+
         } catch (NotBoundException e) {
+
         }
     }
 
@@ -22,6 +24,13 @@ public class Executioner extends Thread{
         while(true){
             Request request = connection.getRequest();
             System.out.println(request.getTipo());
+            try {
+                rmi = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS,Server.rmiPort).lookup("rmi");
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (NotBoundException e) {
+                e.printStackTrace();
+            }
             connection.setResponse(request.execute(rmi));
             synchronized (this){
                 try {
