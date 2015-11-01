@@ -16,7 +16,7 @@ public interface RMI extends Remote, Serializable{
     ArrayList<Project> getProjects() throws java.rmi.RemoteException, SQLException;
     ArrayList<Project> getOlderProjects() throws java.rmi.RemoteException, SQLException;
     ArrayList<Project> getOwnedProjects(int projectId) throws java.rmi.RemoteException, SQLException;
-    ArrayList<Project> getAdminProjects(int projectId) throws java.rmi.RemoteException, SQLException;
+    ArrayList<Project> getAdminProjects(int userId) throws java.rmi.RemoteException, SQLException;
     ArrayList<Reward> getProjectRewards(int projectId) throws java.rmi.RemoteException, SQLException;
     ArrayList<Extra> getProjectExtraLevels(int projectId) throws java.rmi.RemoteException, SQLException;
     ArrayList<Path> getProjectPaths(int projectId) throws java.rmi.RemoteException, SQLException;
