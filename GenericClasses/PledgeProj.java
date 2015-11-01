@@ -14,7 +14,7 @@ public class PledgeProj extends Request {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         //Definir o projeto a apoiar
-        System.out.println("Indique o ID do projeto: ");
+        System.out.println("Write the project Id to pledge: ");
         try {
             proj = Integer.parseInt(reader.readLine());
         }
@@ -22,7 +22,7 @@ public class PledgeProj extends Request {
         }
 
         //Definir a quantia com que apoiar o projeto
-        System.out.println("Indique com quanto quer apoiar o projecto: ");
+        System.out.println("Write how much you want to plege the project (exact reward values only): ");
         try{
            valor = (Double.parseDouble(reader.readLine()));
         }
@@ -30,7 +30,7 @@ public class PledgeProj extends Request {
         }
 
         //Escolher o caminho (voto) para o projeto
-        System.out.println("Indique em qual caminho quer votar (id do path): ");
+        System.out.println("Select witch path you want to vote on (path id): ");
         try{
             path = (Integer.parseInt(reader.readLine()));
         }

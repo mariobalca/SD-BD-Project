@@ -18,7 +18,7 @@ public class AddReward extends Request{
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         //Definir o projeto a que adicionar a reward
-        System.out.println("Indique o ID do projeto: ");
+        System.out.println("Write the project Id: ");
         try{
             proj = Integer.parseInt(reader.readLine());
         }
@@ -27,7 +27,7 @@ public class AddReward extends Request{
         }
 
         //Definir o valor minimo da reward
-        System.out.println("Indique o valor minimo da reward: ");
+        System.out.println("Write the value of the reward: ");
         try{
             valor = Double.parseDouble(reader.readLine());
         }
@@ -36,7 +36,7 @@ public class AddReward extends Request{
         }
 
         //Definir o nome da reward
-        System.out.println("Indique o nome da reward: ");
+        System.out.println("Write the reward's name: ");
         try{
            nome = (reader.readLine());
         }
@@ -45,7 +45,7 @@ public class AddReward extends Request{
         }
 
         //Definir a descricao da reward
-        System.out.println("Indique a descricao para a reward: ");
+        System.out.println("Write the reward's description: ");
         try{
            descricao = (reader.readLine());
         }

@@ -100,7 +100,7 @@ public class Project implements Serializable {
     }
 
     public String detailed() {
-        String s = "Nome: " + name + "\nDeadline: " + deadline + "\nObjective: " + objective + "\nDescription: " + description + "\nId: " + id + "\n";
+        String s = "Project's name: " + name + "\nDeadline: " + deadline + "\nObjective: " + objective + "\nDescription: " + description + "\nId: " + id + "\n";
         if (paths.size() > 0) {
             s += "Paths:\n";
             for (Path path : paths) {

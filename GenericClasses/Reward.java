@@ -46,10 +46,10 @@
 
         @Override
         public String toString() {
-            return "Id: " + id + " Value: " + minValue + " Name: " + name + " Description: " + description;
+            return "Reward Id: " + id + " Value: " + minValue + " Name: " + name + " Description: " + description;
         }
         public String toUser(){
-            return toString() + ((flag)?" - Recebido":" - Por Receber");
+            return toString() + ((flag)?" - Received":" - To be received");
         }
         public void setId(int id) {
             this.id = id;

@@ -25,51 +25,53 @@ public class CreateProj extends Request{
 
 
         //Definir o nome do projecto
-        System.out.println("Indique o nome do projeto: ");
+        System.out.println("Write the name of the project: ");
         try{
             name = (reader.readLine());
         }
         catch (Exception e) {
             System.out.println("Erro de escrita.");
         }
+        int check =0;
+        while(check == 0) {
+            //Definir a deadline do projeto
+            System.out.println("Write the deadline of the projet: \nYEAR: ");
 
+            try {
+                year = (Integer.parseInt(reader.readLine()));
 
-        //Definir a deadline do projeto
-        System.out.println("Indique a Deadline do projeto: \nAno: ");
-        try{
-            year = (Integer.parseInt(reader.readLine()));
+            } catch (Exception e) {
+                continue;
+            }
+            System.out.println("MONTH: ");
+            try {
+                mon = (Integer.parseInt(reader.readLine()));
+            } catch (Exception e) {
+                continue;
+            }
+            System.out.println("DAY: ");
+            try {
+                day = (Integer.parseInt(reader.readLine()));
+            } catch (Exception e) {
+                continue;
+            }
+            System.out.println("HOUR: ");
+            try {
+                hour = (Integer.parseInt(reader.readLine()));
+            } catch (Exception e) {
+                continue;
+            }
+            System.out.println("MINUTE: ");
+            try {
+                min = (Integer.parseInt(reader.readLine()));
+            } catch (Exception e) {
+                continue;
+            }
+            check =1;
         }
-        catch (Exception e) {
-        }
-        System.out.println("M�s: ");
-        try{
-            mon = (Integer.parseInt(reader.readLine()));
-        }
-        catch (Exception e) {
-        }
-        System.out.println("Dia: ");
-        try{
-            day = (Integer.parseInt(reader.readLine()));
-        }
-        catch (Exception e) {
-        }
-        System.out.println("Hora: ");
-        try{
-            hour = (Integer.parseInt(reader.readLine()));
-        }
-        catch (Exception e) {
-        }
-        System.out.println("Minuto: ");
-        try{
-            min = (Integer.parseInt(reader.readLine()));
-        }
-        catch (Exception e) {
-            System.out.println("Erro de escrita.");
-        }
-
 
         //Definir o objetivo monetário
-        System.out.println("Defina o objetivo monet�rio a alcan�ar: ");
+        System.out.println("Write the goal of the project: ");
         try{
            goal = (Double.parseDouble(reader.readLine()));
         }
@@ -78,7 +80,7 @@ public class CreateProj extends Request{
 
 
         //Definir a descrição do projeto
-        System.out.println("Indique a descricao do projeto: ");
+        System.out.println("Write the description of the projet: ");
         try{
             description = (reader.readLine());
         }
@@ -88,9 +90,9 @@ public class CreateProj extends Request{
         System.out.println("Add reward (0 if no)");
         try {
             while(!reader.readLine().equals("0")){
-                System.out.println("Qual valor:");
+                System.out.println("Value of the Reward:");
                 int valor = Integer.parseInt(reader.readLine());
-                System.out.println("Nome :");
+                System.out.println("Name of the Reward :");
                 String nome = reader.readLine();
                 System.out.println("Description: ");
                 String d = reader.readLine();
@@ -99,9 +101,9 @@ public class CreateProj extends Request{
             }
             System.out.println("Add path (0 if no)");
             while(!reader.readLine().equals("0")){
-                System.out.println("Nome :");
+                System.out.println("Name of the path :");
                 String nome = reader.readLine();
-                System.out.println("Description: ");
+                System.out.println("Description of the path: ");
                 String d = reader.readLine();
                 paths.add(new Path(nome,d,0));
                 System.out.println("Add path (0 if no)");
