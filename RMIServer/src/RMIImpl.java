@@ -235,11 +235,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             String subject = result.getString(3);
             String question = result.getString(4);
             String response = result.getString(5);
-            ResultSet fromUserResult = connection.createStatement().executeQuery("select * from Users where fromUserId = " + result.getInt(5));
-            User fromUser = new User(fromUserResult.getString(2), fromUserResult.getString(3), fromUserResult.getDouble(4));
-            fromUser.setId(fromUserResult.getInt(1));
+            String fromUserUsername = connection.createStatement().executeQuery("select Username from Users where id = " + result.getInt(6)).getString(1);
 
-            Message m = new Message(subject, question, response, fromUser);
+            Message m = new Message(subject, question, response);
+            m.setFromUserUsername(fromUserUsername);
             m.setId(result.getInt(1));
             messages.add(m);
         }
@@ -445,15 +444,15 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public boolean sendMessage(Message message, int projectId, int requestId) throws RemoteException, SQLException {
-        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + message.getSender().getId());
+        ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + message.getFromUserId());
         if(result.getInt(1) == 0){
-            connection.createStatement().execute("insert into messages (ProjectId, Subject, Question, Response, FromUserId) values (" + projectId + ",\"" + message.getSubject() + "\",\"" + message.getQuestion() + "\", \"\", " + message.getSender().getId() + ")");
-            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + message.getSender().getId() + ", " + requestId + ", 1)");
+            connection.createStatement().execute("insert into messages (ProjectId, Subject, Question, Response, FromUserId) values (" + projectId + ",\"" + message.getSubject() + "\",\"" + message.getQuestion() + "\", \"\", " + message.getFromUserId() + ")");
+            connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + message.getFromUserId() + ", " + requestId + ", 1)");
 
             return true;
         }
         else{
-            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + message.getSender().getId());
+            result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + message.getFromUserId());
             return result.getBoolean(1);
         }
     }

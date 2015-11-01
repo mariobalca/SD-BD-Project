@@ -119,7 +119,8 @@ class Connection extends Thread{
                 return new BooleanResponse("GiveReward",rmi.giveReward(reward.rewardId,reward.requestId,reward.userId,reward.username,0));
             case "DeleteProj":
                 return new BooleanResponse("DeleteProj",rmi.cancelProject(((DeleteProj)request).proj,((DeleteProj) request).requestId,request.userId));
-
+            case "CommentProj":
+                return new BooleanResponse("CommentProj", rmi.sendMessage(new Message(((CommentProj)request).subject,((CommentProj)request).question, ((CommentProj)request).userId), ((CommentProj)request).proj, ((CommentProj)request).requestId));
         }
         return null;
     }

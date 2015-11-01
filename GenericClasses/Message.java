@@ -8,14 +8,20 @@ public class Message implements Serializable {
     private String subject;
     private String question;
     private String response;
-    private User sender;
+    private int fromUserId;
+    private String fromUserUsername;
 
 
-    public Message(String sub, String q, String res, User sen){
+    public Message(String sub, String q, int fromUserId){
         this.subject = sub;
         this.question = q;
-        this.response = res;
-        this.sender = sen;
+        this.fromUserId = fromUserId;
+    }
+
+    public Message(String sub, String q, String r){
+        this.subject = sub;
+        this.question = q;
+        this.response = r;
     }
 
     public String getResponse() {
@@ -46,15 +52,28 @@ public class Message implements Serializable {
         return id;
     }
 
-    public User getSender() {
-        return sender;
-    }
-
-    public void setSender(User sender) {
-        this.sender = sender;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getFromUserId() {
+        return fromUserId;
+    }
+
+    public void setFromUserId(int fromUserId) {
+        this.fromUserId = fromUserId;
+    }
+
+    public String getFromUserUsername() {
+        return fromUserUsername;
+    }
+
+    public void setFromUserUsername(String fromUserUsername) {
+        this.fromUserUsername = fromUserUsername;
+    }
+
+    @Override
+    public String toString() {
+        return "Subject: " + subject + " Question: " + question+ " Response: " + response;
     }
 }
