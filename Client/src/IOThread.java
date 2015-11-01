@@ -375,7 +375,7 @@ public class IOThread extends Thread {
                                 for(Project p:projectListResponse.projects){
                                     System.out.println(p.detailed());
                                 }
-                                schedule(new PledgeProj());
+                                schedule(new PledgeProj(projectListResponse.projects));
                             }
                             break;
                         case 7:
