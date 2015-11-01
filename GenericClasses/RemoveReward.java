@@ -16,13 +16,16 @@ public class RemoveReward extends Request {
         this.proj = projectId;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        //Definir o valor minimo da reward
-        System.out.println("Write the id of the reward: ");
-        try{
-            rewardId = Integer.parseInt(reader.readLine());
-        }
-        catch (Exception e) {
-            System.out.println("Erro de escrita do inteiro.");
+        boolean check = true;
+        while(check) {
+            System.out.println("Write the id of the reward: ");
+            try {
+                rewardId = Integer.parseInt(reader.readLine());
+            } catch (Exception e) {
+                System.out.println("Erro de escrita do inteiro.");
+                continue;
+            }
+            check = false;
         }
         requestId = ++Client.requestId;
     }

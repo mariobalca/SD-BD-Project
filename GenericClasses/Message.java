@@ -74,6 +74,6 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        return "Id: " + id + " Subject: " + subject + " Question: " + question+ " Response: " + response;
+        return "Message Id: " + id + "Question by: "+fromUserId+" Subject: " + subject + " \nQuestion: " + question+ " \nResponse: " + response;
     }
 }

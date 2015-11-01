@@ -22,7 +22,12 @@ public class CommentProj extends Request{
             boolean verifica = false;
             while(!verifica){
                 System.out.println("Write the project Id to question: ");
-                proj = Integer.parseInt(reader.readLine());
+                try {
+                    proj = Integer.parseInt(reader.readLine());
+                }catch (Exception e){
+                    System.out.println("Input Error");
+                    continue;
+                }
                 for(Project p : projects){
                     if(proj == p.getId())
                         verifica = true;
