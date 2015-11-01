@@ -15,29 +15,56 @@ public class PledgeProj extends Request {
         super("PledgeProj");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        //Definir o projeto a apoiar
-        System.out.println("Write the project Id to pledge: ");
-        try {
-            proj = Integer.parseInt(reader.readLine());
-        }
-        catch (Exception e) {
+
+        int check = 0;
+        while(check == 0)
+        {
+            try {
+                System.out.println("Write the project Id to pledge: ");
+                proj = Integer.parseInt(reader.readLine());
+            } catch (Exception e) {
+                continue;
+            }
+            check =1;
         }
 
-        //Definir a quantia com que apoiar o projeto
-        System.out.println("Write how much you want to plege the project (exact reward values only): ");
-        try{
-           valor = (Double.parseDouble(reader.readLine()));
+
+        check = 0;
+        while(check == 0)
+        {
+            try {
+
+                System.out.println("Write how much you want to plege the project (exact reward values only): ");
+                valor = (Double.parseDouble(reader.readLine()));
+                if (valor <= 0)
+                    continue;
+            } catch (Exception e) {
+                continue;
+            }
+            check =1;
         }
-        catch (Exception e) {
-        }
+
+
 
         //Escolher o caminho (voto) para o projeto
-        System.out.println("Select witch path you want to vote on (path id): ");
-        try{
-            path = (Integer.parseInt(reader.readLine()));
+
+
+        check = 0;
+        while(check == 0)
+        {
+            try {
+                System.out.println("Select witch path you want to vote on (path id): ");
+                path = (Integer.parseInt(reader.readLine()));
+                if(path <= 0){
+                    continue;
+                }
+            } catch (Exception e) {
+                continue;
+            }
+            check =1;
         }
-        catch (Exception e) {
-        }
+
+
         requestId = ++Client.requestId;
     }
 

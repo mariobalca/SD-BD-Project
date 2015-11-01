@@ -550,9 +550,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public boolean removeReward(int rewardId, int requestId, int userId) throws RemoteException, SQLException {
+        System.out.println(rewardId + " " + requestId + " " + userId);
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            int projectId = connection.createStatement().executeQuery("select projectId from rewards where id = " + rewardId + ")").getInt(1);
+            int projectId = connection.createStatement().executeQuery("select projectId from rewards where id = " + rewardId).getInt(1);
             result = connection.createStatement().executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
 
             if(!result.next())

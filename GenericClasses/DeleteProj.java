@@ -11,6 +11,7 @@ public class DeleteProj extends Request{
     public int requestId;
     public DeleteProj(int projectId) {
         super("DeleteProj");
+
         this.proj = projectId;
         requestId = ++Client.requestId;
     }

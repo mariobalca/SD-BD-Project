@@ -83,14 +83,19 @@ public class IOThread extends Thread {
                                     System.out.println(project);
                                 }
                                 System.out.println("Which project do you want to see? (0 if none)");
-                                int aux = Integer.parseInt(reader.readLine());
-                                if (aux != 0) {
-                                    for (Project project : projectListResponse.projects) {
-                                        if (project.getId() == aux) {
-                                            System.out.println(project.detailed());
+                                try {
+                                    int aux = Integer.parseInt(reader.readLine());
+                                    if (aux != 0) {
+                                        for (Project project : projectListResponse.projects) {
+                                            if (project.getId() == aux) {
+                                                System.out.println(project.detailed());
+                                            }
                                         }
                                     }
+                                }catch (Exception e){
+                                    System.out.println("Error in input");
                                 }
+
 
                             }
                             break;
@@ -232,6 +237,18 @@ public class IOThread extends Thread {
                                         }
                                         else{
                                             System.out.println("There was a problem adding the reward");
+                                        }
+                                        break;
+                                    case 4:
+                                        schedule(new RemoveReward(projectId));
+                                        synchronized (Client.currentRequest.response){
+                                            booleanResponse = (BooleanResponse)Client.currentRequest.response;
+                                        }
+                                        if(booleanResponse.status){
+                                            System.out.println("Reward removed successfully");
+                                        }
+                                        else{
+                                            System.out.println("There was a problem removing the reward");
                                         }
                                         break;
 
