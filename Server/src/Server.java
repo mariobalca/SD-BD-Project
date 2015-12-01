@@ -36,7 +36,7 @@ public class Server{
     public Server(){
 
         try {
-            BufferedReader fR = new BufferedReader(new FileReader("config/configServer.txt"));
+            BufferedReader fR = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream ("configServer.txt")));
 
             serverPort = Integer.parseInt(fR.readLine());
             udpPort=Integer.parseInt(fR.readLine());
@@ -48,7 +48,7 @@ public class Server{
             fR.close();
         }
         catch (Exception e){
-
+            System.out.println(e);
             System.out.println("Erro ao abrir ficheiro configServer.txt");
             System.exit(1);
         }
@@ -133,13 +133,7 @@ public class Server{
     }
 
     public static void main(String args[]) throws InterruptedException {
-
-
-
-    new Server();
-
-        //Thread.sleep(1000);
-        //new Server(8001,8011,"localhost",8012);
+        new Server();
     }
 
 

@@ -25,7 +25,7 @@ public class RMIServer{
         try {
 
             try {
-                BufferedReader fR = new BufferedReader(new FileReader("config/configRMI.txt"));
+                BufferedReader fR = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream ("configRMI.txt")));
                 hostname = fR.readLine();
                 port = Integer.parseInt(fR.readLine());
                 delta = Integer.parseInt(fR.readLine());
@@ -35,8 +35,8 @@ public class RMIServer{
                 System.out.println("Erro ao abrir ficheiro configRMI");
                 System.exit(1);
             }
-            //Connection connection = DriverManager.getConnection("jdbc:sqlite:RMIServer/src/db/db.db");
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:db/db.db");
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:RMIServer/src/db/db.db");
+            //Connection connection = DriverManager.getConnection("jdbc:sqlite:db/db.db");
             System.setProperty("java.rmi.server.hostname",hostname);
             RMIImpl rmiServer = new RMIImpl(connection);
             Registry r = LocateRegistry.createRegistry(port);
