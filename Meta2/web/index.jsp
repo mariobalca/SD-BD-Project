@@ -15,7 +15,7 @@
       <title>Hello World</title>
     </head>
     <body>
-      <h1>Hello World From Struts2</h1>
+      <h1>Hello World From Struts4</h1>
       <form action="hello" method="post">
         <label for="name">Please enter your name</label><br/>
         <input type="text" name="name"/>

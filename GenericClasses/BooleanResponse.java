@@ -3,7 +3,7 @@
  */
 public class BooleanResponse extends Response {
     public boolean status;
-    public BooleanResponse(String response, Boolean status) {
+    public BooleanResponse(String response, boolean status) {
         super(response);
         this.status = status;
     }

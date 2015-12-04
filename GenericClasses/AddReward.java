@@ -63,7 +63,7 @@ public class AddReward extends Request{
     }
 
     @Override
-    public Response execute(RMI rmiServer){
+    public BooleanResponse execute(RMI rmiServer){
         boolean verifica = false;
         while(!verifica){
             try {
