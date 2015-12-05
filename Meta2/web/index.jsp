@@ -14,7 +14,7 @@
     <head>
       <title>Hello World</title>
     </head>
-    <body>
+    <body style="background-color: aqua">
       <h1>Hello World From Struts4</h1>
       <form action="hello" method="post">
         <label for="name">Please enter your name</label><br/>
