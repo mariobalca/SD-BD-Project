@@ -18,7 +18,7 @@ public class ListActualProj extends Request{
         while(!verifica){
             try {
                 rmiServer = (RMI) LocateRegistry.getRegistry(Server.RMI_ADDRESS, Server.rmiPort).lookup("rmi");
-                ArrayList<Project> projects = rmiServer.getProjects();
+                ArrayList<Project> projects = rmiServer.getCurrentProjects();
                 ProjectListResponse response = new ProjectListResponse("ListActualProj", projects);
                 return response;
             } catch (RemoteException e) {

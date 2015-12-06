@@ -171,7 +171,7 @@ public class CreateProj extends Request{
         boolean verifica = false;
         while(!verifica){
             try {
-                String dataAux = year + "-" + mon + "-" + day + " " + hour + ":" + min;
+                String dataAux = year + "-" + (mon + 1) + "-" + day + " " + hour + ":" + min;
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 Date date = dateFormat.parse(dataAux);
 
