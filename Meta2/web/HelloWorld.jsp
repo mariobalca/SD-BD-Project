@@ -11,7 +11,7 @@
 <head>
     <title>Hello World</title>
 </head>
-<body>
-Hello World, <s:property value="name"/>
+<body style="background-color: violet">
+Hello World, <s:property value="username"/>
 </body>
 </html>
