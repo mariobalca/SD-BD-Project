@@ -7,17 +7,25 @@
 <struts>
     <constant name="struts.devMode" value="true" />
     <package name="helloworld" extends="struts-default">
-        <action name="hello"
-                class="com.struts2.HelloWorldAction"
+        <action name="index"
+                class="com.rpmstarter.usersController.LoginAction"
+                method="logged">
+            <result name="logged">/index.jsp</result>
+            <result name="notlogged">/Login.jsp</result>
+        </action>
+
+        <action name="SignUp"
+                class="com.rpmstarter.usersController.SignUpAction"
                 method="execute">
-            <result name="success">/Login.jsp</result>
-            <result name="failed">/Error.jsp</result>
+            <result name="success">/index.jsp</result>
+            <result name="failed">/index.jsp</result>
+            <result name="rmidown">/RMIDown.jsp</result>
         </action>
 
         <action name="Login"
-                class="com.struts2.LoginAction"
+                class="com.rpmstarter.usersController.LoginAction"
                 method="execute">
-            <result name="success">/HelloWorld.jsp</result>
+            <result name="success">/index.jsp</result>
             <result name="failed">/Login.jsp</result>
             <result name="rmidown">/RMIDown.jsp</result>
         </action>

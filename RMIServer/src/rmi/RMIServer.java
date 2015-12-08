@@ -46,6 +46,7 @@ public class RMIServer{
             System.out.println("Port already in use");
             System.exit(1);
         } catch (SQLException e){
+
         }
     }
 
