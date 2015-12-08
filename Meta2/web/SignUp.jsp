@@ -1,3 +1,4 @@
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: pedro
@@ -17,5 +18,8 @@
         <input type="password" name="password">
         <button value="SignUp" type="submit" id="signup-button">Submit</button>
     </form>
+    <div>
+        <p><s:property value="error"/></p>
+    </div>
 </body>
 </html>

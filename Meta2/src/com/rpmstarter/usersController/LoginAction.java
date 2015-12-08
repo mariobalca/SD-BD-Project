@@ -23,8 +23,12 @@ public class LoginAction implements SessionAware{
 
     public String execute(){
         try {
-            if(getRMI().loginUser(username,password)[0]>0){
-                session.put("username",username);
+            System.out.println(username + " " + password);
+            int login[] = getRMI().loginUser(username,password);
+            if(login[0]>0) {
+                session.put("username", username);
+                session.put("usernameId",login[0]);
+                session.put("requestId",login[1]);
                 return "success";
             }
             else{

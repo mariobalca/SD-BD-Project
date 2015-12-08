@@ -15,6 +15,15 @@ import java.util.Map;
 public class SignUpAction implements SessionAware{
     private Map<String,Object> session;
     private String username, password;
+    private String error;
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
 
     public String getPassword() {
         return password;
@@ -34,11 +43,15 @@ public class SignUpAction implements SessionAware{
 
     public String execute(){
         try {
-            if(getRMI().registerUser(username,password)>1) {
+            int userId = getRMI().registerUser(username,password);
+            if(userId>1) {
                 session.put("username", username);
+                session.put("usernameId",userId);
+                session.put("requestId",0);
                 return "success";
             }
             else{
+                setError("That username already exists");
                 return "failed";
             }
         } catch (NotBoundException e) {

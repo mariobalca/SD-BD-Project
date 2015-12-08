@@ -54,8 +54,9 @@ public class Login extends Request {
             } catch (RemoteException e) {
                 verifica = false;
             } catch (SQLException e) {
+                System.out.println(e);
             } catch (NotBoundException e) {
-
+                System.out.println(e);
             }
         }
 

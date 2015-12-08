@@ -25,5 +25,11 @@
             </button>
         </a>
     </div>
+    <div>
+        <p><s:property value="error"/></p>
+    </div>
+    <div>
+        <p><s:property value="balance"/></p>
+    </div>
 </body>
 </html>
