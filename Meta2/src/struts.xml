@@ -5,27 +5,28 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <constant name="struts.devMode" value="true" />
+    <constant name="struts.devMode" value="true"/>
     <package name="helloworld" extends="struts-default">
-        <action name="index"
-                class="com.rpmstarter.usersController.LoginAction"
-                method="logged">
-            <result name="logged">/index.jsp</result>
-            <result name="notlogged">/Login.jsp</result>
-        </action>
-
+        <default-action-ref name="Index"/>
         <action name="SignUp"
                 class="com.rpmstarter.usersController.SignUpAction"
                 method="execute">
             <result name="success" type="redirectAction">Index</result>
-            <result name="failed">/index.jsp</result>
+            <result name="failed">/SignUp.jsp</result>
             <result name="rmidown">/RMIDown.jsp</result>
         </action>
 
         <action name="Index"
-                class="com.rpmstarter.usersController.GetUserDetailsAction"
+                class="com.rpmstarter.usersController.IndexAction"
                 method="execute">
-            <result name="success">/index.jsp</result>
+            <result>/index.jsp</result>
+
+        </action>
+
+        <action name="Logout"
+                class="com.rpmstarter.usersController.LogoutAction"
+                method="execute">
+            <result type="redirectAction">Index</result>
         </action>
 
         <action name="Login"
@@ -35,6 +36,5 @@
             <result name="failed">/Login.jsp</result>
             <result name="rmidown">/RMIDown.jsp</result>
         </action>
-
     </package>
 </struts>

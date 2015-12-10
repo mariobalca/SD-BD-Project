@@ -14,23 +14,19 @@ import java.util.Map;
 /**
  * Created by pedro on 12/8/15.
  */
-public class GetUserDetailsAction implements SessionAware {
+public class IndexAction implements SessionAware {
     private Map<String,Object> session;
     private double balance;
-    private String username;
-
-    public String getUsername() {
-        return (String) session.get("username");
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    private boolean logged;
+    private ArrayList<Project> projects;
 
     public String execute(){
         try {
-            balance = getRMI().getBalance((Integer) session.get("usernameId"));
-            return "success";
+            logged = session.containsKey("username");
+            if(logged) {
+                balance = getRMI().getBalance((Integer) session.get("usernameId"));
+            }
+            projects = getRMI().getCurrentProjects();
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -40,6 +36,15 @@ public class GetUserDetailsAction implements SessionAware {
         }
         return "success";
     }
+
+    public boolean getLogged() {
+        return logged;
+
+    }
+    public void setLogged(boolean logged){
+        this.logged = logged;
+    }
+
 
     public double getBalance() {
         return balance;
@@ -64,5 +69,13 @@ public class GetUserDetailsAction implements SessionAware {
 
     public void setRMI(RMI rmi){
         session.put("rmi",rmi);
+    }
+
+    public ArrayList<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(ArrayList<Project> projects) {
+        this.projects = projects;
     }
 }
