@@ -95,6 +95,13 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         return projects;
     }
 
+    public Project getProject(int id) throws java.rmi.RemoteException, SQLException {
+        String query = "select * from projects where id = " + id;
+        Project result = getProjects(query).get(0);
+
+        return result;
+    }
+
     public ArrayList<Project> getCurrentProjects() throws java.rmi.RemoteException, SQLException{
         String query = "Select * from Projects where active = 1";
         ArrayList<Project> projects = getProjects(query);
@@ -234,18 +241,20 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
     public boolean createProject(Project project, int requestId, int userId) throws RemoteException, SQLException {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
+
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             result = connection.createStatement().executeQuery("select id from projects where Name = \"" + project.getName()+"\"");
             if(result.next())
                 return false;
-
+            connection.setAutoCommit(false);
             connection.createStatement().execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId,Active) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" + project.getDescription() + "\", " + userId + "," +1+ ")");
 
             result = connection.createStatement().executeQuery("select id from projects where Name = \"" + project.getName()+"\"");
             int projectId = result.getInt(1);
             connection.createStatement().execute("insert into administrators (ProjectId, UserId) values (" + projectId + ", " + userId + ")");
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+
             System.out.println(projectId);
             for(Reward reward :project.getRewards()){
                 this.createReward(reward, 0, projectId, userId);
@@ -253,8 +262,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             for(Path path:project.getPaths()){
                 this.createPath(path, 0, userId, projectId);
             }
+            connection.commit();
             return true;
         }
+
         else{
             result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
@@ -269,6 +280,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
                 return false;
 
             result = connection.createStatement().executeQuery("select UserId, Value from transactions where ProjectId = " + projectId);
+            connection.setAutoCommit(false);
             while(result.next())
             {
                 int pledgerId = result.getInt(1);
@@ -283,7 +295,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             }
             connection.createStatement().execute("update projects set active = 0 where id = " + projectId);
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
-
+            connection.commit();
             return true;
         }
         else{
@@ -297,9 +309,9 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         double objective = result.getDouble(1);
         int ownerUserId = result.getInt(2);
         double sum = connection.createStatement().executeQuery("select sum(value) from transactions where projectId = " + projectId).getDouble(1);
+        connection.setAutoCommit(false);
         if(sum<objective) {
             result = connection.createStatement().executeQuery("select UserId, Value from transactions where ProjectId = " + projectId);
-
             while(result.next())
             {
                 int pledgerId = result.getInt(1);
@@ -322,6 +334,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             }
             connection.createStatement().execute("update projects set active = 0 where id = " + projectId);
         }
+        connection.commit();
         return true;
     }
 
@@ -335,13 +348,13 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             ResultSet rewardIdRS = connection.createStatement().executeQuery("select id from rewards where projectId = " + projectId + " and MinValue = " + value);
             if(!rewardIdRS.next())
                 return false;
-
+            connection.setAutoCommit(false);
             connection.createStatement().execute("update users set balance = " + (result.getDouble(1) - value) + " where id = " + userId);
             connection.createStatement().execute("insert into transactions (UserId, ProjectId,PathId, Value) values (" + userId + ", " +projectId  + ", " + pathId+ ", " + value + ")");
 
             this.winReward(rewardIdRS.getInt(1), 0, userId, 0);
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
-
+            connection.commit();
             return true;
         }
         else{
@@ -367,10 +380,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             result = connection.createStatement().executeQuery("select * from administrators where userId = " + newAdminId + " and projectId= " + projectId);
             if(result.next())
                 return false;
-
+            connection.setAutoCommit(false);
             connection.createStatement().execute("insert into administrators (UserId, ProjectId) values (" + newAdminId + ", " + projectId+ ")");
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
-
+            connection.commit();
             return true;
         }
         else{
@@ -386,10 +399,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
             if(!result.next())
                 return false;
-
+            connection.setAutoCommit(false);
             connection.createStatement().execute("delete from administrators where userId = " + removeAdminId + " and projectId = " + projectId);
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
-
+            connection.commit();
             return true;
         }
         else{
@@ -401,9 +414,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     public boolean sendMessage(Message message, int projectId, int requestId) throws RemoteException, SQLException {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + message.getFromUserId());
         if(result.getInt(1) == 0){
+            connection.setAutoCommit(false);
             connection.createStatement().execute("insert into messages (ProjectId, Subject, Question, Response, FromUserId) values (" + projectId + ",\"" + message.getSubject() + "\",\"" + message.getQuestion() + "\", \"\", " + message.getFromUserId() + ")");
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + message.getFromUserId() + ", " + requestId + ", 1)");
-
+            connection.commit();
             return true;
         }
         else{
@@ -419,10 +433,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
             if(!result.next())
                 return false;
-
+            connection.setAutoCommit(false);
             connection.createStatement().execute("update messages set response = \"" + response + "\" where id = " + messageId);
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
-
+            connection.commit();
             return true;
         }
         else{
@@ -465,9 +479,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             result = connection.createStatement().executeQuery("select * from administrators where userId = " + userId + " and projectId= " + projectId);
             if(!result.next())
                 return false;
+            connection.setAutoCommit(false);
             connection.createStatement().execute("insert into rewards (MinValue, Name, Description, ProjectId) values (" + reward.getMinValue()  + ",\"" + reward.getName() + "\", \"" + reward.getDescription() + "\", " + projectId + ")");
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
-
+            connection.commit();
             return true;
         }
         else{
@@ -484,10 +499,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
             if(!result.next())
                 return false;
-
+            connection.setAutoCommit(false);
             connection.createStatement().execute("delete from rewards where id = " + rewardId);
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
-
+            connection.commit();
             return true;
         }
         else{
@@ -499,9 +514,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     public boolean winReward(int rewardId, int requestId, int userId, int flag) throws RemoteException, SQLException {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0 || requestId == 0){
+            connection.setAutoCommit(false);
             connection.createStatement().execute("insert into rewards_users (RewardId, WinnerUserId, OwnerUserId,flag) values (" + rewardId + ", " + userId + ", " + userId + ", " + flag + ")");
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
-
+            connection.commit();
             return true;
         }
         else{
@@ -518,9 +534,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             if(!resultSet.next())
                 return false;
             int receiverUserId = resultSet.getInt(1);
+            connection.setAutoCommit(false);
             connection.createStatement().execute("update rewards_users set OwnerUserId = " + receiverUserId + " where id = " + rewardUserId);
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
-
+            connection.commit();
             return true;
         }
         else{
@@ -540,10 +557,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
             if(!result.next())
                 return false;
-
+            connection.setAutoCommit(false);
             connection.createStatement().execute("insert into extras (MinValue, Name, Description, ProjectId) values (" + extra.getMinValue()  + ",\"" + extra.getName() + "\", \"" + extra.getDescription() + "\", " + projectId + ")");
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
-
+            connection.commit();
             return true;
         }
         else{
@@ -559,9 +576,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
             if(!result.next())
                 return false;
-
+            connection.setAutoCommit(false);
             connection.createStatement().execute("delete from extras where id = " + extraId);
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            connection.commit();
 
             return true;
         }
