@@ -204,11 +204,10 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public int[] loginUser(String username, String password) throws SQLException {
-        ResultSet result = connection.createStatement().executeQuery("select id, count(*) from Users where username = \"" + username + " \" and password = \"" + password + "\"");
-        if(result.getInt(1) >= 1){
-            int userId = result.getInt(0);
+        System.out.println("select id, count(*) from Users where username = \"" + username + "\" and password = \"" + password + "\"");
+        ResultSet result = connection.createStatement().executeQuery("select id, count(*) from Users where username = \"" + username + "\" and password = \"" + password + "\"");        if(result.getInt(1) >= 1){
+            int userId = result.getInt(1);
             result = connection.createStatement().executeQuery("select count(*) from Logs where userId = " + userId);
-
             return new int[]{userId, result.getInt(1)};
         }
         else{
@@ -521,6 +520,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public boolean giveReward(int rewardUserId, int requestId, int userId, String receiverUserName, int flag) throws RemoteException, SQLException {
+        System.out.println(rewardUserId+ " " + requestId+ " " + userId + " " + receiverUserName);
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0 || requestId == 0){
             ResultSet resultSet = connection.createStatement().executeQuery("select id from users where username = \"" + receiverUserName + "\"");

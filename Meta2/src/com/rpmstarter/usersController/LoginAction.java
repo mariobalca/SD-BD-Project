@@ -3,7 +3,6 @@ package com.rpmstarter.usersController;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.SessionAware;
 import rmi.RMI;
-import server.Server;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -23,8 +22,12 @@ public class LoginAction implements SessionAware{
 
     public String execute(){
         try {
-            if(getRMI().loginUser(username,password)[0]>0){
-                session.put("username",username);
+            System.out.println(username + " " + password);
+            int login[] = getRMI().loginUser(username,password);
+            if(login[0]>0) {
+                session.put("username", username);
+                session.put("usernameId",login[0]);
+                session.put("requestId",login[1]);
                 return "success";
             }
             else{
@@ -38,13 +41,6 @@ public class LoginAction implements SessionAware{
         } catch (SQLException e) {
             return "rmidown";
         }
-    }
-
-    public String logged(){
-        if(session.containsKey("username")){
-            return "logged";
-        }
-        return "notlogged";
     }
 
     public String getPassword() {

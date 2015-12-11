@@ -12,18 +12,16 @@
     <title>Hello World</title>
 </head>
 <body style="background-color: violet">
-    Hello <s:property value="username"/>
-    <div>
-        <a href="Login.jsp">
-            <button value="Login" type="submit" id="login-button">
-                Login
-            </button>
-        </a>
-        <a href="SignUp.jsp">
-            <button value="SignUp" type="submit" id="signup-button">
-                Sign Up
-            </button>
-        </a>
-    </div>
+    <s:if test="logged">
+        <jsp:include page="LoggedOnHeader.jsp"/>
+    </s:if>
+    <s:else>
+        <jsp:include page="LoggedOffHeader.jsp"/>
+    </s:else>
+    <s:iterator value="projects">
+        <div>
+            Name:<s:property value="name"/>, Objective:<s:property value="objective"/>, Date:<s:property value="deadline"/>
+        </div>
+    </s:iterator>
 </body>
 </html>
