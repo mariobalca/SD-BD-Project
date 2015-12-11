@@ -8,19 +8,18 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
  * Created by Rui on 11/12/2015.
  */
-public class ConsultProj implements SessionAware{
+public class PledgeProjAction implements SessionAware{
     private Map<String,Object> session;
     private double balance;
     private boolean logged;
     private int projId;
     private Project project;
-    private String detailed;
+
 
     public String execute(){
         try {
@@ -29,7 +28,6 @@ public class ConsultProj implements SessionAware{
                 balance = getRMI().getBalance((Integer) session.get("usernameId"));
             }
             project = getRMI().getProject(projId);
-            detailed = project.detailed();
             return "success";
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -58,7 +56,6 @@ public class ConsultProj implements SessionAware{
         this.session = map;
     }
 
-
     public double getBalance() {
         return balance;
     }
@@ -81,14 +78,6 @@ public class ConsultProj implements SessionAware{
 
     public void setProjId(int projId) {
         this.projId = projId;
-    }
-
-    public String getDetailed() {
-        return detailed;
-    }
-
-    public void setDetailed(String detailed) {
-        this.detailed = detailed;
     }
 
     public Project getProject() {

@@ -35,6 +35,19 @@
             <result type="redirectAction" name="success">Index</result>
         </action>
 
+
+        <action name="ConsultProj"
+                class="com.rpmstarter.usersController.ConsultProj"
+                method="execute">
+            <result name = "success">/ConsultProj.jsp</result>
+        </action>
+
+        <action name="PledgeProj"
+                class="com.rpmstarter.usersController.PledgeProjAction"
+                method="execute">
+            <result name="success">/PledgeProj.jsp</result>
+        </action>
+
         <action name="Logout"
                 class="com.rpmstarter.usersController.LogoutAction"
                 method="execute">
