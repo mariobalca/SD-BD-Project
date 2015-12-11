@@ -19,9 +19,12 @@
         <jsp:include page="LoggedOffHeader.jsp"/>
     </s:else>
     <s:iterator value="projects">
-        <div>
+        <p>
             Name:<s:property value="name"/>, Objective:<s:property value="objective"/>, Date:<s:property value="deadline"/>
-        </div>
+            <form action=ConsultProj method="POST">
+                <button name="projId" value="${id}" type="submit" id="consultproj-button">Consult Project</button>
+            </form>
+        </p>
     </s:iterator>
 </body>
 </html>
