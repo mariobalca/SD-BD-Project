@@ -19,8 +19,20 @@
         <action name="Index"
                 class="com.rpmstarter.usersController.IndexAction"
                 method="execute">
-            <result>/index.jsp</result>
+            <result>/Index.jsp</result>
 
+        </action>
+
+        <action name="Rewards"
+                class="com.rpmstarter.usersController.RewardsAction"
+                method="execute">
+            <result name = "success">/Rewards.jsp</result>
+        </action>
+
+        <action name="GiftReward"
+                class="com.rpmstarter.usersController.GiftRewardAction"
+                method="execute">
+            <result type="redirectAction" name="success">Index</result>
         </action>
 
         <action name="Logout"

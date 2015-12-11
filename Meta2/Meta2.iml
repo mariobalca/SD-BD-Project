@@ -19,8 +19,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="GenericClasses" />
+    <orderEntry type="module" module-name="SD-BD-Project" />
     <orderEntry type="module" module-name="RMIServer" />
-    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="Struts 2-2.3.20.1" level="project" />
   </component>
 </module>
