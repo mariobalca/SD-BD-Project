@@ -429,7 +429,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     public boolean answerMessage(int messageId, String response, int requestId, int userId) throws RemoteException, SQLException {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
-            result = connection.createStatement().executeQuery("select * from administrators where userId = 2 and projectId = (select projectId from messages where id = " + messageId + ")");
+            result = connection.createStatement().executeQuery("select * from administrators where userId = " + userId + " and projectId = (select projectId from messages where id = " + messageId + ")");
 
             if(!result.next())
                 return false;
