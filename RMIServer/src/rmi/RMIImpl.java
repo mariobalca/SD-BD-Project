@@ -95,6 +95,13 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         return projects;
     }
 
+    public Project getProject(int id) throws java.rmi.RemoteException, SQLException {
+        String query = "select * from projects where id = " + id;
+        Project result = getProjects(query).get(0);
+
+        return result;
+    }
+
     public ArrayList<Project> getCurrentProjects() throws java.rmi.RemoteException, SQLException{
         String query = "Select * from Projects where active = 1";
         ArrayList<Project> projects = getProjects(query);
