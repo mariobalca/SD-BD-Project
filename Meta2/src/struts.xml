@@ -20,13 +20,16 @@
         </action>
     </package>
     <package name="projects" extends="struts-default">
-
-        <action name="getProject"
-                class="actions.Projects.GetProjectAction"
+        <action name="listMyProjects"
+                class="actions.Projects.ListProjectsAction"
                 method="execute">
-            <result name = "success">/getProj.jsp</result>
+            <result name = "success">/listProjects.jsp</result>
         </action>
-
+        <action name="listAllProjects"
+                class="actions.Projects.ListProjectsAction"
+                method="execute">
+            <result name = "success">/listProjects.jsp</result>
+        </action>
         <action name="pledgeProj"
                 class="actions.Projects.PledgeProjectAction"
                 method="execute">
@@ -74,7 +77,7 @@
         </action>
 
         <action name="postLogin" class="actions.Users.LoginAction" method="post">
-            <result name="success" type="redirectAction">index</result>
+            <result name="success" type="redirectAction">dashboard</result>
             <result name="failed">/login.jsp</result>
             <result name="rmidown">/rmiDown.jsp</result>
         </action>
