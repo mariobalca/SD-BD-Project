@@ -22,12 +22,12 @@
 <body>
     <div class="header">
         <div align="right" style="vertical-align: middle;display: table-cell;border: 1px solid greenyellow">
-            <a href="Login.jsp" style="margin-right: 10px">
+            <a href="login.jsp" style="margin-right: 10px">
                 <button value="Login" type="submit" id="login-button">
                     Login
                 </button>
             </a>
-            <a href="SignUp.jsp">
+            <a href="signup.jsp">
                 <button value="SignUp" type="submit" id="signup-button" style="margin-right: 20px">
                     Sign Up
                 </button>

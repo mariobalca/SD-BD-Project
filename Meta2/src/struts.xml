@@ -6,60 +6,77 @@
 
 <struts>
     <constant name="struts.devMode" value="true"/>
-    <package name="helloworld" extends="struts-default">
-        <default-action-ref name="Index"/>
-        <action name="SignUp"
-                class="com.rpmstarter.usersController.SignUpAction"
+    <package name="general" extends="struts-default">
+        <default-action-ref name="index"/>
+        <action name="index"
+                class="actions.General.IndexAction"
                 method="execute">
-            <result name="success" type="redirectAction">Index</result>
-            <result name="failed">/SignUp.jsp</result>
-            <result name="rmidown">/RMIDown.jsp</result>
+            <result>/index.jsp</result>
+        </action>
+        <action name="dashboard"
+                class="actions.General.DashboardAction"
+                method="execute">
+            <result>/dashboard.jsp</result>
+        </action>
+    </package>
+    <package name="projects" extends="struts-default">
+
+        <action name="getProject"
+                class="actions.Projects.GetProjectAction"
+                method="execute">
+            <result name = "success">/getProj.jsp</result>
         </action>
 
-        <action name="Index"
-                class="com.rpmstarter.usersController.IndexAction"
+        <action name="pledgeProj"
+                class="actions.Projects.PledgeProjectAction"
                 method="execute">
-            <result>/Index.jsp</result>
+            <result name="success">/pledgeProj.jsp</result>
+        </action>
+    </package>
+    <package name="rewards" extends="struts-default">
+        <action name="rewards"
+                class="actions.Rewards.ListRewardsAction"
+                method="execute">
+            <result name = "success">/rewards.jsp</result>
+        </action>
+        <action name="giveReward"
+                class="actions.Rewards.GiveRewardAction"
+                method="execute">
+            <result type="redirectAction" name="success">index</result>
+        </action>
+    </package>
+    <package name="messages" extends="struts-default">
 
+    </package>
+    <package name="transactions" extends="struts-default">
+
+    </package>
+    <package name="users" extends="struts-default">
+        <action name="getSignup" class="actions.Users.SignUpAction" method="get">
+            <result name="success">/signup.jsp</result>
+            <result name="rmidown">/rmiiDown.jsp</result>
+        </action>
+        <action name="postSignup" class="actions.Users.SignUpAction" method="post">
+            <result name="success" type="redirectAction">dashboard</result>
+            <result name="failed">/signup.jsp</result>
+            <result name="rmidown">/rmiDown.jsp</result>
         </action>
 
-        <action name="Rewards"
-                class="com.rpmstarter.usersController.RewardsAction"
+        <action name="logout"
+                class="actions.Users.LogoutAction"
                 method="execute">
-            <result name = "success">/Rewards.jsp</result>
+            <result type="redirectAction">index</result>
         </action>
 
-        <action name="GiftReward"
-                class="com.rpmstarter.usersController.GiftRewardAction"
-                method="execute">
-            <result type="redirectAction" name="success">Index</result>
+        <action name="getLogin" class="actions.Users.LoginAction" method="get">
+            <result name="success">/login.jsp</result>
+            <result name="rmidown">/rmiiDown.jsp</result>
         </action>
 
-
-        <action name="ConsultProj"
-                class="com.rpmstarter.usersController.ConsultProj"
-                method="execute">
-            <result name = "success">/ConsultProj.jsp</result>
-        </action>
-
-        <action name="PledgeProj"
-                class="com.rpmstarter.usersController.PledgeProjAction"
-                method="execute">
-            <result name="success">/PledgeProj.jsp</result>
-        </action>
-
-        <action name="Logout"
-                class="com.rpmstarter.usersController.LogoutAction"
-                method="execute">
-            <result type="redirectAction">Index</result>
-        </action>
-
-        <action name="Login"
-                class="com.rpmstarter.usersController.LoginAction"
-                method="execute">
-            <result name="success" type="redirectAction">Index</result>
-            <result name="failed">/Login.jsp</result>
-            <result name="rmidown">/RMIDown.jsp</result>
+        <action name="postLogin" class="actions.Users.LoginAction" method="post">
+            <result name="success" type="redirectAction">index</result>
+            <result name="failed">/login.jsp</result>
+            <result name="rmidown">/rmiDown.jsp</result>
         </action>
     </package>
 </struts>
