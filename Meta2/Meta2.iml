@@ -25,7 +25,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="RMIServer" />
-    <orderEntry type="module" module-name="GenericClasses" />
     <orderEntry type="module-library">
       <library name="org.apache.struts:struts2-core:2.3.16.3" type="repository">
         <properties maven-id="org.apache.struts:struts2-core:2.3.16.3" />
@@ -48,5 +47,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="GenericClasses" />
   </component>
 </module>
