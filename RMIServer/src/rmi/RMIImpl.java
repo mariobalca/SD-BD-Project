@@ -26,16 +26,26 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
     // IDEMPOTENTES
 
+    public User getUser(int userId) throws RemoteException, SQLException {
+        ResultSet result = connection.createStatement().executeQuery("Select * from users where id = " + userId);
+        User user;
+        if(result.next()){
+            user = new User(result.getString(1), result.getString(2));
+            return user;
+        }
+        return null;
+    }
+
     public ArrayList<User> getUsers() throws RemoteException, SQLException {
         ResultSet result = connection.createStatement().executeQuery("Select * from Users");
         ArrayList<User> users = new ArrayList<User>();
         while(result.next())
         {
-            User u = new User(result.getString(2), result.getString(3), result.getDouble(4));
+            User u = new User(result.getString(2), result.getString(3));
             u.setId(result.getInt(1));
             users.add(u);
         }
-        System.out.println("Get Users executed");
+        System.out.println("Get Auth executed");
         return users;
     }
 
@@ -44,7 +54,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ArrayList<User> users = new ArrayList<User>();
         while(result.next())
         {
-            User u = new User(result.getString(2), result.getString(3), result.getDouble(4));
+            User u = new User(result.getString(2), result.getString(3));
             u.setId(result.getInt(1));
             users.add(u);
         }
@@ -211,7 +221,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public int[] loginUser(String username, String password) throws SQLException {
-        System.out.println("select id, count(*) from Users where username = \"" + username + "\" and password = \"" + password + "\"");
+        System.out.println("select id, count(*) from Auth where username = \"" + username + "\" and password = \"" + password + "\"");
         ResultSet result = connection.createStatement().executeQuery("select id, count(*) from Users where username = \"" + username + "\" and password = \"" + password + "\"");        if(result.getInt(1) >= 1){
             int userId = result.getInt(1);
             result = connection.createStatement().executeQuery("select count(*) from Logs where userId = " + userId);

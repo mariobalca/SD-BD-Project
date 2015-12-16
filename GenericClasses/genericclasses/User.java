@@ -9,18 +9,21 @@ public class User implements Serializable {
     private int id;
     private String username;
     private String password;
+    private int requests;
 
-    public User(String u, String p, double b){
+    public User(String u, String p){
         this.username = u;
         this.password = p;
     }
+
+    public User() { }
 
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
-        password = password;
+        this.password = password;
     }
 
     public String getUsername() {
@@ -28,11 +31,11 @@ public class User implements Serializable {
     }
 
     public void setUsername(String username) {
-        username = username;
+        this.username = username;
     }
 
     public String toString(){
-        return this.getUsername() + " | " + this.getPassword();
+        return this.username + " | " + this.password;
     }
 
     public int getId() {
@@ -41,5 +44,13 @@ public class User implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getRequests() {
+        return requests;
+    }
+
+    public void setRequests(int requests) {
+        this.requests = requests;
     }
 }

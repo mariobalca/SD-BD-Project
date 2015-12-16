@@ -38,8 +38,8 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <div class="navbar-form navbar-right">
-                        <a href="login.jsp" class="btn btn-success">Sign In</a>
-                        <a href="signup.jsp" class="btn btn-primary">Sign Up</a>
+                        <a href="<s:url action="getLogin"></s:url>" class="btn btn-success">Sign In</a>
+                        <a href="<s:url action="getSignup"></s:url>" class="btn btn-primary">Sign Up</a>
                     </div>
                 </div><!--/.navbar-collapse -->
             </div>
