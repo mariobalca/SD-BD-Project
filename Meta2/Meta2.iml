@@ -10,11 +10,6 @@
           <root url="file://$MODULE_DIR$/web" relative="/" />
         </webroots>
       </configuration>
-      <facet type="Struts2" name="Struts 2">
-        <configuration>
-          <propertiesKeys disabled="false" />
-        </configuration>
-      </facet>
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
@@ -24,29 +19,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="RMIServer" />
     <orderEntry type="module" module-name="GenericClasses" />
-    <orderEntry type="module-library">
-      <library name="org.apache.struts:struts2-core:2.3.16.3" type="repository">
-        <properties maven-id="org.apache.struts:struts2-core:2.3.16.3" />
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/struts2-core-2.3.16.3.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/xwork-core-2.3.16.3.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/commons-lang3-3.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/ognl-3.0.6.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/javassist-3.11.0.GA.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/asm-3.3.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/asm-commons-3.3.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/asm-tree-3.3.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/freemarker-2.3.19.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/servlet-api-2.4.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/jsp-api-2.0.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/commons-fileupload-1.3.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/commons-io-2.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="module" module-name="RMIServer" />
+    <orderEntry type="module" module-name="Server" />
+    <orderEntry type="library" name="Struts 2-2.3.20.1" level="project" />
+    <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
   </component>
 </module>
