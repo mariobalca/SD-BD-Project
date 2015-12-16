@@ -1,6 +1,7 @@
 package actions.Auth;
 
 import com.opensymphony.xwork2.ActionSupport;
+import genericclasses.JsonResponse;
 import genericclasses.Login;
 import genericclasses.User;
 import org.apache.struts2.interceptor.SessionAware;
@@ -17,7 +18,7 @@ import java.util.Map;
 
 public class LoginAction extends ActionSupport implements SessionAware{
     private Map<String, Object> session;
-    private String error;
+    private JsonResponse response;
     private User user = new User();
 
     @Override
@@ -37,16 +38,16 @@ public class LoginAction extends ActionSupport implements SessionAware{
         this.user = user;
     }
 
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
     @Override
     public void setSession(Map<String, Object> map) {
         this.session = map;
+    }
+
+    public JsonResponse getResponse() {
+        return response;
+    }
+
+    public void setResponse(JsonResponse response) {
+        this.response = response;
     }
 }
