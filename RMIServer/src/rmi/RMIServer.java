@@ -1,4 +1,4 @@
-package rmi; /**
+package rmi;/**
  * Created by mariobalca on 24-10-2015.
  */
 
@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.Timer;
 
 public class RMIServer{
+
     String hostname;
     int port;
     int delta;
@@ -25,6 +26,8 @@ public class RMIServer{
                 delta = Integer.parseInt(fR.readLine());
                 fR.close();
             }
+
+
             catch (Exception e){
                 System.out.println("Erro ao abrir ficheiro configRMI");
                 System.exit(1);
