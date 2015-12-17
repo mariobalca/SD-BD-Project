@@ -2,6 +2,7 @@ package actions.Extra;
 
 import com.opensymphony.xwork2.ActionSupport;
 import genericclasses.Extra;
+import genericclasses.JsonResponse;
 import org.apache.struts2.interceptor.SessionAware;
 import repositories.ExtraRepository;
 
@@ -13,6 +14,7 @@ import java.util.Map;
 public class CreateExtraAction extends ActionSupport {
     private Extra extra = new Extra();
     private int requestId;
+    private JsonResponse response;
     private int userId;
     private int projectId;
 
@@ -43,9 +45,11 @@ public class CreateExtraAction extends ActionSupport {
     public String execute(){
         ExtraRepository extraRepository = new ExtraRepository();
         if(extraRepository.createExtra(extra,requestId,projectId,userId)){
+            response.setSuccess(true);
             return SUCCESS;
         }
         else{
+            response.setSuccess(false);
             return ERROR;
         }
     }
