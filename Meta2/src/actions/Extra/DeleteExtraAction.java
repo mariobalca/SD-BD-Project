@@ -1,6 +1,7 @@
 package actions.Extra;
 
 import com.opensymphony.xwork2.ActionSupport;
+import genericclasses.JsonResponse;
 import org.apache.struts2.interceptor.SessionAware;
 import repositories.ExtraRepository;
 
@@ -14,6 +15,7 @@ public class DeleteExtraAction extends ActionSupport {
     private int requestId;
     private int projectId;
     private int userId;
+    private JsonResponse response;
 
     public int getUserId() {
         return userId;
@@ -50,10 +52,12 @@ public class DeleteExtraAction extends ActionSupport {
     public String execute(){
         ExtraRepository extraRepository = new ExtraRepository();
         if(extraRepository.removeExtra(extraId,requestId,userId)){
+            response.setSuccess(true);
             return SUCCESS;
         }
 
         else{
+            response.setSuccess(false);
             return ERROR;
         }
     }

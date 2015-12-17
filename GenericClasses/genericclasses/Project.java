@@ -28,6 +28,10 @@ public class Project implements Serializable {
         this.active = active;
     }
 
+    public Project(){
+
+    }
+
     public Date getDeadline() {
         return deadline;
     }
