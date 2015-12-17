@@ -5,7 +5,6 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <constant name="struts.devMode" value="true"/>
     <package name="api" namespace="/api" extends="json-default">
         <result-types>
             <result-type name="json" class="org.apache.struts2.json.JSONResult"></result-type>

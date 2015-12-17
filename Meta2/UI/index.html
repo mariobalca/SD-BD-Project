@@ -22,16 +22,20 @@
 				</button>
 				<a class="navbar-brand" href="/">RPM Starter</a>
 			</div>
-			<div id="navbar" class="navbar-collapse collapse">
+
+			<div id="navbar" class="navbar-collapse collapse" ng-show="!auth">
 				<div class="navbar-form navbar-right">
-					<a ng-href="#/login" class="btn btn-success">Login</a>
-					<a ng-href="#/register" class="btn btn-primary">Register</a>
+					<a href="#/login" class="btn btn-success">Login</a>
+					<a href="#/register" class="btn btn-primary">Register</a>
 				</div>
 			</div><!--/.navbar-collapse -->
 		</div>
 	</nav>
 	<div ng-view></div>
 	<script src="js/app.js"></script>
+	<script src="js/controllers/authController.js"></script>
+	<script src="js/controllers/homeController.js"></script>
+	<script src="js/config/routes.js"></script>
 	<script src="js/services/auth.js"></script>
 	</body>
 </html>

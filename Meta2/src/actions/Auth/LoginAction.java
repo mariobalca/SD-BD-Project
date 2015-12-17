@@ -31,6 +31,7 @@ public class LoginAction extends ActionSupport implements SessionAware{
         }
         else {
             response.setSuccess(true);
+            session.put("user", user);
         }
         return SUCCESS;
     }
