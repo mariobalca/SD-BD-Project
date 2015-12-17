@@ -20,5 +20,8 @@
         <action name="login" method="execute" class="actions.Auth.LoginAction">
             <result name="success" type="json"></result>
         </action>
+        <action name="register" method="execute" class="actions.Auth.RegisterAction">
+            <result name="success" type="json"></result>
+        </action>
     </package>
 </struts>

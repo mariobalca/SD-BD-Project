@@ -18,15 +18,20 @@ import java.util.Map;
 
 public class LoginAction extends ActionSupport implements SessionAware{
     private Map<String, Object> session;
-    private JsonResponse response;
+    private JsonResponse response = new JsonResponse();
     private User user = new User();
 
     @Override
     public String execute() throws RemoteException, SQLException {
         AuthRepository auth = new AuthRepository();
-        System.out.println(user);
         user = auth.login(user.getUsername(), user.getPassword());
-
+        if(user == null) {
+            response.setSuccess(false);
+            response.setMessage("Dados de login errados");
+        }
+        else {
+            response.setSuccess(true);
+        }
         return SUCCESS;
     }
 
