@@ -7,6 +7,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by pedrocb on 17/12/2015.
@@ -58,6 +59,17 @@ public class ProjectRepository {
             successful = false;
         }
         return successful;
+    }
+
+    public ArrayList<Project> getCurrentProjects(){
+        try{
+            return rmiServer.getCurrentProjects();
+        } catch (RemoteException e) {
+            return null;
+        } catch (SQLException e) {
+            return null;
+        }
+
     }
 
 }
