@@ -69,7 +69,16 @@ public class ProjectRepository {
         } catch (SQLException e) {
             return null;
         }
+    }
 
+    public ArrayList<Project> getOlderProjects(){
+        try {
+            return rmiServer.getOlderProjects();
+        } catch (RemoteException e) {
+            return null;
+        } catch (SQLException e) {
+            return null;
+        }
     }
 
 }
