@@ -2,17 +2,15 @@ package actions.Project;
 
 import com.opensymphony.xwork2.ActionSupport;
 import genericclasses.JsonResponse;
-import genericclasses.Project;
 import repositories.ProjectRepository;
 
 /**
  * Created by pedrocb on 17/12/2015.
  */
-public class CreateProjectAction extends ActionSupport {
-    private Project project = new Project();
-    private int requestId;
+public class CancelProjectAction extends ActionSupport{
+    private int projectId;
     private int userId;
-    private JsonResponse response;
+    private int requestId;
 
     public int getRequestId() {
         return requestId;
@@ -20,14 +18,6 @@ public class CreateProjectAction extends ActionSupport {
 
     public void setRequestId(int requestId) {
         this.requestId = requestId;
-    }
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
     }
 
     public int getUserId() {
@@ -38,6 +28,14 @@ public class CreateProjectAction extends ActionSupport {
         this.userId = userId;
     }
 
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
+    }
+
     public JsonResponse getResponse() {
         return response;
     }
@@ -46,14 +44,11 @@ public class CreateProjectAction extends ActionSupport {
         this.response = response;
     }
 
+    private JsonResponse response;
+
     public String execute(){
         ProjectRepository projectRepository = new ProjectRepository();
-        if(projectRepository.createProject(project,requestId,userId)){
-            response.setSuccess(true);
-        }else{
-            response.setSuccess(false);
-        }
+        response.setSuccess(projectRepository.deleteProject(projectId,requestId,userId));
         return SUCCESS;
     }
-
 }

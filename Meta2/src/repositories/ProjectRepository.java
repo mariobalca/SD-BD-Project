@@ -36,5 +36,17 @@ public class ProjectRepository {
         return successful;
     }
 
+    public boolean deleteProject(int projectId,int requestId,int userId){
+        boolean successful;
+        try {
+            successful = rmiServer.cancelProject(projectId,requestId,userId);
+        } catch (RemoteException e) {
+            successful = false;
+        } catch (SQLException e) {
+            successful = false;
+        }
+        return successful;
+    }
+
 
 }
