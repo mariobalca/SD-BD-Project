@@ -48,5 +48,16 @@ public class ProjectRepository {
         return successful;
     }
 
+    public boolean financeProject(int projectId,int requestId,int userId,int pathId,double value){
+        boolean successful;
+        try {
+            successful = rmiServer.financeProject(projectId,requestId,userId,pathId,value);
+        } catch (RemoteException e) {
+            successful = false;
+        } catch (SQLException e) {
+            successful = false;
+        }
+        return successful;
+    }
 
 }
