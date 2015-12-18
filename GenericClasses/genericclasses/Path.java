@@ -17,6 +17,10 @@ public class Path implements Serializable {
         this.value = value;
     }
 
+    public Path(){
+
+    }
+
     public int getId() {
         return id;
     }

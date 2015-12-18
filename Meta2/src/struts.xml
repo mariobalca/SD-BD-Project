@@ -49,5 +49,8 @@
         <action name="getProjectExtras" method="execute" class="actions.Extra.GetProjectExtrasAction">
             <result name="success" type="json"></result>
         </action>
+        <action name="getProjectPaths" method="execute" class="actions.Path.GetProjectPathsAction">
+            <result name="success" type="json"></result>
+        </action>
     </package>
 </struts>
