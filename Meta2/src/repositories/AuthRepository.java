@@ -35,8 +35,8 @@ public class AuthRepository {
         }
         if(login[0] > 1) {
             User user = rmiServer.getUser(login[0]);
-            user.setRequests(login[1]);
             user.setId(login[0]);
+            user.setRequests(login[1]);
             return user;
         }
         return null;
@@ -58,5 +58,16 @@ public class AuthRepository {
             return user;
         }
         return null;
+    }
+
+    public double getBalance(int userId) {
+        try {
+            return rmiServer.getBalance(userId);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

@@ -9,9 +9,10 @@
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/angular.js"></script>
 		<script src="js/angular-route.js"></script>
+		<script src="js/angular-cookies.js"></script>
 	</head>
 	<body>
-	<nav class="navbar navbar-inverse navbar-fixed-top">
+	<nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="navController">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -20,22 +21,41 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/">RPM Starter</a>
+				<a class="navbar-brand" href="#/">RPM Starter</a>
 			</div>
-
-			<div id="navbar" class="navbar-collapse collapse" ng-show="!auth">
-				<div class="navbar-form navbar-right">
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav" ng-if="user">
+					<li><a href="#/dashboard">Dashboard</a></li>
+					<li><a href="#/myprojects">My Projects</a></li>
+					<li ng-class="checkIfActive('myrewards')"><a href="#/myrewards">My Rewards</a></li>
+					<li><a href="#/findprojects">Find Projects</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right" ng-if="user">
+					<li>
+						<span class="navbar-span" ng-click="getBalance()">{{ user.balance }} <i class="fa fa-refresh"></i>
+						</span>
+					</li>
+					<li class="dropdown">
+						<span class="navbar-span dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username}}<i class="caret"></i></span>
+						<ul class="dropdown-menu">
+							<li><a ng-click="logout()">Logout</a>
+						</ul>
+					</li>
+				</ul>
+				<div class="navbar-form navbar-right" ng-show="!user">
 					<a href="#/login" class="btn btn-success">Login</a>
 					<a href="#/register" class="btn btn-primary">Register</a>
 				</div>
 			</div><!--/.navbar-collapse -->
 		</div>
 	</nav>
-	<div ng-view></div>
+	<div ng-view>
+	</div>
 	<script src="js/app.js"></script>
+	<script src="js/services/authService.js"></script>
+	<script src="js/controllers/navController.js"></script>
 	<script src="js/controllers/authController.js"></script>
 	<script src="js/controllers/homeController.js"></script>
 	<script src="js/config/routes.js"></script>
-	<script src="js/services/auth.js"></script>
 	</body>
 </html>

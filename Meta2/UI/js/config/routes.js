@@ -1,5 +1,6 @@
 myApp.config(['$routeProvider', function ($routeProvider){
 	$routeProvider
+		.otherwise('/')
 		.when('/',{
 			templateUrl: 'pages/frontpage.html',
 			controller: 'homeController'
@@ -16,5 +17,4 @@ myApp.config(['$routeProvider', function ($routeProvider){
 			templateUrl: 'pages/dashboard.html',
 			controller: 'homeController'
 		})
-
 }]);

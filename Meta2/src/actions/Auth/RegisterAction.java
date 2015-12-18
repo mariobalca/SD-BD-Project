@@ -22,7 +22,6 @@ public class RegisterAction extends ActionSupport implements SessionAware{
         AuthRepository auth = new AuthRepository();
         System.out.println(user);
         user = auth.register(user.getUsername(), user.getPassword());
-
         return SUCCESS;
     }
 

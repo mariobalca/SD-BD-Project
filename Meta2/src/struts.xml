@@ -22,5 +22,8 @@
         <action name="register" method="execute" class="actions.Auth.RegisterAction">
             <result name="success" type="json"></result>
         </action>
+        <action name="getBalance" method="execute" class="actions.Auth.GetBalanceAction">
+            <result name="success" type="json"></result>
+        </action>
     </package>
 </struts>
