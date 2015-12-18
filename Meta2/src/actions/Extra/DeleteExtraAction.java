@@ -15,7 +15,15 @@ public class DeleteExtraAction extends ActionSupport {
     private int requestId;
     private int projectId;
     private int userId;
-    private JsonResponse response;
+    private JsonResponse response = new JsonResponse();
+
+    public JsonResponse getResponse() {
+        return response;
+    }
+
+    public void setResponse(JsonResponse response) {
+        this.response = response;
+    }
 
     public int getUserId() {
         return userId;
@@ -51,14 +59,7 @@ public class DeleteExtraAction extends ActionSupport {
 
     public String execute(){
         ExtraRepository extraRepository = new ExtraRepository();
-        if(extraRepository.removeExtra(extraId,requestId,userId)){
-            response.setSuccess(true);
-            return SUCCESS;
-        }
-
-        else{
-            response.setSuccess(false);
-            return ERROR;
-        }
+        response.setSuccess(extraRepository.removeExtra(extraId,requestId,userId));
+        return SUCCESS;
     }
 }

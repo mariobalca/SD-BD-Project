@@ -12,6 +12,8 @@ public class CancelProjectAction extends ActionSupport{
     private int userId;
     private int requestId;
 
+    private JsonResponse response;
+
     public int getRequestId() {
         return requestId;
     }
@@ -43,8 +45,6 @@ public class CancelProjectAction extends ActionSupport{
     public void setResponse(JsonResponse response) {
         this.response = response;
     }
-
-    private JsonResponse response;
 
     public String execute(){
         ProjectRepository projectRepository = new ProjectRepository();

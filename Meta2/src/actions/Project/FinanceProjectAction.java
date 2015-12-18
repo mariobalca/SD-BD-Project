@@ -13,11 +13,19 @@ public class FinanceProjectAction extends ActionSupport{
     private int userId;
     private int pathId;
     private double value;
-    private JsonResponse response;
+    private JsonResponse response = new JsonResponse();
 
     public String execute(){
         ProjectRepository projectRepository = new ProjectRepository();
         response.setSuccess(projectRepository.financeProject(projectId,requestId,userId,pathId,value));
         return SUCCESS;
+    }
+
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
     }
 }

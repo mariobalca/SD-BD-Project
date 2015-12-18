@@ -1,6 +1,7 @@
 package actions.Reward;
 
 import com.opensymphony.xwork2.ActionSupport;
+import genericclasses.JsonResponse;
 import genericclasses.Reward;
 import repositories.RewardRepository;
 
@@ -10,15 +11,12 @@ import repositories.RewardRepository;
 public class GiveRewardAction extends ActionSupport {
     private int rewardUserId, requestId, userId;
     private String receiverUserName;
+    private JsonResponse response = new JsonResponse();
 
     public String execute(){
         RewardRepository rewardRepository = new RewardRepository();
-        if(rewardRepository.giveReward(rewardUserId,requestId,userId,receiverUserName)){
-            return SUCCESS;
-        }
-        else{
-            return ERROR;
-        }
+        response.setSuccess(rewardRepository.giveReward(rewardUserId,requestId,userId,receiverUserName));
+        return SUCCESS;
     }
 
 
@@ -52,5 +50,13 @@ public class GiveRewardAction extends ActionSupport {
 
     public void setReceiverUserName(String receiverUserName) {
         this.receiverUserName = receiverUserName;
+    }
+
+    public JsonResponse getResponse() {
+        return response;
+    }
+
+    public void setResponse(JsonResponse response) {
+        this.response = response;
     }
 }

@@ -16,12 +16,7 @@ public class GetUserRewardAction extends ActionSupport {
     public String execute(){
         RewardRepository rewardRepository = new RewardRepository();
         rewards = rewardRepository.getUserRewards(userId);
-        if(rewards != null){
-            return SUCCESS;
-        }
-        else{
-            return ERROR;
-        }
+        return SUCCESS;
     }
 
     public int getUserId() {

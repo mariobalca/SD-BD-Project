@@ -19,4 +19,20 @@ public class GetAdminProjectsAction extends ActionSupport{
         projects = projectRepository.getAdminProjects(userId);
         return SUCCESS;
     }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public ArrayList<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(ArrayList<Project> projects) {
+        this.projects = projects;
+    }
 }

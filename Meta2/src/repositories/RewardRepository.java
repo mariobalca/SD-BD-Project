@@ -49,18 +49,6 @@ public class RewardRepository {
         return successful;
     }
 
-    public boolean winReward(int rewardId, int requestId, int userId){
-        boolean successful;
-        try {
-            successful = rmiServer.winReward(rewardId,requestId,userId,0);
-        } catch (RemoteException e) {
-            successful = false;
-        } catch (SQLException e) {
-            successful = false;
-        }
-        return successful;
-    }
-
     public ArrayList<Reward> getUserRewards(int userId){
         ArrayList<Reward> rewards;
         try {

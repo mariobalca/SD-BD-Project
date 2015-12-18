@@ -22,7 +22,7 @@
         <action name="register" method="execute" class="actions.Auth.RegisterAction">
             <result name="success" type="json"></result>
         </action>
-        <action name="createProject" method="execute" class="actions.Project.CancelProjectAction">
+        <action name="createProject" method="execute" class="actions.Project.CreateProjectAction">
             <result name="success" type="json"></result>
         </action>
         <action name="cancelProject" method="execute" class="actions.Project.CancelProjectAction">
@@ -31,7 +31,7 @@
         <action name="financeProject" method="execute" class="actions.Project.FinanceProjectAction">
             <result name="success" type="json"></result>
         </action>
-        <action name="getProjects" method="execute" class="actions.Project.GetCurrentProjectsAction">
+        <action name="getCurrentProjects" method="execute" class="actions.Project.GetCurrentProjectsAction">
             <result name="success" type="json"></result>
         </action>
         <action name="getOlderProjects" method="execute" class="actions.Project.GetOlderProjectsAction">
@@ -47,6 +47,27 @@
             <result name="success" type="json"></result>
         </action>
         <action name="getProjectExtras" method="execute" class="actions.Extra.GetProjectExtrasAction">
+            <result name="success" type="json"></result>
+        </action>
+        <action name="getProjectPaths" method="execute" class="actions.Path.GetProjectPathsAction">
+            <result name="success" type="json"></result>
+        </action>
+        <action name="addAdmin" method="execute" class="actions.Admin.CreateAdminAction">
+            <result name="success" type="json"></result>
+        </action>
+        <action name="createReward" method="execute" class="actions.Reward.CreateRewardAction">
+            <result name="success" type="json"></result>
+        </action>
+        <action name="getProjectRewards" method="execute" class="actions.Reward.GetProjRewardAction">
+            <result name="success" type="json"></result>
+        </action>
+        <action name="getUserRewards" method="execute" class="actions.Reward.GetUserRewardAction">
+            <result name="success" type="json"></result>
+        </action>
+        <action name="giveReward" method="execute" class="actions.Reward.GiveRewardAction">
+            <result name="success" type="json"></result>
+        </action>
+        <action name="removeReward" method="execute" class="actions.Reward.RemoveRewardAction">
             <result name="success" type="json"></result>
         </action>
     </package>

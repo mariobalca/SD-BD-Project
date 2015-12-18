@@ -12,7 +12,7 @@ public class CreateProjectAction extends ActionSupport {
     private Project project = new Project();
     private int requestId;
     private int userId;
-    private JsonResponse response;
+    private JsonResponse response = new JsonResponse();
 
     public int getRequestId() {
         return requestId;
@@ -48,11 +48,7 @@ public class CreateProjectAction extends ActionSupport {
 
     public String execute(){
         ProjectRepository projectRepository = new ProjectRepository();
-        if(projectRepository.createProject(project,requestId,userId)){
-            response.setSuccess(true);
-        }else{
-            response.setSuccess(false);
-        }
+        response.setSuccess(projectRepository.createProject(project,requestId,userId));
         return SUCCESS;
     }
 
