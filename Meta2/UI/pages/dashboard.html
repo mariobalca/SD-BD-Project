@@ -3,7 +3,14 @@
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4>My Projects</h4>
+					<div class="row">
+						<div class="col-md-6">
+							<h4>My Projects</h4>
+						</div>
+						<div class="col-md-6 text-right">
+							<button class="btn btn-primary" data-toggle="modal" data-target="#createProjectModal">Add Project</button>
+						</div>
+					</div>
 				</div>
 				<div class="panel-body">
 					<table class="table table-hover">
@@ -26,7 +33,14 @@
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4>My Rewards</h4>
+					<div class="row">
+						<div class="col-md-6">
+							<h4>My Projects</h4>
+						</div>
+						<div class="col-md-6 text-right">
+							<button class="btn btn-primary" data-toggle="modal" data-target="#giveRewardModal">Give Reward</button>
+						</div>
+					</div>
 				</div>
 				<div class="panel-body">
 					<table class="table table-hover">
@@ -48,3 +62,37 @@
 		</div>
 	</div>
 </div>
+<div class="modal fade" id="createProjectModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Create Project</h4>
+			</div>
+			<div class="modal-body">
+				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="giveRewardModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Give Reward</h4>
+			</div>
+			<div class="modal-body">
+				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

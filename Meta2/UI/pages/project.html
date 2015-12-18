@@ -8,7 +8,7 @@
 							<h4>{{ project.name }} - Info</h4>
 						</div>
 						<div class="col-md-6 text-right">
-							<button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Pledge</button>
+							<button ng-if="loggedIn" class="btn btn-primary" data-toggle="modal" data-target="#projectModal">Pledge</button>
 						</div>
 					</div>
 				</div>
@@ -64,7 +64,7 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="projectModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
