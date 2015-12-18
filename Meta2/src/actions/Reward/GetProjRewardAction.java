@@ -16,12 +16,7 @@ public class GetProjRewardAction extends ActionSupport{
     public String execute(){
         RewardRepository rewardRepository = new RewardRepository();
         rewards = rewardRepository.getProjectRewards(projId);
-        if(rewards != null){
-            return SUCCESS;
-        }
-        else{
-            return ERROR;
-        }
+        return SUCCESS;
     }
 
     public int getProjId() {

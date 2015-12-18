@@ -1,6 +1,7 @@
 package actions.Reward;
 
 import com.opensymphony.xwork2.ActionSupport;
+import genericclasses.JsonResponse;
 import org.omg.PortableInterceptor.SUCCESSFUL;
 import repositories.RewardRepository;
 
@@ -9,10 +10,10 @@ import repositories.RewardRepository;
  */
 public class RemoveRewardAction extends ActionSupport{
     private int rewardId,requestId, userId;
-
+    private JsonResponse response = new JsonResponse();
     public String execute(){
         RewardRepository rewardRepository = new RewardRepository();
-        rewardRepository.removeReward(rewardId,requestId,userId);
+        response.setSuccess(rewardRepository.removeReward(rewardId,requestId,userId));
         return SUCCESS;
     }
 
@@ -38,5 +39,13 @@ public class RemoveRewardAction extends ActionSupport{
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public JsonResponse getResponse() {
+        return response;
+    }
+
+    public void setResponse(JsonResponse response) {
+        this.response = response;
     }
 }

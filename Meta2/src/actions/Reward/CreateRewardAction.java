@@ -11,7 +11,7 @@ import repositories.RewardRepository;
 public class CreateRewardAction extends ActionSupport {
     private Reward reward = new Reward();
     private int requestId, projectId, userId;
-    private JsonResponse response;
+    private JsonResponse response = new JsonResponse();
 
     public String execute(){
         RewardRepository rewardRepository = new RewardRepository();
@@ -49,5 +49,13 @@ public class CreateRewardAction extends ActionSupport {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public JsonResponse getResponse() {
+        return response;
+    }
+
+    public void setResponse(JsonResponse response) {
+        this.response = response;
     }
 }

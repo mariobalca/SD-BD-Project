@@ -13,7 +13,7 @@ public class CreateAdminAction extends ActionSupport {
     private int requestId;
     private int userId;
     private String newAdminName;
-    private JsonResponse response;
+    private JsonResponse response = new JsonResponse();
 
     public int getProjectId() {
         return projectId;

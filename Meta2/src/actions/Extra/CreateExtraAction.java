@@ -14,7 +14,24 @@ import java.util.Map;
 public class CreateExtraAction extends ActionSupport {
     private Extra extra = new Extra();
     private int requestId;
-    private JsonResponse response;
+    private JsonResponse response = new JsonResponse();
+
+    public Extra getExtra() {
+        return extra;
+    }
+
+    public void setExtra(Extra extra) {
+        this.extra = extra;
+    }
+
+    public JsonResponse getResponse() {
+        return response;
+    }
+
+    public void setResponse(JsonResponse response) {
+        this.response = response;
+    }
+
     private int userId;
     private int projectId;
 
@@ -44,13 +61,7 @@ public class CreateExtraAction extends ActionSupport {
 
     public String execute(){
         ExtraRepository extraRepository = new ExtraRepository();
-        if(extraRepository.createExtra(extra,requestId,projectId,userId)){
-            response.setSuccess(true);
-            return SUCCESS;
-        }
-        else{
-            response.setSuccess(false);
-            return ERROR;
-        }
+        response.setSuccess(extraRepository.createExtra(extra,requestId,projectId,userId));
+        return SUCCESS;
     }
 }

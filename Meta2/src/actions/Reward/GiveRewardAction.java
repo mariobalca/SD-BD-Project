@@ -11,7 +11,7 @@ import repositories.RewardRepository;
 public class GiveRewardAction extends ActionSupport {
     private int rewardUserId, requestId, userId;
     private String receiverUserName;
-    private JsonResponse response;
+    private JsonResponse response = new JsonResponse();
 
     public String execute(){
         RewardRepository rewardRepository = new RewardRepository();
@@ -50,5 +50,13 @@ public class GiveRewardAction extends ActionSupport {
 
     public void setReceiverUserName(String receiverUserName) {
         this.receiverUserName = receiverUserName;
+    }
+
+    public JsonResponse getResponse() {
+        return response;
+    }
+
+    public void setResponse(JsonResponse response) {
+        this.response = response;
     }
 }
