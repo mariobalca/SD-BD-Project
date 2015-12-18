@@ -26,6 +26,8 @@ public class Message implements Serializable {
         this.response = r;
     }
 
+    public Message(){}
+
     public String getResponse() {
         return response;
     }

@@ -18,6 +18,8 @@ import java.io.Serializable;
             this.description = d;
         }
 
+        public Reward(){}
+
         public String getName() {
             return name;
         }

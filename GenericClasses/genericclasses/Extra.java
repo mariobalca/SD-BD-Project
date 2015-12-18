@@ -17,6 +17,10 @@ public class Extra implements Serializable {
         this.description = d;
     }
 
+    public Extra(){
+
+    }
+
     public int getId() {
         return id;
     }
