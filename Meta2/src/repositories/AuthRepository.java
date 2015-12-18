@@ -25,7 +25,7 @@ public class AuthRepository {
     }
 
     public User login(String username, String password) throws RemoteException, SQLException {
-        int [] login = new int[0];
+        int [] login = new int[2];
         try {
             login = rmiServer.loginUser(username, password);
         } catch (RemoteException e) {
@@ -33,7 +33,7 @@ public class AuthRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if(login[0] > 1) {
+        if(login[0] >= 1) {
             User user = rmiServer.getUser(login[0]);
             user.setId(login[0]);
             user.setRequests(login[1]);

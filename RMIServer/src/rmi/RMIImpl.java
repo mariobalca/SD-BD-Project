@@ -225,7 +225,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public int[] loginUser(String username, String password) throws SQLException {
-        System.out.println("select id, count(*) from users where username = \"" + username + "\" and password = \"" + password + "\"");
+        System.out.println(username + " " + password);
         ResultSet result = connection.createStatement().executeQuery("select id from Users where username = \"" + username + "\" and password = \"" + password + "\"");
         if(result.next()){
             int userId = result.getInt(1);
