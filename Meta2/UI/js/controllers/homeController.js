@@ -1,5 +1,10 @@
 myApp.controller('homeController', ['$scope', '$log', '$http', 'authService', function($scope, $log, $http, authService){
-	$log.info(authService);
-	$scope.auth = authService;
-	$log.info($scope.auth);
+	if(authService.loggedIn){
+		$scope.user = authService.user;
+	}
+	$scope.$watch('loggedIn', function(newValue){
+		authService.loggedIn = $scope.loggedIn;
+		console.log(authService.loggedIn);
+	}, true);
+
 }])

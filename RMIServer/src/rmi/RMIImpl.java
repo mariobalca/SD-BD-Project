@@ -30,7 +30,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = connection.createStatement().executeQuery("Select * from users where id = " + userId);
         User user;
         if(result.next()){
-            user = new User(result.getString(1), result.getString(2));
+            user = new User(result.getString(2), result.getString(3));
             return user;
         }
         return null;
