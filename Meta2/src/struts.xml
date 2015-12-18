@@ -70,5 +70,14 @@
         <action name="removeReward" method="execute" class="actions.Reward.RemoveRewardAction">
             <result name="success" type="json"></result>
         </action>
+        <action name="answerMessage" method="execute" class="actions.Message.AnswerMessageAction">
+            <result name="success" type="json"></result>
+        </action>
+        <action name="getProjectMessages" method="execute" class="actions.Message.GetProjMessageAction">
+            <result name="success" type="json"></result>
+        </action>
+        <action name="sendMessage" method="execute" class="actions.Message.SendMessageAction">
+            <result name="success" type="json"></result>
+        </action>
     </package>
 </struts>

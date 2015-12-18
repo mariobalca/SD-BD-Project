@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class GetProjMessageAction extends ActionSupport{
     private ArrayList<Message> messages;
     private int projId;
-    private JsonResponse response;
 
     public String execute(){
         MessageRepository messageRepository = new MessageRepository();
@@ -38,11 +37,4 @@ public class GetProjMessageAction extends ActionSupport{
         this.projId = projId;
     }
 
-    public JsonResponse getResponse() {
-        return response;
-    }
-
-    public void setResponse(JsonResponse response) {
-        this.response = response;
-    }
 }

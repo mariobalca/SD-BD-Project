@@ -10,7 +10,7 @@ import repositories.MessageRepository;
  */
 public class AnswerMessageAction extends ActionSupport{
     private int userId, requestId, messageId;
-    private JsonResponse response;
+    private JsonResponse response = new JsonResponse();
     private String resposta;
 
     public String execute(){

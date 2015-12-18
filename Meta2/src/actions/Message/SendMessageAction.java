@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class SendMessageAction extends ActionSupport {
     private Message message = new Message();
     private int projId, requestId;
-    private JsonResponse response;
+    private JsonResponse response = new JsonResponse();
 
     public String execute(){
         MessageRepository messageRepository = new MessageRepository();
