@@ -3,7 +3,7 @@ myApp.config(['$routeProvider', function ($routeProvider){
 		.otherwise('/')
 		.when('/',{
 			templateUrl: 'pages/frontpage.html',
-			controller: 'homeController'
+			controller: 'homeController',
 		})
 		.when('/login', {
 			templateUrl: 'pages/login.html',
@@ -15,6 +15,21 @@ myApp.config(['$routeProvider', function ($routeProvider){
 		})
 		.when('/dashboard', {
 			templateUrl: 'pages/dashboard.html',
-			controller: 'homeController'
+			controller: 'homeController',
+			access: {
+				requiresLogin: true
+			}
 		})
 }]);
+
+myApp.run(['$rootScope', '$location', 'authService', function($rootScope, $location, authService){
+	$rootScope.$on('$routeChangeStart', function (event, next) {
+	    var authorised;
+	    if(next.access != undefined){
+	    	authorised = authService.authorize(next.access.requiresLogin);
+            if(!authorised){
+            	$location.path('/login');
+            }
+	    }
+    });
+}])
