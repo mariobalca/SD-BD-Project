@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public interface RMI extends Remote, Serializable{
 
     // IDEMPOTENTES
-    ArrayList<User> getUsers() throws java.rmi.RemoteException, SQLException;
+    ArrayList<User> getUsers() throws RemoteException, SQLException;
     User getUser(int id) throws java.rmi.RemoteException, SQLException; //
     ArrayList<User> getAdmins(int projectId) throws java.rmi.RemoteException, SQLException;
     ArrayList<Project> getProjectsWithoutDetails() throws java.rmi.RemoteException, SQLException;//

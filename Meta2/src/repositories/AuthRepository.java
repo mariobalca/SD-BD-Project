@@ -6,7 +6,9 @@ import rmi.RMI;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.sql.Array;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by mariobalca on 12/16/15.
@@ -69,5 +71,15 @@ public class AuthRepository {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public ArrayList<User> getUsers(){
+        try {
+            return rmiServer.getUsers();
+        } catch (RemoteException e) {
+            return null;
+        } catch (SQLException e) {
+            return null;
+        }
     }
 }

@@ -1,11 +1,14 @@
 package repositories;
 
+import genericclasses.User;
 import rmi.RMI;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.sql.Array;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by pedrocb on 18/12/2015.
@@ -28,6 +31,16 @@ public class AdminRepository {
             return false;
         } catch (SQLException e) {
             return false;
+        }
+    }
+
+    public ArrayList<User> getAdmins(int projectId){
+        try {
+            return rmiServer.getAdmins(projectId);
+        } catch (RemoteException e) {
+            return null;
+        } catch (SQLException e) {
+            return null;
         }
     }
 }
