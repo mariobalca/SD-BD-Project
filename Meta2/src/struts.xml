@@ -22,11 +22,9 @@
         <action name="register" method="execute" class="actions.Auth.RegisterAction">
             <result name="success" type="json"></result>
         </action>
-
         <action name="getBalance" method="execute" class="actions.Auth.GetBalanceAction">
             <result name="success"  type="json"></result>
         </action>
-
         <action name="createProject" method="execute" class="actions.Project.CreateProjectAction">
             <result name="success" type="json"></result>
         </action>
@@ -49,6 +47,9 @@
             <result name="success" type="json"></result>
         </action>
         <action name="deleteExtra" method="execute" class="actions.Extra.DeleteExtraAction">
+            <result name="success" type="json"></result>
+        </action>
+        <action name="getProject" method="execute" class="actions.Project.GetProjectAction">
             <result name="success" type="json"></result>
         </action>
         <action name="getProjectExtras" method="execute" class="actions.Extra.GetProjectExtrasAction">

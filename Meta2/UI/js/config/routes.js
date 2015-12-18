@@ -20,6 +20,14 @@ myApp.config(['$routeProvider', function ($routeProvider){
 				requiresLogin: true
 			}
 		})
+		.when('/projects', {
+			templateUrl: 'pages/projects.html',
+			controller: 'projectsController'
+		})
+		.when('/projects/:id', {
+			templateUrl: 'pages/project.html',
+			controller: 'projectController'
+		})
 }]);
 
 myApp.run(['$rootScope', '$location', 'authService', function($rootScope, $location, authService){

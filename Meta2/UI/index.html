@@ -24,11 +24,9 @@
 				<a class="navbar-brand" href="#/">RPM Starter</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
-				<ul class="nav navbar-nav" ng-if="user">
-					<li><a href="#/dashboard">Dashboard</a></li>
-					<li><a href="#/myprojects">My Projects</a></li>
-					<li ng-class="checkIfActive('myrewards')"><a href="#/myrewards">My Rewards</a></li>
-					<li><a href="#/findprojects">Find Projects</a></li>
+				<ul class="nav navbar-nav">
+					<li ng-if="user"><a href="#/dashboard">Dashboard</a></li>
+					<li><a href="#/projects">Browse Projects</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right" ng-if="user">
 					<li>
@@ -56,6 +54,10 @@
 	<script src="js/controllers/navController.js"></script>
 	<script src="js/controllers/authController.js"></script>
 	<script src="js/controllers/homeController.js"></script>
+	<script src="js/controllers/projectsController.js"></script>
+	<script src="js/controllers/projectController.js"></script>
+	<script src="js/controllers/rewardsController.js"></script>
+	<script src="js/controllers/rewardController.js"></script>
 	<script src="js/config/routes.js"></script>
 	</body>
 </html>

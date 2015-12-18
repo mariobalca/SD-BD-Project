@@ -91,4 +91,13 @@ public class ProjectRepository {
         }
     }
 
+    public Project getProject(int id) {
+        try {
+            return rmiServer.getProject(id);
+        } catch (RemoteException e) {
+            return null;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
 }

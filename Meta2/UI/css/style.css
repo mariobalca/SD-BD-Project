@@ -22,3 +22,7 @@ body {
 .dropdown-menu a{
 	cursor: pointer;
 }
+
+.table-hover tbody tr {
+	cursor: pointer;
+}
