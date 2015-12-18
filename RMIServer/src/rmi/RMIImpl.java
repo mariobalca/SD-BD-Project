@@ -89,6 +89,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         while(result.next())
         {
             try {
+                System.out.printf(result.getString(3));
                 Date projectDate = format.parse(result.getString(3));
                 Project p = new Project(result.getString(2), projectDate, result.getDouble(4), result.getString(5), result.getBoolean(6));
                 int projectId = result.getInt(1);
@@ -137,6 +138,9 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         String query = "Select Projects.* from Projects, Administrators where UserId = " + userId + " and Projects.id = ProjectId and active = 1";
         ArrayList<Project> projects = getProjects(query);
         System.out.println("Get Administrated Projects executed");
+        for (Project project:projects){
+            System.out.println(project);
+        }
         return projects;
     }
 
@@ -250,22 +254,22 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public boolean createProject(Project project, int requestId, int userId) throws RemoteException, SQLException {
+        System.out.println(project.getDeadline());
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
-
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             result = connection.createStatement().executeQuery("select id from projects where Name = \"" + project.getName()+"\"");
-            if(result.next())
+            System.out.println("OLE");
+            if(result.next()) {
                 return false;
+            }
             connection.setAutoCommit(false);
             connection.createStatement().execute("insert into projects (Name, Deadline, Objective, Description, OwnerUserId,Active) values (\"" + project.getName() + "\", \"" + dateFormat.format(project.getDeadline()) + "\"," + project.getObjective() + ", \"" + project.getDescription() + "\", " + userId + "," +1+ ")");
-
             result = connection.createStatement().executeQuery("select id from projects where Name = \"" + project.getName()+"\"");
             int projectId = result.getInt(1);
             connection.createStatement().execute("insert into administrators (ProjectId, UserId) values (" + projectId + ", " + userId + ")");
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
 
-            System.out.println(projectId);
             for(Reward reward :project.getRewards()){
                 this.createReward(reward, 0, projectId, userId);
             }

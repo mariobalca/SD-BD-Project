@@ -15,8 +15,6 @@ public class GetAdminProjectsAction extends ActionSupport{
     private ArrayList<Project> projects;
 
     public String execute(){
-        System.out.printf("------------------------");
-        System.out.println(userId);
         ProjectRepository projectRepository = new ProjectRepository();
         projects = projectRepository.getAdminProjects(userId);
         return SUCCESS;

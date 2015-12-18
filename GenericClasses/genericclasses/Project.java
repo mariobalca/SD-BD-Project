@@ -1,6 +1,9 @@
 package genericclasses;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,6 +14,7 @@ public class Project implements Serializable {
     private int id;
     private String name;
     private Date deadline;
+    private String deadlineApi;
     private double objective;
     private String description;
     private boolean active;
@@ -29,15 +33,26 @@ public class Project implements Serializable {
     }
 
     public Project(){
-
+        this.messages = new ArrayList<>();
+        this.extras = new ArrayList<>();
+        this.rewards = new ArrayList<>();
+        this.paths = new ArrayList<>();
     }
 
     public Date getDeadline() {
-        return deadline;
+        return this.deadline;
     }
 
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
+    public void setDeadline(Date date) {
+        this.deadline = date;
+    }
+
+    public void setDeadlineApi(String date){
+        this.deadlineApi = date;
+    }
+
+    public String getDeadlineApi() {
+        return deadlineApi;
     }
 
     public double getObjective() {
@@ -94,6 +109,7 @@ public class Project implements Serializable {
     }
 
     public void setName(String name) {
+        System.out.println("OLa");
         this.name = name;
     }
 
