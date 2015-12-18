@@ -7,6 +7,9 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -27,6 +30,12 @@ public class ProjectRepository {
 
     public boolean createProject(Project project,int requestId,int userId){
         boolean successful;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        try {
+            project.setDeadline(format.parse(project.getDeadlineApi()));
+        } catch (ParseException e) {
+        }
         try {
             successful = rmiServer.createProject(project,requestId,userId);
         } catch (RemoteException e) {
