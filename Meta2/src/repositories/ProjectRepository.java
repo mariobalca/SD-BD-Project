@@ -81,4 +81,14 @@ public class ProjectRepository {
         }
     }
 
+    public ArrayList<Project> getAdminProjects(int userId){
+        try {
+            return rmiServer.getAdminProjects(userId);
+        } catch (RemoteException e) {
+            return null;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
 }

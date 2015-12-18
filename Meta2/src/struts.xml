@@ -37,10 +37,16 @@
         <action name="getOlderProjects" method="execute" class="actions.Project.GetOlderProjectsAction">
             <result name="success" type="json"></result>
         </action>
+        <action name="getAdminProjects" method="execute" class="actions.Project.GetAdminProjectsAction">
+            <result name="success" type="json"></result>
+        </action>
         <action name="createExtra" method="execute" class="actions.Extra.CreateExtraAction">
             <result name="success" type="json"></result>
         </action>
         <action name="deleteExtra" method="execute" class="actions.Extra.DeleteExtraAction">
+            <result name="success" type="json"></result>
+        </action>
+        <action name="getProjectExtras" method="execute" class="actions.Extra.GetProjectExtrasAction">
             <result name="success" type="json"></result>
         </action>
     </package>
