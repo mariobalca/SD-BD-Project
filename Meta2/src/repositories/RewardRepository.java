@@ -1,6 +1,5 @@
 package repositories;
 
-import genericclasses.Extra;
 import genericclasses.Reward;
 import rmi.RMI;
 
@@ -75,4 +74,29 @@ public class RewardRepository {
         return null;
     }
 
+    public boolean removeReward(int rewardId, int requestId, int userId){
+        boolean successful;
+        try {
+            successful = rmiServer.removeReward(rewardId,requestId,userId);
+        } catch (RemoteException e) {
+            successful = false;
+        } catch (SQLException e) {
+            successful = false;
+        }
+        return successful;
+    }
+
+
+    public ArrayList<Reward> getProjectRewards(int projId){
+        ArrayList<Reward> rewards;
+        try {
+            rewards = rmiServer.getProjectRewards(projId);
+            return rewards;
+        } catch (RemoteException e) {
+            System.out.println(e);
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
 }
