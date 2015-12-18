@@ -8,7 +8,7 @@ myApp.controller('authController', ['$scope', '$log', '$http', 'authService', '$
 				authService.loggedIn = true;
 				authService.user.id = result.user.id;
 				authService.user.username = result.user.username;
-				authService.user.requests = result.user.requests;
+				authService.user.requestId = result.user.requests;
 				authService.user.balance = result.user.balance;
 				$cookieStore.put('user', authService.user);
 				$location.path('/dashboard').replace();
@@ -24,7 +24,7 @@ myApp.controller('authController', ['$scope', '$log', '$http', 'authService', '$
 				authService.loggedIn = true;
 				authService.user.id = result.user.id;
 				authService.user.username = result.user.username;
-				authService.user.requests = result.user.requests;
+				authService.user.requestId = result.user.requests;
 				authService.user.balance = result.user.balance;
 				$cookieStore.put('user', authService.user);				
 			}

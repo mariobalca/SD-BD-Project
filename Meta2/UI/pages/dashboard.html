@@ -1,65 +1,63 @@
-<div class="container">
-	<div class="row">
-		<div class="col-md-6">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-md-6">
-							<h4>My Projects</h4>
-						</div>
-						<div class="col-md-6 text-right">
-							<button class="btn btn-primary" data-toggle="modal" data-target="#createProjectModal">Add Project</button>
-						</div>
+<div class="row">
+	<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-md-6">
+						<h4>My Projects</h4>
 					</div>
-				</div>
-				<div class="panel-body">
-					<table class="table table-hover" ng-if="projects.length>0">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Description</th>								
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-repeat="project in projects" ng-click="showProject(project)">
-								<td>{{ project.name }}</td>
-								<td>{{ project.description}}</td>
-							</tr>
-						</tbody>
-					</table>
-					<p class="text-muted" ng-if="projects.length == 0">No projects to show</p>
+					<div class="col-md-6 text-right">
+						<button class="btn btn-primary" data-toggle="modal" data-target="#createProjectModal">Add Project</button>
+					</div>
 				</div>
 			</div>
+			<div class="panel-body">
+				<table class="table table-hover" ng-if="projects.length>0">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Description</th>								
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="project in projects" ng-click="showProject(project)">
+							<td>{{ project.name }}</td>
+							<td>{{ project.description}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="text-muted" ng-if="projects.length == 0">No projects to show</p>
+			</div>
 		</div>
-		<div class="col-md-6">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-md-6">
-							<h4>My Rewards</h4>
-						</div>
-						<div class="col-md-6 text-right">
-							<button ng-if="rewards.length>0" class="btn btn-primary" data-toggle="modal" data-target="#giveRewardModal">Give Reward</button>
-						</div>
+	</div>
+	<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-md-6">
+						<h4>My Rewards</h4>
+					</div>
+					<div class="col-md-6 text-right">
+						<button ng-if="rewards.length>0" class="btn btn-primary" data-toggle="modal" data-target="#giveRewardModal">Give Reward</button>
 					</div>
 				</div>
-				<div class="panel-body">
-					<table class="table table-hover" ng-if="rewards.length>0">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Value</th>								
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-repeat="reward in rewards">
-								<td>{{ reward.name }}</td>
-								<td>{{ reward.description}}</td>
-							</tr>
-						</tbody>
-					</table>
-					<p class="text-muted" ng-if="rewards.length == 0">No rewards to show</p>
-				</div>
+			</div>
+			<div class="panel-body">
+				<table class="table table-hover" ng-if="rewards.length>0">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Value</th>								
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="reward in rewards">
+							<td>{{ reward.name }}</td>
+							<td>{{ reward.description}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="text-muted" ng-if="rewards.length == 0">No rewards to show</p>
 			</div>
 		</div>
 	</div>

@@ -13,7 +13,8 @@ myApp.controller('dashboardController', ['$scope', '$log', '$http', 'authService
 
 	$scope.createProject = function(){
 		$log.info($scope.project);
-		$http.post('http://localhost:8080/api/createProject', {'project': $scope.project, 'userId': authService.user.id, 'requestId': 124}).success(function(result){
+		$http.post('http://localhost:8080/api/createProject', {'project': $scope.project, 'userId': authService.user.id, 'requestId': authService.user.requestId}).success(function(result){
+			authService.user.requestId++;
 			$scope.projects.push(result.project);
 		});
 	}

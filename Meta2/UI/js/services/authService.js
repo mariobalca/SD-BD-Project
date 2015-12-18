@@ -2,7 +2,7 @@ myApp.service('authService', ['$cookieStore', '$log', '$http', '$location', func
 	this.user = {
 		id: 0,
 		username: '',
-		requests: 0,
+		requestId: 0,
 		balance: 0
 	};
 	this.loggedIn = false;

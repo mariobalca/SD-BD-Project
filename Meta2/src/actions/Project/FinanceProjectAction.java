@@ -13,6 +13,47 @@ public class FinanceProjectAction extends ActionSupport{
     private int userId;
     private int pathId;
     private double value;
+
+    public int getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getPathId() {
+        return pathId;
+    }
+
+    public void setPathId(int pathId) {
+        this.pathId = pathId;
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public JsonResponse getResponse() {
+        return response;
+    }
+
+    public void setResponse(JsonResponse response) {
+        this.response = response;
+    }
+
     private JsonResponse response = new JsonResponse();
 
     public String execute(){
