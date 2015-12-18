@@ -1,6 +1,7 @@
 package actions.Auth;
 
 import com.opensymphony.xwork2.ActionSupport;
+import genericclasses.JsonResponse;
 import genericclasses.User;
 import org.apache.struts2.interceptor.SessionAware;
 import repositories.AuthRepository;
@@ -14,14 +15,20 @@ import java.util.Map;
  */
 public class RegisterAction extends ActionSupport implements SessionAware{
     private Map<String, Object> session;
-    private String error;
     private User user = new User();
-
+    private JsonResponse response = new JsonResponse();
     @Override
     public String execute() throws RemoteException, SQLException {
         AuthRepository auth = new AuthRepository();
         System.out.println(user);
         user = auth.register(user.getUsername(), user.getPassword());
+        if(user == null) {
+            response.setSuccess(false);
+            response.setMessage("Utilizador já existe");
+        }
+        else {
+            response.setSuccess(true);
+        }
         return SUCCESS;
     }
 
@@ -33,12 +40,12 @@ public class RegisterAction extends ActionSupport implements SessionAware{
         this.user = user;
     }
 
-    public String getError() {
-        return error;
+    public JsonResponse getResponse() {
+        return response;
     }
 
-    public void setError(String error) {
-        this.error = error;
+    public void setResponse(JsonResponse response) {
+        this.response = response;
     }
 
     @Override

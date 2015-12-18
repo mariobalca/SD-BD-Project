@@ -13,20 +13,21 @@
 					</div>
 				</div>
 				<div class="panel-body">
-					<table class="table table-hover">
+					<table class="table table-hover" ng-if="projects.length>0">
 						<thead>
 							<tr>
 								<th>Name</th>
-								<th>Value</th>								
+								<th>Description</th>								
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>aaa</td>
-								<td></td>
-							</tr>							
+							<tr ng-repeat="project in projects" ng-click="showProject(project)">
+								<td>{{ project.name }}</td>
+								<td>{{ project.description}}</td>
+							</tr>
 						</tbody>
 					</table>
+					<p class="text-muted" ng-if="projects.length == 0">No projects to show</p>
 				</div>
 			</div>
 		</div>
@@ -35,15 +36,15 @@
 				<div class="panel-heading">
 					<div class="row">
 						<div class="col-md-6">
-							<h4>My Projects</h4>
+							<h4>My Rewards</h4>
 						</div>
 						<div class="col-md-6 text-right">
-							<button class="btn btn-primary" data-toggle="modal" data-target="#giveRewardModal">Give Reward</button>
+							<button ng-if="rewards.length>0" class="btn btn-primary" data-toggle="modal" data-target="#giveRewardModal">Give Reward</button>
 						</div>
 					</div>
 				</div>
 				<div class="panel-body">
-					<table class="table table-hover">
+					<table class="table table-hover" ng-if="rewards.length>0">
 						<thead>
 							<tr>
 								<th>Name</th>
@@ -51,12 +52,13 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>aaa</td>
-								<td></td>
-							</tr>							
+							<tr ng-repeat="reward in rewards">
+								<td>{{ reward.name }}</td>
+								<td>{{ reward.description}}</td>
+							</tr>
 						</tbody>
 					</table>
+					<p class="text-muted" ng-if="rewards.length == 0">No rewards to show</p>
 				</div>
 			</div>
 		</div>
@@ -66,20 +68,83 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" data-dismiss="modal" ng-click="clearProject()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title">Create Project</h4>
 			</div>
 			<div class="modal-body">
-				
+				<h4>Project</h4>
+				<hr>
+				<div class="form-group">
+					<label for="project-name">Name</label>
+					<input type="text" class="form-control" placeholder="Project X" ng-model="project.name" id="project-name">
+				</div>
+				<div class="form-group">
+					<label for="project-deadline">Deadline</label>
+					<input type="text" class="form-control" placeholder="2016-12-31 00:00" ng-model="project.deadlineApi" id="project-deadline">
+				</div>
+				<div class="form-group">
+					<label for="project-objective">Objective</label>
+					<input type="text" class="form-control" placeholder="1000 €" ng-model="project.objective" id="project-objective">
+				</div>
+				<div class="form-group">
+					<label for="project-description">Description</label>
+					<textarea class="form-control" placeholder="Description XPTO" ng-model="project.description" id="project-description"></textarea>
+				</div>
+				<hr>
+				<h4>Paths</h4>
+				<hr>
+				<div class="form-group">
+					<label for="path0-name">Name</label>
+					<input type="text" class="form-control" placeholder="Path X" ng-model="project.paths[0].name">
+				</div>
+				<div class="form-group">
+					<label for="path0-description">Description</label>
+					<textarea id="path0-description" class="form-control" ng-model="project.paths[0].description" placeholder="Description"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="path1-name">Name</label>
+					<input type="text" class="form-control" placeholder="Path X" ng-model="project.paths[1].name">
+				</div>
+				<div class="form-group">
+					<label for="path1-description">Description</label>
+					<textarea id="path1-description" class="form-control" ng-model="project.paths[1].description" placeholder="Description"></textarea>
+				</div>
+				<hr>
+				<h4>Rewards</h4>
+				<hr>
+				<div class="form-group">
+					<label for="reward0-name">Name</label>
+					<input type="text" class="form-control" placeholder="reward X" ng-model="project.rewards[0].name">
+				</div>
+				<div class="form-group">
+					<label for="reward0-minvalue">MinValue</label>
+					<input type="text" class="form-control" placeholder="25 €" ng-model="project.rewards[0].minvalue">
+				</div>
+				<div class="form-group">
+					<label for="reward0-description">Description</label>
+					<textarea id="reward0-description" class="form-control" ng-model="project.rewards[0].description" placeholder="Description"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="reward1-name">Name</label>
+					<input type="text" class="form-control" placeholder="reward X" ng-model="project.rewards[1].name">
+				</div>
+				<div class="form-group">
+					<label for="reward1-minvalue">MinValue</label>
+					<input type="text" class="form-control" placeholder="25 €" ng-model="project.rewards[1].minvalue">
+				</div>
+				<div class="form-group">
+					<label for="reward1-description">Description</label>
+					<textarea id="reward1-description" class="form-control" ng-model="project.rewards[1].description" placeholder="Description"></textarea>
+				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearProject();">Close</button>
+				<button type="button" class="btn btn-primary" ng-click="createProject()">Create Project</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<div class="modal fade" id="giveRewardModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="giveRewardModal" tabindex="-1" role="dialog" ng-if="rewards.length>0">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -91,7 +156,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="button" class="btn btn-primary">Give Reward</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

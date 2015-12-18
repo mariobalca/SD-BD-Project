@@ -3,7 +3,7 @@ myApp.controller('authController', ['$scope', '$log', '$http', 'authService', '$
 	$scope.password = '';
 
 	$scope.login = function(){
-		$http.post('http://localhost:8080/api/login', {'user':{'username': $scope.username, 'password': $scope.password}}).success(function(result){
+		$http.post('http://localhost:8080/api/login', {'user':{'username': $scope.username, 'password': $scope.password}}).success(function(result){			
 			if(result.response.success) {
 				authService.loggedIn = true;
 				authService.user.id = result.user.id;
@@ -12,6 +12,9 @@ myApp.controller('authController', ['$scope', '$log', '$http', 'authService', '$
 				authService.user.balance = result.user.balance;
 				$cookieStore.put('user', authService.user);
 				$location.path('/dashboard').replace();
+			}
+			else {
+				$scope.response = result.response;
 			}
 		});
 	}
@@ -24,6 +27,9 @@ myApp.controller('authController', ['$scope', '$log', '$http', 'authService', '$
 				authService.user.requests = result.user.requests;
 				authService.user.balance = result.user.balance;
 				$cookieStore.put('user', authService.user);				
+			}
+			else {
+				$scope.response = result.response;
 			}
 		});
 	}

@@ -2,8 +2,7 @@ myApp.config(['$routeProvider', function ($routeProvider){
 	$routeProvider
 		.otherwise('/')
 		.when('/',{
-			templateUrl: 'pages/frontpage.html',
-			controller: 'homeController',
+			templateUrl: 'pages/frontpage.html'
 		})
 		.when('/login', {
 			templateUrl: 'pages/login.html',
@@ -15,7 +14,7 @@ myApp.config(['$routeProvider', function ($routeProvider){
 		})
 		.when('/dashboard', {
 			templateUrl: 'pages/dashboard.html',
-			controller: 'homeController',
+			controller: 'dashboardController',
 			access: {
 				requiresLogin: true
 			}
