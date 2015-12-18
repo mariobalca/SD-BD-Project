@@ -26,6 +26,17 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
     // IDEMPOTENTES
 
+    public ArrayList<User> getUsers() throws RemoteException, SQLException {
+        ResultSet result = connection.createStatement().executeQuery("select * from users");
+        ArrayList<User> users = new ArrayList<>();
+        while(result.next()){
+            User user = new User(result.getString(2),result.getString(3));
+            user.setId(result.getInt(1));
+            users.add(user);
+        }
+        return users;
+    }
+
     public User getUser(int userId) throws RemoteException, SQLException {
         ResultSet result = connection.createStatement().executeQuery("Select * from users where id = " + userId);
         User user;
@@ -36,26 +47,16 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         return null;
     }
 
-    public ArrayList<User> getUsers() throws RemoteException, SQLException {
-        ResultSet result = connection.createStatement().executeQuery("Select * from Users");
-        ArrayList<User> users = new ArrayList<User>();
-        while(result.next())
-        {
-            User u = new User(result.getString(2), result.getString(3));
-            u.setId(result.getInt(1));
-            users.add(u);
-        }
-        System.out.println("Get Auth executed");
-        return users;
-    }
-
     public ArrayList<User> getAdmins(int projectId) throws java.rmi.RemoteException, SQLException{
         ResultSet result = connection.createStatement().executeQuery("Select * from Administrators where projectId = " + projectId);
         ArrayList<User> users = new ArrayList<User>();
         while(result.next())
         {
-            User u = new User(result.getString(2), result.getString(3));
-            u.setId(result.getInt(1));
+            int userId = result.getInt(3);
+            System.out.println("Select * from users where userId = " + userId);
+            ResultSet result2 = connection.createStatement().executeQuery("Select * from users where id = " + userId);
+            User u = new User(result2.getString(2), result2.getString(3));
+            u.setId(result2.getInt(1));
             users.add(u);
         }
         System.out.println("Get Admins executed");
