@@ -52,5 +52,8 @@
         <action name="getProjectPaths" method="execute" class="actions.Path.GetProjectPathsAction">
             <result name="success" type="json"></result>
         </action>
+        <action name="addAdmin" method="execute" class="actions.Admin.CreateAdminAction">
+            <result name="success" type="json"></result>
+        </action>
     </package>
 </struts>
