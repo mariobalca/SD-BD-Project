@@ -8,7 +8,7 @@
 						<h4>{{ project.name }} - Info</h4>
 					</div>
 					<div class="col-md-6 text-right">
-						<button ng-if="loggedIn" class="btn btn-primary" data-toggle="modal" data-target="#projectModal">Pledge</button>
+						<button class="btn btn-primary" ng-if="isAdmin()">Cancel Project</button>
 					</div>
 				</div>
 			</div>
@@ -81,12 +81,14 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>Name</th>					
+							<th>Name</th>
+							<th>&nbsp;</th>				
 						</tr>
 					</thead>
 					<tbody>
 						<tr ng-repeat="admin in admins">
 							<td>{{ admin.username }}</td>
+							<td class="text-right"><button class="btn btn-danger" ng-if="isAdmin()">Remove Admin</button></td>
 						</tr>
 					</tbody>
 				</table>
@@ -124,7 +126,15 @@
 	<div class="col-md-6">
 		<div class="panel panel-default" ng-if="project.paths.length>0">
 			<div class="panel-heading">
-				<h4>{{ project.name }} - Paths</h4>
+				<div class="row">
+					<div class="col-md-6">
+						<h4>{{ project.name }} - Paths</h4>
+					</div>
+					<div class="col-md-6 text-right">
+						<button ng-if="loggedIn" class="btn btn-primary" data-toggle="modal" data-target="#projectModal">Pledge</button>
+					</div>
+				</div>
+				
 			</div>
 			<div class="panel-body">
 				<table class="table">
@@ -145,7 +155,14 @@
 		</div>
 		<div class="panel panel-default" ng-if="project.rewards.length>0">
 			<div class="panel-heading">
-				<h4>{{ project.name }} - Rewards</h4>
+				<div class="row">
+					<div class="col-md-6">
+						<h4>{{ project.name }} - Rewards</h4>						
+					</div>
+					<div class="col-md-6 text-right" ng-if="isAdmin()">
+						<button class="btn btn-primary">Add Reward</button>
+					</div>
+				</div>
 			</div>
 			<div class="panel-body">
 				<table class="table">
@@ -153,12 +170,14 @@
 						<th>Name</th>
 						<th>Description</th>
 						<th>Value</th>
+						<th>&nbsp;</th>
 					</thead>
 					<tbody>
 						<tr ng-repeat="reward in project.rewards">
 							<td>{{reward.name}}</td>
 							<td>{{reward.description}}</td>
 							<td>{{reward.minValue}}</td>
+							<td class="text-right"><button class="btn btn-danger" ng-if="isAdmin()"  ng-click="removeReward(reward)">Remove Reward</button></td>
 						</tr>
 					</tbody>
 				</table>
@@ -182,9 +201,24 @@
 				<h4 class="modal-title">Pledge {{ project.name}}</h4>
 			</div>
 			<div class="modal-body">
-				<div class="radio" ng-repeat="reward in project.rewards">
+				<h4>
+					Choose the path
+				</h4>
+				<hr>
+				<div class="radio" ng-repeat="path in project.paths">					
 					<label>
-						<input type="radio" value="{{ reward.minValue }}" ng-model="pledge.value" name="pledge-value">
+						<input type="radio" value="{{ pathId }}" ng-model="pathId">
+						<h5>{{ path.name }}</h5>
+						<p>{{ path.description }}</p>
+					</label>
+				</div>
+				<h4>
+					Choose the amount of money
+				</h4>
+				<hr>
+				<div class="radio" ng-repeat="reward in project.rewards">					
+					<label>
+						<input type="radio" value="{{ reward.minValue }}" ng-model="pledge.value">
 						{{ reward.name }} - {{ reward.minValue }} €
 					</label>
 				</div>
