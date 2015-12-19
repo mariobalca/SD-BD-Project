@@ -53,7 +53,7 @@ public class AuthRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if(userId > 1) {
+        if(userId >= 1) {
             User user = rmiServer.getUser(userId);
             user.setRequests(0);
             user.setId(userId);

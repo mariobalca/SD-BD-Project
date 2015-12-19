@@ -7,6 +7,7 @@ myApp.controller('navController', ['$scope', '$log', '$http', 'authService', '$c
 			$scope.getBalance();		
 		}
 	},true);
+	
 	$scope.getBalance = function(){
 		$http.post('http://localhost:8080/api/getBalance', {'user': {'id': $scope.user.id}}).success(function(result){
 			$scope.user.balance = result.balance;

@@ -73,12 +73,23 @@
 						<h4>{{ project.name }} - Administrators</h4>							
 					</div>
 					<div class="col-md-6 text-right">
-						<button class="btn btn-primary" data-toggle="modal" data-target="#addAdminModal">Add Administrator</button>
+						<button ng-if="isAdmin()" class="btn btn-primary" data-toggle="modal" data-target="#addAdminModal">Add Administrator</button>
 					</div>
 				</div>
 			</div>
 			<div class="panel-body">
-
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Name</th>					
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="admin in admins">
+							<td>{{ admin.username }}</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 
@@ -94,7 +105,19 @@
 				</div>
 			</div>
 			<div class="panel-body">
-
+				<table class="table table-hover" ng-if="project.messages.length>0">
+					<thead>
+						<tr>
+							<th>Subject</th>							
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="message in project.messages">
+							<td>{{ message.subject }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="text-muted" ng-if="project.messages.length==0">No questions on this project</p>
 			</div>
 		</div>
 	</div>
@@ -192,7 +215,7 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="modal fade" id="addAdminModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="addAdminModal" tabindex="-1" role="dialog" ng-if="isAdmin()">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -200,11 +223,13 @@
 				<h4 class="modal-title">Add Administrator to {{ project.name}}</h4>
 			</div>
 			<div class="modal-body">
-				
+				<label>Utilizador</label>
+				<select ng-model="newAdmin" ng-change="changedValue(newAdmin)" class="form-control" ng-options="user as user.username for user in users track by user.username">
+				</select>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" data-dismiss="modal">Add Administrator</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="addAdmin()">Add Administrator</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
