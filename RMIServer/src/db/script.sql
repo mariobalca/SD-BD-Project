@@ -15,6 +15,8 @@ CREATE TABLE Projects(
 	Description TEXT NOT NULL,
 	Active INTEGER NOT NULL,
 	OwnerUserId INTEGER NOT NULL,
+	TumblrPostId INTEGER ,
+	Reblog_key Text,
 	FOREIGN KEY (OwnerUserId) REFERENCES Users(id)
 );
 
