@@ -3,6 +3,7 @@ package rmi;/**
  */
 
 import org.scribe.builder.ServiceBuilder;
+import org.scribe.builder.api.TumblrApi;
 import org.scribe.model.Token;
 import org.scribe.oauth.OAuthService;
 
@@ -51,6 +52,12 @@ public class RMIServer{
             // This task is scheduled to run every 10 seconds
 
             t.scheduleAtFixedRate(mTask, 0, delta);
+            RMIServer.service = new ServiceBuilder()
+                    .provider(TumblrApi.class)
+                    .apiKey(RMIServer.oauth_key)
+                    .apiSecret(RMIServer.secret_key)
+                    .callback("http://localhost:8080/tumblr/callback") //   forbidden. We need an url and the better is on the tumblr website !
+                    .build();
             System.out.println("rmi.RMI Server ready.");
         } catch (RemoteException re) {
             re.printStackTrace();

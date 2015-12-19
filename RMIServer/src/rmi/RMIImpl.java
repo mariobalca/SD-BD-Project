@@ -256,26 +256,16 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     // NÃO IDEMPOTENTES
 
     public String signInTumblr() throws RemoteException{
-        RMIServer.service = new ServiceBuilder()
-                .provider(TumblrApi.class)
-                .apiKey(RMIServer.oauth_key)
-                .apiSecret(RMIServer.secret_key)
-                .callback("http://localhost:8080/tumblr/callback") //   forbidden. We need an url and the better is on the tumblr website !
-                .build();
         RMIServer.request_token = RMIServer.service.getRequestToken();
         String result = RMIServer.service.getAuthorizationUrl(RMIServer.request_token);
         return result;
     }
 
 
-
-
-
     public int registerUser(String username, String password) throws SQLException {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from Users where username = \"" + username +"\"");
         if (result.getInt(1) == 0){
             connection.createStatement().execute("insert into users (username, password, balance) values (\"" + username + "\", \"" + password + "\", " + 100 + ")");
-            System.out.println("OIII");
             result = connection.createStatement().executeQuery("select id from Users where username = \"" + username +"\"");
             return result.getInt(1);
         }
@@ -304,17 +294,25 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         else {
             connection.createStatement().execute("insert into users (username,password, balance , userToken, userSecret) values (\"" + name + "\"," + "\"tumblr\"," + 100 + ", " + "\"" + user_token + "\", " + "\"" + user_secret + "\")");
         }
-        postinTumblr(name);
         return true;
     }
 
-    public boolean postinTumblr(String username) throws SQLException {
+
+    public boolean isTumblr(String username) throws SQLException,RemoteException {
+        ResultSet resultSet = connection.createStatement().executeQuery("select userToken,userSecret from users where username = \"" +username+"\"");
+        if(resultSet.getString(1) == null){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean postinTumblr(String username,Project project) throws SQLException {
         ResultSet result = connection.createStatement().executeQuery("select userToken,userSecret from users where username = \"" +username+"\"");
         Token token = new Token(result.getString(1),result.getString(2));
         OAuthRequest request = new OAuthRequest(Verb.POST,"http://api.tumblr.com/v2/blog/"+username+".tumblr.com/post");
         request.addHeader("Accept", "application/json");
         request.addBodyParameter("type","text");
-        request.addBodyParameter("body","O meu primeiro post");
+        request.addBodyParameter("body","Criei projeto " + project.getName());
         RMIServer.service.signRequest(token,request);
         org.scribe.model.Response response = request.send();
         System.out.println(response.getBody());
@@ -322,12 +320,11 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public boolean createProject(Project project, int requestId, int userId) throws RemoteException, SQLException {
-        System.out.println(project.getDeadline());
+        System.out.println(userId);
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);
         if(result.getInt(1) == 0){
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             result = connection.createStatement().executeQuery("select id from projects where Name = \"" + project.getName()+"\"");
-            System.out.println("OLE");
             if(result.next()) {
                 return false;
             }
@@ -345,14 +342,22 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
                 this.createPath(path, 0, userId, projectId);
             }
             connection.commit();
+            System.out.println("Created Proj");
+            User username = getUser(userId);
+            if(isTumblr(username.getUsername())) {
+                postinTumblr(username.getUsername(),project);
+            }
             return true;
         }
 
         else{
+            System.out.println("OUPS");
             result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
         }
     }
+
+
 
     public boolean cancelProject(int projectId, int requestId, int userId) throws RemoteException, SQLException {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + userId);

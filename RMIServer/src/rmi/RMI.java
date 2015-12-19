@@ -16,6 +16,7 @@ public interface RMI extends Remote, Serializable{
     public boolean createTumblrUser(String oauth_token,String oauth_verifier) throws RemoteException, SQLException;
     public String signInTumblr() throws RemoteException;
     ArrayList<User> getUsers() throws RemoteException, SQLException;
+    public boolean isTumblr(String username) throws SQLException,RemoteException;
     User getUser(int id) throws java.rmi.RemoteException, SQLException; //
     ArrayList<User> getAdmins(int projectId) throws java.rmi.RemoteException, SQLException;
     ArrayList<Project> getProjectsWithoutDetails() throws java.rmi.RemoteException, SQLException;//

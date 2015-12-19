@@ -39,8 +39,10 @@ public class ProjectRepository {
         try {
             successful = rmiServer.createProject(project,requestId,userId);
         } catch (RemoteException e) {
+            e.printStackTrace();
             successful = false;
         } catch (SQLException e) {
+            e.printStackTrace();
             successful = false;
         }
         return successful;
