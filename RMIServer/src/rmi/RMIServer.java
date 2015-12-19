@@ -14,6 +14,8 @@ import java.util.Timer;
 
 public class RMIServer{
 
+    public static String oauth_key = "5WvSypvkMXbY4bQtDW5v8zjJYHsR0qzJoacCmTwlh0LrNP9IBI";
+    public static String secret_key = "pkUvCjVi9U0bOvaEFXIPj9hTsIio8czSbMz32DSr26MlTPerHw";
     String hostname;
     int port;
     int delta;
