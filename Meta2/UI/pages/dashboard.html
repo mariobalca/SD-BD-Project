@@ -116,7 +116,7 @@
 				</div>
 				<div class="form-group">
 					<label for="reward0-minvalue">MinValue</label>
-					<input type="text" class="form-control" placeholder="25 €" ng-model="project.rewards[0].minvalue">
+					<input type="text" class="form-control" placeholder="25 €" ng-model="project.rewards[0].minValue">
 				</div>
 				<div class="form-group">
 					<label for="reward0-description">Description</label>
@@ -128,7 +128,7 @@
 				</div>
 				<div class="form-group">
 					<label for="reward1-minvalue">MinValue</label>
-					<input type="text" class="form-control" placeholder="25 €" ng-model="project.rewards[1].minvalue">
+					<input type="text" class="form-control" placeholder="25 €" ng-model="project.rewards[1].minValue">
 				</div>
 				<div class="form-group">
 					<label for="reward1-description">Description</label>
@@ -136,8 +136,8 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearProject();">Close</button>
-				<button type="button" class="btn btn-primary" ng-click="createProject()">Create Project</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearProject()">Close</button>
+				<button type="button" class="btn btn-primary" ng-click="createProject()" data-dismiss="modal">Create Project</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
@@ -150,11 +150,14 @@
 				<h4 class="modal-title">Give Reward</h4>
 			</div>
 			<div class="modal-body">
-				
+				<label>User to give reward</label>
+				<select class="form-control" ng-change="changedUserToGive(userToGive)" ng-model="userToGive" ng-options="user as user.username for user in users track by user.username"></select>
+				<label>Reward to give</label>
+				<select class="form-control" ng-change="changedReward(reward)" ng-model="reward" ng-options="reward as reward.name for reward in rewards track by reward.id"></select>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Give Reward</button>
+				<button type="button" class="btn btn-primary" ng-click="giveReward()" data-dismiss="modal">Give Reward</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

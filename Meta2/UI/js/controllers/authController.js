@@ -26,7 +26,8 @@ myApp.controller('authController', ['$scope', '$log', '$http', 'authService', '$
 				authService.user.username = result.user.username;
 				authService.user.requestId = result.user.requests;
 				authService.user.balance = result.user.balance;
-				$cookieStore.put('user', authService.user);				
+				$cookieStore.put('user', authService.user);
+				$location.path('/dashboard').replace();		
 			}
 			else {
 				$scope.response = result.response;
