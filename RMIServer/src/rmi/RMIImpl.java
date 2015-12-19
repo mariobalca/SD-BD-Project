@@ -3,6 +3,10 @@ package rmi; /**
  */
 
 import genericclasses.*;
+import org.scribe.builder.ServiceBuilder;
+import org.scribe.builder.api.TumblrApi;
+import org.scribe.model.Token;
+import org.scribe.oauth.OAuthService;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -186,12 +190,13 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public ArrayList<Path> getProjectPaths(int projectId) throws java.rmi.RemoteException, SQLException{
-        ResultSet result = connection.createStatement().executeQuery("SELECT paths.*, sum(value) from paths INNER JOIN transactions on transactions.pathId = paths.id where paths.projectId = " + projectId);
+        ResultSet result = connection.createStatement().executeQuery("SELECT * from paths where projectId = " + projectId);
         ArrayList<Path> paths = new ArrayList<Path>();
-        int i = 0;
         while(result.next())
         {
-            Path p = new Path(result.getString(2), result.getString(4), result.getDouble(5));
+            int pathId = result.getInt(1);
+            ResultSet result2 = connection.createStatement().executeQuery("Select sum(value) from transactions where PathId  = "+ pathId);
+            Path p = new Path(result.getString(2), result.getString(4), result2.getDouble(1));
             p.setId(result.getInt(1));
             paths.add(p);
         }
@@ -244,6 +249,14 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
 
     public int registerUser(String username, String password) throws SQLException {
+        OAuthService service = new ServiceBuilder()
+                .provider(TumblrApi.class)
+                .apiKey(RMIServer.oauth_key)
+                .apiSecret(RMIServer.secret_key)
+                .callback("localhost:8080/a") //   forbidden. We need an url and the better is on the tumblr website !
+                .build();
+        Token requestToken = service.getRequestToken();
+        System.out.println(service.getAuthorizationUrl(requestToken));
         ResultSet result = connection.createStatement().executeQuery("select count(*) from Users where username = \"" + username +"\"");
         if (result.getInt(1) == 0){
             connection.createStatement().execute("insert into users (username, password, balance) values (\"" + username + "\", \"" + password + "\", " + 100 + ")");
