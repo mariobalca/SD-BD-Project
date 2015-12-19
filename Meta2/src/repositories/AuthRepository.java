@@ -82,4 +82,21 @@ public class AuthRepository {
             return null;
         }
     }
+
+    public String registerTumblr(){
+        try {
+            return rmiServer.signInTumblr();
+        } catch (RemoteException e) {
+            return null;
+        }
+    }
+
+    public Boolean createUserTumblr(String oauth_token,String oauth_verifier){
+        try {
+            rmiServer.createTumblrUser(oauth_token,oauth_verifier);
+        } catch (RemoteException e) {
+            return false;
+        }
+        return true;
+    }
 }

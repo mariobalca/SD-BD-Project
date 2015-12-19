@@ -5,7 +5,10 @@ package rmi; /**
 import genericclasses.*;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.TumblrApi;
+import org.scribe.model.OAuthRequest;
 import org.scribe.model.Token;
+import org.scribe.model.Verb;
+import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
 import java.rmi.RemoteException;
@@ -247,16 +250,21 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
     // NÃO IDEMPOTENTES
 
-
-    public int registerUser(String username, String password) throws SQLException {
-        OAuthService service = new ServiceBuilder()
+    public String signInTumblr() throws RemoteException{
+        RMIServer.service = new ServiceBuilder()
                 .provider(TumblrApi.class)
                 .apiKey(RMIServer.oauth_key)
                 .apiSecret(RMIServer.secret_key)
-                .callback("localhost:8080/a") //   forbidden. We need an url and the better is on the tumblr website !
+                .callback("http://localhost:8080/tumblr/callback") //   forbidden. We need an url and the better is on the tumblr website !
                 .build();
-        Token requestToken = service.getRequestToken();
-        System.out.println(service.getAuthorizationUrl(requestToken));
+        RMIServer.request_token = RMIServer.service.getRequestToken();
+        String result = RMIServer.service.getAuthorizationUrl(RMIServer.request_token);
+        return result;
+    }
+
+
+
+    public int registerUser(String username, String password) throws SQLException {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from Users where username = \"" + username +"\"");
         if (result.getInt(1) == 0){
             connection.createStatement().execute("insert into users (username, password, balance) values (\"" + username + "\", \"" + password + "\", " + 100 + ")");
@@ -266,6 +274,28 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         else {
             return 0;
         }
+    }
+
+    public boolean createTumblrUser(String oauth_token,String oauth_verifier) throws RemoteException{
+        //Token requestToken = new Token(oauth_token,oauth_verifier);
+        Verifier verifier = new Verifier(oauth_verifier);
+        Token accessToken = RMIServer.service.getAccessToken(RMIServer.request_token,verifier);
+        String user_token = accessToken.getToken();
+        String user_secret = accessToken.getSecret();
+        Token newToken = new Token(user_token,user_secret);
+        OAuthRequest request = new OAuthRequest(Verb.GET, "https://api.tumblr.com/v2/user/info");
+        request.addHeader("Accept", "application/json");
+        RMIServer.service.signRequest(newToken, request);
+        System.out.println(request.getHeaders().keySet());
+        org.scribe.model.Response response = request.send();
+        System.out.println("Got it! Lets see what we found...");
+        System.out.println("HTTP RESPONSE: =============");
+        System.out.println(response.getCode());
+        System.out.println(response.getBody());
+        System.out.println("END RESPONSE ===============");
+        return true;
+
+
     }
 
     public boolean createProject(Project project, int requestId, int userId) throws RemoteException, SQLException {

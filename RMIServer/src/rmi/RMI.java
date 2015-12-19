@@ -13,6 +13,8 @@ import java.util.ArrayList;
 public interface RMI extends Remote, Serializable{
 
     // IDEMPOTENTES
+    public boolean createTumblrUser(String oauth_token,String oauth_verifier) throws RemoteException;
+    public String signInTumblr() throws RemoteException;
     ArrayList<User> getUsers() throws RemoteException, SQLException;
     User getUser(int id) throws java.rmi.RemoteException, SQLException; //
     ArrayList<User> getAdmins(int projectId) throws java.rmi.RemoteException, SQLException;
