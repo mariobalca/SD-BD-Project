@@ -4,7 +4,9 @@ import genericclasses.Message;
 import genericclasses.Reward;
 import rmi.RMI;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -14,6 +16,15 @@ import java.util.ArrayList;
 public class MessageRepository {
     private RMI rmiServer;
 
+    public MessageRepository(){
+        try {
+            this.rmiServer = (RMI) LocateRegistry.getRegistry("localhost",7000).lookup("rmi");
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            e.printStackTrace();
+        }
+    }
     public boolean sendMessage(Message message, int projId, int requestId){
         boolean successful;
         try {

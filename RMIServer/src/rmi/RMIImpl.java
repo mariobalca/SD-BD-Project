@@ -3,6 +3,7 @@ package rmi; /**
  */
 
 import genericclasses.*;
+import org.json.JSONObject;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.TumblrApi;
 import org.scribe.model.OAuthRequest;
@@ -268,6 +269,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from Users where username = \"" + username +"\"");
         if (result.getInt(1) == 0){
             connection.createStatement().execute("insert into users (username, password, balance) values (\"" + username + "\", \"" + password + "\", " + 100 + ")");
+            System.out.println("OIII");
             result = connection.createStatement().executeQuery("select id from Users where username = \"" + username +"\"");
             return result.getInt(1);
         }
@@ -276,7 +278,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         }
     }
 
-    public boolean createTumblrUser(String oauth_token,String oauth_verifier) throws RemoteException{
+    public boolean createTumblrUser(String oauth_token,String oauth_verifier) throws RemoteException, SQLException {
         //Token requestToken = new Token(oauth_token,oauth_verifier);
         Verifier verifier = new Verifier(oauth_verifier);
         Token accessToken = RMIServer.service.getAccessToken(RMIServer.request_token,verifier);
@@ -288,14 +290,11 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         RMIServer.service.signRequest(newToken, request);
         System.out.println(request.getHeaders().keySet());
         org.scribe.model.Response response = request.send();
-        System.out.println("Got it! Lets see what we found...");
-        System.out.println("HTTP RESPONSE: =============");
-        System.out.println(response.getCode());
-        System.out.println(response.getBody());
-        System.out.println("END RESPONSE ===============");
+        JSONObject jsonresponse = new JSONObject(response.getBody());
+        String name = jsonresponse.getJSONObject("response").getJSONObject("user").getString("name");
+        System.out.println("insert into users (username, balance , userToken, userSecret) values (\"" + name + "\"," + 100 + ", "+"\""+user_token + "\", "+"\""+user_secret + "\")");
+        connection.createStatement().execute("insert into users (username, balance , userToken, userSecret) values (\"" + name + "\"," + 100 + ", "+"\""+user_token + "\", "+"\""+user_secret + "\")");
         return true;
-
-
     }
 
     public boolean createProject(Project project, int requestId, int userId) throws RemoteException, SQLException {
@@ -474,6 +473,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + message.getFromUserId());
         if(result.getInt(1) == 0){
             connection.setAutoCommit(false);
+            System.out.println("cheguei aqui");
             connection.createStatement().execute("insert into messages (ProjectId, Subject, Question, Response, FromUserId) values (" + projectId + ",\"" + message.getSubject() + "\",\"" + message.getQuestion() + "\", \"\", " + message.getFromUserId() + ")");
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + message.getFromUserId() + ", " + requestId + ", 1)");
             connection.commit();

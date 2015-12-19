@@ -96,6 +96,8 @@ public class AuthRepository {
             rmiServer.createTumblrUser(oauth_token,oauth_verifier);
         } catch (RemoteException e) {
             return false;
+        } catch (SQLException e) {
+            return false;
         }
         return true;
     }

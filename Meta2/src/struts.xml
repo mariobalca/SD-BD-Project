@@ -102,5 +102,10 @@
             <result name="success">/index.jsp</result>
         </action>
     </package>
-
+<!--    <package name="general" namespace="/" extends="struts-default">
+        <action name="websocket" method="execute" class="actions.IndexAction">
+            <result name="success">/chat.html</result>
+        </action>
+    </package>
+    <constant name="struts.action.excludePattern" value="^ws://.+$"/>-->
 </struts>
