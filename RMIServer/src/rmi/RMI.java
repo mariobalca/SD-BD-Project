@@ -13,7 +13,10 @@ import java.util.ArrayList;
 public interface RMI extends Remote, Serializable{
 
     // IDEMPOTENTES
+    public boolean createTumblrUser(String oauth_token,String oauth_verifier) throws RemoteException, SQLException;
+    public String signInTumblr() throws RemoteException;
     ArrayList<User> getUsers() throws RemoteException, SQLException;
+    public boolean isTumblr(String username) throws SQLException,RemoteException;
     User getUser(int id) throws java.rmi.RemoteException, SQLException; //
     ArrayList<User> getAdmins(int projectId) throws java.rmi.RemoteException, SQLException;
     ArrayList<Project> getProjectsWithoutDetails() throws java.rmi.RemoteException, SQLException;//
@@ -31,6 +34,7 @@ public interface RMI extends Remote, Serializable{
     public int[] loginUser(String username, String password) throws java.rmi.RemoteException, SQLException;//
     public int registerUser(String username, String password) throws java.rmi.RemoteException, SQLException;//
     public double getBalance(int userId) throws java.rmi.RemoteException, SQLException;//
+    double getProjectValue(int projectId) throws java.rmi.RemoteException,SQLException;
 
 
     public boolean endProject(int projectId) throws RemoteException, SQLException;

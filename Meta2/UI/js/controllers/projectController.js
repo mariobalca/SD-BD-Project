@@ -13,13 +13,16 @@ myApp.controller('projectController', ['$scope', '$log', '$http', '$routeParams'
 
 	$http.post('http://localhost:8080/api/getProject', {'projectId': id}).success(function(result){
 		$scope.project = result.project;
+		$scope.project.value = 0;
 		$scope.project.isActive = function(){		
 			if($scope.project.active)
 				return true;
 			else
 				return false;
 		}
-		$scope.project.value = 200;
+		angular.forEach(result.project.paths, function(path){
+			$scope.project.value += path.value;
+		});
 		$log.info(result.project);
 	});
 

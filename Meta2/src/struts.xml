@@ -16,6 +16,7 @@
             </interceptor-stack>
         </interceptors>
         <default-interceptor-ref name="jsonStack"></default-interceptor-ref>
+        <default-action-ref name="index.jsp"></default-action-ref>
         <action name="login" method="execute" class="actions.Auth.LoginAction">
             <result name="success" type="json"></result>
         </action>
@@ -94,13 +95,19 @@
         <action name="getUsers" method="execute" class="actions.Auth.GetUsersAction">
             <result name="success" type="json"></result>
         </action>
+        <action name="signInTumblr" method="execute" class="actions.Auth.SignInWithTumblrAction">
+            <result name="success" type="json"></result>
+        </action>
+        <action name="getProjectValue" method="execute" class="actions.Project.GetProjectValueAction">
+            <result name="success" type="json"></result>
+        </action>
 
     </package>
-    <package name="general" namespace="/" extends="struts-default">
-        <action name="websocket" method="execute" class="actions.IndexAction">
-            <result name="success">/chat.html</result>
+    <package name="tumblr" namespace="/tumblr" extends="struts-default">
+        <action name="callback" method="execute" class="actions.CallbackAction">
+            <result name="success">/index.jsp</result>
         </action>
     </package>
-    <constant name="struts.action.excludePattern" value="/endpoint/.*">
-    </constant>
+
+    <constant name="struts.action.excludePattern" value="/endpoint/.*"></constant>
 </struts>

@@ -4,9 +4,11 @@ import com.opensymphony.xwork2.ActionSupport;
 import genericclasses.JsonResponse;
 import genericclasses.User;
 import repositories.AdminRepository;
+import repositories.AuthRepository;
 import repositories.ProjectRepository;
 import websockets.WebSocketAnnotation;
 
+import javax.websocket.Session;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -65,12 +67,26 @@ public class FinanceProjectAction extends ActionSupport{
     public String execute(){
         ProjectRepository projectRepository = new ProjectRepository();
         AdminRepository adminRepository = new AdminRepository();
+        AuthRepository authRepository = new AuthRepository();
         boolean success = projectRepository.financeProject(projectId,requestId,userId,pathId,value);
-        if(success){
+        double projectValue = projectRepository.getProjectValue(projectId);
+        if(success) {
             ArrayList<User> admins = adminRepository.getAdmins(projectId);
-            for (User admin: admins) {
+            for (User admin : admins) {
                 try {
-                    WebSocketAnnotation.wsClients.get(admin.getId()).getBasicRemote().sendText("Your project " + projectId + " has been pledged with " + value);
+                    Session session = WebSocketAnnotation.wsClients.get(admin.getId());
+                    if(session != null)
+                        session.getBasicRemote().sendText("{\"action\": \"pledge\", \"projectId\": " + projectId + ", \"value\": " + value + ", \"projectValue\": " + projectValue + "}");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            ArrayList<User> users = authRepository.getUsers();
+            for (User user : users) {
+                try {
+                    Session session = WebSocketAnnotation.wsClients.get(user.getId());
+                    if(session != null)
+                        session.getBasicRemote().sendText("{\"action\": \"newValue\", \"projectId\": " + projectId + ", \"value\": " + value + ", \"projectValue\": " + projectValue + "}");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

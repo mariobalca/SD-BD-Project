@@ -2,6 +2,11 @@ package rmi;/**
  * Created by mariobalca on 24-10-2015.
  */
 
+import org.scribe.builder.ServiceBuilder;
+import org.scribe.builder.api.TumblrApi;
+import org.scribe.model.Token;
+import org.scribe.oauth.OAuthService;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.rmi.RemoteException;
@@ -16,6 +21,8 @@ public class RMIServer{
 
     public static String oauth_key = "5WvSypvkMXbY4bQtDW5v8zjJYHsR0qzJoacCmTwlh0LrNP9IBI";
     public static String secret_key = "pkUvCjVi9U0bOvaEFXIPj9hTsIio8czSbMz32DSr26MlTPerHw";
+    public static Token request_token;
+    public static OAuthService service;
     String hostname;
     int port;
     int delta;
@@ -45,12 +52,19 @@ public class RMIServer{
             // This task is scheduled to run every 10 seconds
 
             t.scheduleAtFixedRate(mTask, 0, delta);
+            RMIServer.service = new ServiceBuilder()
+                    .provider(TumblrApi.class)
+                    .apiKey(RMIServer.oauth_key)
+                    .apiSecret(RMIServer.secret_key)
+                    .callback("http://localhost:8080/tumblr/callback") //   forbidden. We need an url and the better is on the tumblr website !
+                    .build();
             System.out.println("rmi.RMI Server ready.");
         } catch (RemoteException re) {
+            re.printStackTrace();
             System.out.println("Port already in use");
             System.exit(1);
         } catch (SQLException e){
-
+            e.printStackTrace();
         }
     }
 

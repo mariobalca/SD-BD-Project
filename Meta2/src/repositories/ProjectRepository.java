@@ -39,8 +39,10 @@ public class ProjectRepository {
         try {
             successful = rmiServer.createProject(project,requestId,userId);
         } catch (RemoteException e) {
+            e.printStackTrace();
             successful = false;
         } catch (SQLException e) {
+            e.printStackTrace();
             successful = false;
         }
         return successful;
@@ -103,6 +105,16 @@ public class ProjectRepository {
     public Project getProject(int id) {
         try {
             return rmiServer.getProject(id);
+        } catch (RemoteException e) {
+            return null;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public Double getProjectValue(int projectId){
+        try {
+            return rmiServer.getProjectValue(projectId);
         } catch (RemoteException e) {
             return null;
         } catch (SQLException e) {

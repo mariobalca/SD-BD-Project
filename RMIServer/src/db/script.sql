@@ -1,8 +1,10 @@
 CREATE TABLE Users(
 	id INTEGER PRIMARY KEY,
 	Username CHAR(50) NOT NULL,
-	Password CHAR(256) NOT NULL,
-	Balance	REAL NOT NULL
+	Password CHAR(256),
+	Balance	REAL NOT NULL,
+	UserToken CHAR(256),
+  UserSecret CHAR(256)
 );
 
 CREATE TABLE Projects(
