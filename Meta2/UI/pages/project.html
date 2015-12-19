@@ -82,13 +82,11 @@
 					<thead>
 						<tr>
 							<th>Name</th>
-							<th>&nbsp;</th>				
 						</tr>
 					</thead>
 					<tbody>
 						<tr ng-repeat="admin in admins">
 							<td>{{ admin.username }}</td>
-							<td class="text-right"><button class="btn btn-danger" ng-if="isAdmin()">Remove Admin</button></td>
 						</tr>
 					</tbody>
 				</table>
@@ -102,7 +100,7 @@
 						<h4>{{ project.name }} - Questions</h4>							
 					</div>
 					<div class="col-md-6 text-right">
-						<button class="btn btn-primary" data-toggle="modal" data-target="#messageModal">Ask a Question</button>
+						<button class="btn btn-primary" data-toggle="modal" data-target="#askQuestionModal">Ask a Question</button>
 					</div>
 				</div>
 			</div>
@@ -110,12 +108,19 @@
 				<table class="table table-hover" ng-if="project.messages.length>0">
 					<thead>
 						<tr>
-							<th>Subject</th>							
+							<th>Subject</th>
+							<th>Question</th>
+							<th>&nbsp;</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="message in project.messages">
+						<tr ng-repeat="message in project.messages" ng-click="openModal(message)">
 							<td>{{ message.subject }}</td>
+							<td>{{ message.question }}</td>	
+							<td>
+								<span ng-if="message.response == '' || !message.response">- Por Responder-</span>
+								{{ message.response}}
+							</td>						
 						</tr>
 					</tbody>
 				</table>
@@ -137,7 +142,7 @@
 				
 			</div>
 			<div class="panel-body">
-				<table class="table">
+				<table class="table table-hover" ng-if="project.paths.length>0">
 					<thead>
 						<th>id</th>
 						<th>Name</th>
@@ -150,7 +155,8 @@
 							<td>{{path.description}}</td>
 						</tr>
 					</tbody>
-				</table>		
+				</table>
+				<p class="text-muted" ng-if="project.paths.length==0">No paths available</p>	
 			</div>
 		</div>
 		<div class="panel panel-default" ng-if="project.rewards.length>0">
@@ -165,30 +171,50 @@
 				</div>
 			</div>
 			<div class="panel-body">
-				<table class="table">
+				<table class="table table-hover" ng-if="project.rewards.length>0">
 					<thead>
 						<th>Name</th>
 						<th>Description</th>
-						<th>Value</th>
-						<th>&nbsp;</th>
+						<th>Minimum Value</th>
 					</thead>
 					<tbody>
 						<tr ng-repeat="reward in project.rewards">
 							<td>{{reward.name}}</td>
 							<td>{{reward.description}}</td>
 							<td>{{reward.minValue}}</td>
-							<td class="text-right"><button class="btn btn-danger" ng-if="isAdmin()"  ng-click="removeReward(reward)">Remove Reward</button></td>
 						</tr>
 					</tbody>
 				</table>
+				<p class="text-muted" ng-if="project.rewards.length==0">No paths available</p>	
 			</div>
 		</div>
-		<div class="panel panel-default" ng-if="project.extras.length>0">
+		<div class="panel panel-default" ng-if="project.extras.length>0 || isAdmin()">
 			<div class="panel-heading">
-				<h4>{{ project.name }} - Info</h4>
+				<div class="row">
+					<div class="col-md-6">
+						<h4>{{ project.name }} - Extras</h4>						
+					</div>
+					<div class="col-md-6 text-right">
+						<button class="btn btn-primary" data-toggle="modal" data-target="#addExtraLevelModal" ng-if="project.value>=project.objective">Add Extra Level</button>
+					</div>
+				</div>
 			</div>
 			<div class="panel-body">
-				
+				<table class="table table-hover" ng-if="project.extras.length>0">
+					<thead>
+						<th>Name</th>
+						<th>Minimum Value</th>
+					</thead>
+					<tbody>
+						<tr ng-repeat="extra in project.extras">
+							<td>{{ extra.name }}</td>
+							<td>{{ extra.minValue }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="text-muted">
+					No extra levels available
+				</p>
 			</div>
 		</div>
 	</div>
@@ -207,18 +233,18 @@
 				<hr>
 				<div class="radio" ng-repeat="path in project.paths">					
 					<label>
-						<input type="radio" value="{{ pathId }}" ng-model="pathId">
-						<h5>{{ path.name }}</h5>
-						<p>{{ path.description }}</p>
+						<input type="radio" value="{{ path.id }}" ng-model="pledge.path" name="pledgePath">
+						{{ path.name }}
 					</label>
 				</div>
+				<hr>
 				<h4>
 					Choose the amount of money
 				</h4>
 				<hr>
 				<div class="radio" ng-repeat="reward in project.rewards">					
 					<label>
-						<input type="radio" value="{{ reward.minValue }}" ng-model="pledge.value">
+						<input type="radio" value="{{ reward.minValue }}" ng-model="pledge.value" name="pledgeValue">
 						{{ reward.name }} - {{ reward.minValue }} €
 					</label>
 				</div>
@@ -231,7 +257,7 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="modal fade" id="messageModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="askQuestionModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -239,11 +265,44 @@
 				<h4 class="modal-title">Ask {{ project.name}}</h4>
 			</div>
 			<div class="modal-body">
-				
+				<label>Subject</label>
+				<input type="text" class="form-control" ng-model="message.subject">
+				<label>Question</label>
+				<textarea class="form-control" ng-model="message.question"></textarea>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" data-dismiss="modal">Ask Question</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="askQuestion()">Ask Question</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="viewQuestionModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Ask {{ project.name}}</h4>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="id" ng-model="message.id">
+				<label>Subject</label>
+				<input type="text" class="form-control" ng-model="message.subject" readonly id="subject">
+				<label>Question</label>
+				<textarea class="form-control" ng-model="message.question" readonly id="question"></textarea>
+				<div ng-if="isAdmin() && (message.response == '' || !message.response)">					
+					<label>Answer</label>
+					<textarea class="form-control" ng-model="message.draftResponse"></textarea>
+				</div>
+				<div ng-if="message.response && message.response != ''" id="response">
+					<label>Answer</label>
+					<textarea class="form-control" ng-model="message.response" readonly></textarea>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="answerQuestion(message.id)" ng-if="isAdmin() && (message.response == '' || !message.response)">Answer Question</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
@@ -264,6 +323,29 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="addAdmin()">Add Administrator</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="addExtraLevelModal" tabindex="-1" role="dialog" ng-if="isAdmin()">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Add Extra Level to {{ project.name}}</h4>
+			</div>
+			<div class="modal-body">
+				<label>Name</label>
+				<input type="text" ng-model="extra.name" class="form-control">
+				<label>Minimum Value</label>
+				<input type="text" ng-model="extra.minValue" class="form-control">
+				<label>Description</label>
+				<textarea class="form-control" ng-model="extra.description"></textarea>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="addExtraLevel()">Add Extra Level</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

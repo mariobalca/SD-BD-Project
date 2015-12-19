@@ -445,6 +445,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from logs where requestId = " + requestId + " and userId = " + message.getFromUserId());
         if(result.getInt(1) == 0){
             connection.setAutoCommit(false);
+            System.out.println("cheguei aqui");
             connection.createStatement().execute("insert into messages (ProjectId, Subject, Question, Response, FromUserId) values (" + projectId + ",\"" + message.getSubject() + "\",\"" + message.getQuestion() + "\", \"\", " + message.getFromUserId() + ")");
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + message.getFromUserId() + ", " + requestId + ", 1)");
             connection.commit();
