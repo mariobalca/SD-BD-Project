@@ -48,10 +48,9 @@
 		</div>
 	</nav>
 	<div class="container">
-		<!--<div class="alert alert-success alert-dismissible" role="alert">
-		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		    <strong>Alguém doou 10€ ao projecto X</strong>
-		</div>-->
+		<div id="notifications" ng-controller="websocketController">
+			
+		</div>
 		<div ng-view>
 			
 		</div>
@@ -65,6 +64,7 @@
 	<script src="js/controllers/projectController.js"></script>
 	<script src="js/controllers/rewardsController.js"></script>
 	<script src="js/controllers/rewardController.js"></script>
+	<script src="js/controllers/websocketController.js"></script>
 	<script src="js/config/routes.js"></script>
 	</body>
 </html>

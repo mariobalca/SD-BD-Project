@@ -34,6 +34,16 @@ public class AdminRepository {
         }
     }
 
+    public boolean removeAdmin(int projectId,int requestId,int userId, int adminId){
+        try {
+            return rmiServer.removeAdmin(projectId,requestId,userId,adminId);
+        } catch (RemoteException e) {
+            return false;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
     public ArrayList<User> getAdmins(int projectId){
         try {
             return rmiServer.getAdmins(projectId);

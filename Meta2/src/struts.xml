@@ -61,6 +61,9 @@
         <action name="addAdmin" method="execute" class="actions.Admin.CreateAdminAction">
             <result name="success" type="json"></result>
         </action>
+        <action name="removeAdmin" method="execute" class="actions.Admin.RemoveAdminAction">
+            <result name="success" type="json"></result>
+        </action>
         <action name="getAdmins" method="execute" class="actions.Admin.GetAdminsAction">
             <result name="success" type="json"></result>
         </action>
@@ -98,5 +101,6 @@
             <result name="success">/chat.html</result>
         </action>
     </package>
-    <constant name="struts.action.excludePattern" value="^ws://.+$"/>
+    <constant name="struts.action.excludePattern" value="/endpoint/.*">
+    </constant>
 </struts>

@@ -22,7 +22,16 @@
     <orderEntry type="module" module-name="GenericClasses" />
     <orderEntry type="module" module-name="RMIServer" />
     <orderEntry type="library" name="org.apache.struts:struts2-json-plugin:2.3.20.1" level="project" />
-    <orderEntry type="library" name="Tomcat 8.0.29" level="application_server_libraries" />
-    <orderEntry type="library" name="javax.websocket:javax.websocket-api:1.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Tomcat 8.0.29" level="application_server_libraries" />
+    <orderEntry type="module-library">
+      <library name="com.google.code.gson:gson:2.5" type="repository">
+        <properties maven-id="com.google.code.gson:gson:2.5" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/gson-2.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

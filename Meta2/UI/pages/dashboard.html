@@ -47,13 +47,15 @@
 					<thead>
 						<tr>
 							<th>Name</th>
-							<th>Value</th>								
+							<th>Value</th>		
+							<th>&nbsp;</th>					
 						</tr>
 					</thead>
 					<tbody>
 						<tr ng-repeat="reward in rewards">
 							<td>{{ reward.name }}</td>
 							<td>{{ reward.description}}</td>
+							<td ng-if="reward.flag == false">Por receber</td>
 						</tr>
 					</tbody>
 				</table>

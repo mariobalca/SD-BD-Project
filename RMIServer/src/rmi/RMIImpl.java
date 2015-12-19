@@ -235,7 +235,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         ResultSet result = connection.createStatement().executeQuery("select id from Users where username = \"" + username + "\" and password = \"" + password + "\"");
         if(result.next()){
             int userId = result.getInt(1);
-            result = connection.createStatement().executeQuery("select count(*) from Logs where userId = " + userId);
+            result = connection.createStatement().executeQuery("select max(requestId) from Logs where userId = " + userId);
             return new int[]{userId, result.getInt(1)};
         }
         else{

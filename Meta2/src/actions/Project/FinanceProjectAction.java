@@ -2,7 +2,13 @@ package actions.Project;
 
 import com.opensymphony.xwork2.ActionSupport;
 import genericclasses.JsonResponse;
+import genericclasses.User;
+import repositories.AdminRepository;
 import repositories.ProjectRepository;
+import websockets.WebSocketAnnotation;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by pedrocb on 17/12/2015.
@@ -58,7 +64,19 @@ public class FinanceProjectAction extends ActionSupport{
 
     public String execute(){
         ProjectRepository projectRepository = new ProjectRepository();
-        response.setSuccess(projectRepository.financeProject(projectId,requestId,userId,pathId,value));
+        AdminRepository adminRepository = new AdminRepository();
+        boolean success = projectRepository.financeProject(projectId,requestId,userId,pathId,value);
+        if(success){
+            ArrayList<User> admins = adminRepository.getAdmins(projectId);
+            for (User admin: admins) {
+                try {
+                    WebSocketAnnotation.wsClients.get(admin.getId()).getBasicRemote().sendText("Your project " + projectId + " has been pledged with " + value);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        response.setSuccess(success);
         return SUCCESS;
     }
 
