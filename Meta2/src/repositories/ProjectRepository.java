@@ -109,4 +109,14 @@ public class ProjectRepository {
             return null;
         }
     }
+
+    public Double getProjectValue(int projectId){
+        try {
+            return rmiServer.getProjectValue(projectId);
+        } catch (RemoteException e) {
+            return null;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
 }

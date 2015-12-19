@@ -95,6 +95,9 @@
         <action name="signInTumblr" method="execute" class="actions.Auth.SignInWithTumblrAction">
             <result name="success" type="json"></result>
         </action>
+        <action name="getProjectValue" method="execute" class="actions.Project.GetProjectValueAction">
+            <result name="success" type="json"></result>
+        </action>
 
     </package>
     <package name="tumblr" namespace="/tumblr" extends="struts-default">

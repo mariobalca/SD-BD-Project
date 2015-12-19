@@ -95,8 +95,10 @@ public class AuthRepository {
         try {
             rmiServer.createTumblrUser(oauth_token,oauth_verifier);
         } catch (RemoteException e) {
+            e.printStackTrace();
             return false;
         } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
         return true;

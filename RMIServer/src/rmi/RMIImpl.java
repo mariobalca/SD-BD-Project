@@ -245,7 +245,11 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         else{
             return new int[]{0, 0};
         }
+    }
 
+    public double getProjectValue(int projectId) throws java.rmi.RemoteException,SQLException{
+        ResultSet resultset = connection.createStatement().executeQuery("select sum(value) from transactions where projectId = " + projectId);
+        return resultset.getDouble(1);
     }
 
 
@@ -265,6 +269,8 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
 
 
+
+
     public int registerUser(String username, String password) throws SQLException {
         ResultSet result = connection.createStatement().executeQuery("select count(*) from Users where username = \"" + username +"\"");
         if (result.getInt(1) == 0){
@@ -279,7 +285,6 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
     }
 
     public boolean createTumblrUser(String oauth_token,String oauth_verifier) throws RemoteException, SQLException {
-        //Token requestToken = new Token(oauth_token,oauth_verifier);
         Verifier verifier = new Verifier(oauth_verifier);
         Token accessToken = RMIServer.service.getAccessToken(RMIServer.request_token,verifier);
         String user_token = accessToken.getToken();
@@ -292,8 +297,27 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         org.scribe.model.Response response = request.send();
         JSONObject jsonresponse = new JSONObject(response.getBody());
         String name = jsonresponse.getJSONObject("response").getJSONObject("user").getString("name");
-        System.out.println("insert into users (username, balance , userToken, userSecret) values (\"" + name + "\"," + 100 + ", "+"\""+user_token + "\", "+"\""+user_secret + "\")");
-        connection.createStatement().execute("insert into users (username, balance , userToken, userSecret) values (\"" + name + "\"," + 100 + ", "+"\""+user_token + "\", "+"\""+user_secret + "\")");
+        ResultSet resultSet = connection.createStatement().executeQuery("select * from users where username = \""+name+"\"");
+        if(resultSet.next()) {
+            connection.createStatement().execute("update users set userToken = \"" + user_token + "\" , userSecret = \""+user_secret+"\" where username = \"" + name+"\"");
+        }
+        else {
+            connection.createStatement().execute("insert into users (username,password, balance , userToken, userSecret) values (\"" + name + "\"," + "\"tumblr\"," + 100 + ", " + "\"" + user_token + "\", " + "\"" + user_secret + "\")");
+        }
+        postinTumblr(name);
+        return true;
+    }
+
+    public boolean postinTumblr(String username) throws SQLException {
+        ResultSet result = connection.createStatement().executeQuery("select userToken,userSecret from users where username = \"" +username+"\"");
+        Token token = new Token(result.getString(1),result.getString(2));
+        OAuthRequest request = new OAuthRequest(Verb.POST,"http://api.tumblr.com/v2/blog/"+username+".tumblr.com/post");
+        request.addHeader("Accept", "application/json");
+        request.addBodyParameter("type","text");
+        request.addBodyParameter("body","O meu primeiro post");
+        RMIServer.service.signRequest(token,request);
+        org.scribe.model.Response response = request.send();
+        System.out.println(response.getBody());
         return true;
     }
 

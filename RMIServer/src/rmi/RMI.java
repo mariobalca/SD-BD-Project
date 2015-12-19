@@ -33,6 +33,7 @@ public interface RMI extends Remote, Serializable{
     public int[] loginUser(String username, String password) throws java.rmi.RemoteException, SQLException;//
     public int registerUser(String username, String password) throws java.rmi.RemoteException, SQLException;//
     public double getBalance(int userId) throws java.rmi.RemoteException, SQLException;//
+    double getProjectValue(int projectId) throws java.rmi.RemoteException,SQLException;
 
 
     public boolean endProject(int projectId) throws RemoteException, SQLException;
