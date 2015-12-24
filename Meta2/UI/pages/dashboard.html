@@ -17,12 +17,14 @@
 						<tr>
 							<th>Name</th>
 							<th>Description</th>								
+							<th>Value</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="project in projects" ng-click="showProject(project)">
+						<tr ng-repeat="project in projects" ng-click="showProject(project)"> 
 							<td>{{ project.name }}</td>
 							<td>{{ project.description}}</td>
+							<td  data-projectId="{{ project.id }}" class="value">{{ project.value }}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -47,13 +49,15 @@
 					<thead>
 						<tr>
 							<th>Name</th>
-							<th>Value</th>								
+							<th>Value</th>		
+							<th>&nbsp;</th>					
 						</tr>
 					</thead>
 					<tbody>
 						<tr ng-repeat="reward in rewards">
 							<td>{{ reward.name }}</td>
 							<td>{{ reward.description}}</td>
+							<td ng-if="reward.flag == false">Por receber</td>
 						</tr>
 					</tbody>
 				</table>

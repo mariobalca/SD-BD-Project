@@ -8,7 +8,7 @@
 						<h4>{{ project.name }} - Info</h4>
 					</div>
 					<div class="col-md-6 text-right">
-						<button class="btn btn-primary" ng-if="isAdmin()">Cancel Project</button>
+						<button class="btn btn-primary" data-toggle="modal" data-target="#confirmCancelModal" ng-if="isAdmin() && project.isActive()">Cancel Project</button>
 					</div>
 				</div>
 			</div>
@@ -61,7 +61,9 @@
 						</strong>
 					</div>
 					<div class="col-md-9">
-						100
+						<div data-projectId="{{ project.id }}" class="value">
+							{{ project.value }}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -73,19 +75,19 @@
 						<h4>{{ project.name }} - Administrators</h4>							
 					</div>
 					<div class="col-md-6 text-right">
-						<button ng-if="isAdmin()" class="btn btn-primary" data-toggle="modal" data-target="#addAdminModal">Add Administrator</button>
+						<button ng-if="isAdmin() && project.isActive()" class="btn btn-primary" data-toggle="modal" data-target="#addAdminModal">Add Administrator</button>
 					</div>
 				</div>
 			</div>
 			<div class="panel-body">
-				<table class="table">
+				<table class="table table-hover">
 					<thead>
 						<tr>
 							<th>Name</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="admin in admins">
+						<tr ng-repeat="admin in admins" ng-click="openAdminModal(admin)">
 							<td>{{ admin.username }}</td>
 						</tr>
 					</tbody>
@@ -100,7 +102,7 @@
 						<h4>{{ project.name }} - Questions</h4>							
 					</div>
 					<div class="col-md-6 text-right">
-						<button class="btn btn-primary" data-toggle="modal" data-target="#askQuestionModal">Ask a Question</button>
+						<button class="btn btn-primary" data-toggle="modal" ng-if="project.isActive()" data-target="#askQuestionModal">Ask a Question</button>
 					</div>
 				</div>
 			</div>
@@ -114,7 +116,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="message in project.messages" ng-click="openModal(message)">
+						<tr ng-repeat="message in project.messages" ng-click="openMessageModal(message)">
 							<td>{{ message.subject }}</td>
 							<td>{{ message.question }}</td>	
 							<td>
@@ -136,7 +138,7 @@
 						<h4>{{ project.name }} - Paths</h4>
 					</div>
 					<div class="col-md-6 text-right">
-						<button ng-if="loggedIn" class="btn btn-primary" data-toggle="modal" data-target="#projectModal">Pledge</button>
+						<button ng-if="loggedIn && project.isActive()" class="btn btn-primary" data-toggle="modal" data-target="#projectModal">Pledge</button>
 					</div>
 				</div>
 				
@@ -159,14 +161,14 @@
 				<p class="text-muted" ng-if="project.paths.length==0">No paths available</p>	
 			</div>
 		</div>
-		<div class="panel panel-default" ng-if="project.rewards.length>0">
+		<div class="panel panel-default">
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-md-6">
 						<h4>{{ project.name }} - Rewards</h4>						
 					</div>
-					<div class="col-md-6 text-right" ng-if="isAdmin()">
-						<button class="btn btn-primary">Add Reward</button>
+					<div class="col-md-6 text-right" ng-if="isAdmin() && project.isActive()">
+						<button class="btn btn-primary" data-target="#addRewardModal" data-toggle="modal">Add Reward</button>
 					</div>
 				</div>
 			</div>
@@ -178,7 +180,7 @@
 						<th>Minimum Value</th>
 					</thead>
 					<tbody>
-						<tr ng-repeat="reward in project.rewards">
+						<tr ng-repeat="reward in project.rewards" ng-click="openRewardModal(reward)">
 							<td>{{reward.name}}</td>
 							<td>{{reward.description}}</td>
 							<td>{{reward.minValue}}</td>
@@ -188,14 +190,14 @@
 				<p class="text-muted" ng-if="project.rewards.length==0">No paths available</p>	
 			</div>
 		</div>
-		<div class="panel panel-default" ng-if="project.extras.length>0 || isAdmin()">
+		<div class="panel panel-default" ng-if="project.extras.length>0 || isAdmin() && project.isActive()">
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-md-6">
 						<h4>{{ project.name }} - Extras</h4>						
 					</div>
 					<div class="col-md-6 text-right">
-						<button class="btn btn-primary" data-toggle="modal" data-target="#addExtraLevelModal" ng-if="project.value>=project.objective">Add Extra Level</button>
+						<button class="btn btn-primary" data-toggle="modal" ng-if="project.isActive()" data-target="#addExtraLevelModal" ng-if="project.value>=project.objective">Add Extra Level</button>
 					</div>
 				</div>
 			</div>
@@ -219,7 +221,7 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="projectModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="projectModal" tabindex="-1" role="dialog" ng-if="project.isActive()">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -291,7 +293,7 @@
 				<input type="text" class="form-control" ng-model="message.subject" readonly id="subject">
 				<label>Question</label>
 				<textarea class="form-control" ng-model="message.question" readonly id="question"></textarea>
-				<div ng-if="isAdmin() && (message.response == '' || !message.response)">					
+				<div ng-if="isAdmin() && project.isActive() && (message.response == '' || !message.response)">					
 					<label>Answer</label>
 					<textarea class="form-control" ng-model="message.draftResponse"></textarea>
 				</div>
@@ -302,13 +304,99 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="answerQuestion(message.id)" ng-if="isAdmin() && (message.response == '' || !message.response)">Answer Question</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="answerQuestion(message.id)" ng-if="isAdmin() && project.isActive() && (message.response == '' || !message.response)">Answer Question</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="modal fade" id="addAdminModal" tabindex="-1" role="dialog" ng-if="isAdmin()">
+<div class="modal fade" id="addRewardModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Add Reward</h4>
+			</div>
+			<div class="modal-body">
+				<label>Name</label>
+				<input type="text" class="form-control" ng-model="reward.name" id="reward-name">
+				<label>Minimum Value</label>
+				<input type="text" class="form-control" ng-model="reward.minValue" id="reward-value">
+				<label>Description</label>
+				<textarea class="form-control" ng-model="reward.description" id="reward-description">					
+				</textarea>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="addReward()" ng-if="isAdmin() && project.isActive()">Add Reward</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="viewRewardModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">{{ reward.name}}</h4>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="id" ng-model="reward.id">
+				<label>Name</label>
+				<input type="text" class="form-control" ng-model="reward.name" readonly id="reward-name">
+				<label>Minimum Value</label>
+				<input type="text" class="form-control" ng-model="reward.minValue" readonly id="reward-value">
+				<label>Description</label>
+				<textarea class="form-control" ng-model="reward.description" readonly id="reward-description">					
+				</textarea>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="removeReward(reward.id)" ng-if="isAdmin() && project.isActive()">Remove Reward</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="confirmCancelModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Cancel{{ reward.name}}</h4>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="cancelProject(project.id)" ng-if="isAdmin() && project.isActive()">Cancel Project</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="viewAdminModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">{{admin.username}}</h4>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="id" ng-model="admin.id">
+				<label>Name</label>
+				<input type="text" class="form-control" ng-model="admin.username" readonly id="reward-name">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="removeAdmin(admin.id)" ng-if="isAdmin() && project.isActive()">Remove Admin</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="addAdminModal" tabindex="-1" role="dialog" ng-if="isAdmin() && project.isActive()">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -328,7 +416,7 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="modal fade" id="addExtraLevelModal" tabindex="-1" role="dialog" ng-if="isAdmin()">
+<div class="modal fade" id="addExtraLevelModal" tabindex="-1" role="dialog" ng-if="isAdmin() && project.isActive()">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">

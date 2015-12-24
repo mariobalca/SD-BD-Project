@@ -7,12 +7,22 @@ myApp.controller('projectController', ['$scope', '$log', '$http', '$routeParams'
 	$scope.pledge = {}
 	$scope.extra = {}
 	$scope.newAdmin = {}
+	$scope.admin = {}
 	$scope.message = {}
 
 
 	$http.post('http://localhost:8080/api/getProject', {'projectId': id}).success(function(result){
 		$scope.project = result.project;
-		$scope.project.value = 200;
+		$scope.project.value = 0;
+		$scope.project.isActive = function(){		
+			if($scope.project.active)
+				return true;
+			else
+				return false;
+		}
+		angular.forEach(result.project.paths, function(path){
+			$scope.project.value += path.value;
+		});
 		$log.info(result.project);
 	});
 
@@ -73,7 +83,7 @@ myApp.controller('projectController', ['$scope', '$log', '$http', '$routeParams'
 		});
 	}
 
-	$scope.openModal = function(message){
+	$scope.openMessageModal = function(message){
 		$('#viewQuestionModal').on('show.bs.modal', function(event){
 			var modal = $(this);
 			$scope.message = message;
@@ -81,8 +91,49 @@ myApp.controller('projectController', ['$scope', '$log', '$http', '$routeParams'
 		$('#viewQuestionModal').modal();
 	}
 
+	$scope.openRewardModal = function(reward){
+		$('#viewRewardModal').on('show.bs.modal', function(event){
+			var modal = $(this);
+			$scope.reward = reward;
+		});
+		$('#viewRewardModal').modal();
+	}
+
+	$scope.openAdminModal = function(admin){
+		$('#viewAdminModal').on('show.bs.modal', function(event){
+			var modal = $(this);
+			$scope.admin = admin;
+		});
+		$('#viewAdminModal').modal();
+	}
 
 	$scope.addExtraLevel = function(){
+		authService.updateRequestId();
+		$http.post('http://localhost:8080/api/createExtra', {'projectId': $scope.project.id, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'extra': $scope.extra}).success(function(result){
+		});
+	}
 
+	$scope.addReward = function(){
+		authService.updateRequestId();
+		$http.post('http://localhost:8080/api/createReward', {'projectId': $scope.project.id, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'reward': $scope.reward}).success(function(result){
+		});
+	}
+
+	$scope.removeReward = function(rewardId){
+		authService.updateRequestId();
+		$http.post('http://localhost:8080/api/removeReward', {'rewardId': rewardId, 'requestId': authService.user.requestId, 'userId': authService.user.id}).success(function(result){
+		});
+	}
+
+	$scope.removeAdmin = function(adminId){
+		authService.updateRequestId();
+		$http.post('http://localhost:8080/api/removeAdmin', {'projectId': $scope.project.id, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'adminId': adminId}).success(function(result){
+		});
+	}
+
+	$scope.cancelProject = function(projectId){
+		authService.updateRequestId();
+		$http.post('http://localhost:8080/api/cancelProject', {'projectId': projectId, 'userId': authService.user.id, 'requestId': authService.user.requestId}).success(function(){
+		});
 	}
 }])

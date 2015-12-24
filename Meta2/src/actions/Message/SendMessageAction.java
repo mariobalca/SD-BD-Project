@@ -3,8 +3,13 @@ package actions.Message;
 import com.opensymphony.xwork2.ActionSupport;
 import genericclasses.JsonResponse;
 import genericclasses.Message;
+import genericclasses.User;
+import repositories.AdminRepository;
 import repositories.MessageRepository;
+import websockets.WebSocketAnnotation;
 
+import javax.websocket.Session;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +22,21 @@ public class SendMessageAction extends ActionSupport {
 
     public String execute(){
         MessageRepository messageRepository = new MessageRepository();
-        response.setSuccess(messageRepository.sendMessage(message,projId,requestId));
+        AdminRepository adminRepository = new AdminRepository();
+        boolean success = messageRepository.sendMessage(message,projId,requestId);
+        if(success){
+            ArrayList<User> admins = adminRepository.getAdmins(projId);
+            for (User admin: admins) {
+                try {
+                    Session session = WebSocketAnnotation.wsClients.get(admin.getId());
+                    if(session != null)
+                        session.getBasicRemote().sendText("{\"action\": \"message\", \"projectId\": " + projId + "}");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        response.setSuccess(success);
         return SUCCESS;
     }
 

@@ -2,7 +2,15 @@ package actions.Project;
 
 import com.opensymphony.xwork2.ActionSupport;
 import genericclasses.JsonResponse;
+import genericclasses.User;
+import repositories.AdminRepository;
+import repositories.AuthRepository;
 import repositories.ProjectRepository;
+import websockets.WebSocketAnnotation;
+
+import javax.websocket.Session;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by pedrocb on 17/12/2015.
@@ -58,7 +66,33 @@ public class FinanceProjectAction extends ActionSupport{
 
     public String execute(){
         ProjectRepository projectRepository = new ProjectRepository();
-        response.setSuccess(projectRepository.financeProject(projectId,requestId,userId,pathId,value));
+        AdminRepository adminRepository = new AdminRepository();
+        AuthRepository authRepository = new AuthRepository();
+        boolean success = projectRepository.financeProject(projectId,requestId,userId,pathId,value);
+        double projectValue = projectRepository.getProjectValue(projectId);
+        if(success) {
+            ArrayList<User> admins = adminRepository.getAdmins(projectId);
+            for (User admin : admins) {
+                try {
+                    Session session = WebSocketAnnotation.wsClients.get(admin.getId());
+                    if(session != null)
+                        session.getBasicRemote().sendText("{\"action\": \"pledge\", \"projectId\": " + projectId + ", \"value\": " + value + ", \"projectValue\": " + projectValue + "}");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            ArrayList<User> users = authRepository.getUsers();
+            for (User user : users) {
+                try {
+                    Session session = WebSocketAnnotation.wsClients.get(user.getId());
+                    if(session != null)
+                        session.getBasicRemote().sendText("{\"action\": \"newValue\", \"projectId\": " + projectId + ", \"value\": " + value + ", \"projectValue\": " + projectValue + "}");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        response.setSuccess(success);
         return SUCCESS;
     }
 
