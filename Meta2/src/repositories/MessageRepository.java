@@ -4,6 +4,8 @@ import genericclasses.Message;
 import genericclasses.Reward;
 import rmi.RMI;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -17,8 +19,20 @@ public class MessageRepository {
     private RMI rmiServer;
 
     public MessageRepository(){
+        String rmiAddress = null;
+        int rmiPort = 0;
         try {
-            this.rmiServer = (RMI) LocateRegistry.getRegistry("localhost",7000).lookup("rmi");
+            try {
+                BufferedReader fR = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream ("../configAPI.txt")));
+                rmiAddress = fR.readLine();
+                rmiPort = Integer.parseInt(fR.readLine());
+                fR.close();
+            }
+            catch (Exception e){
+                System.out.println("Erro ao abrir ficheiro configAPI.txt");
+                System.exit(1);
+            }
+            this.rmiServer = (RMI) LocateRegistry.getRegistry(rmiAddress,rmiPort).lookup("rmi");
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (NotBoundException e) {
