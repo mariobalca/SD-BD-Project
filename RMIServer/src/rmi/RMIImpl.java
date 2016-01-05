@@ -36,7 +36,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
     public ArrayList<User> getUsers() throws RemoteException, SQLException {
         ResultSet result = connection.createStatement().executeQuery("select * from users");
-        ArrayList<User> users = new ArrayList<>();
+        ArrayList<User> users = new ArrayList<User>();
         while(result.next()){
             User user = new User(result.getString(2),result.getString(3));
             user.setId(result.getInt(1));

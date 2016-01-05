@@ -33,10 +33,10 @@ public class Project implements Serializable {
     }
 
     public Project(){
-        this.messages = new ArrayList<>();
-        this.extras = new ArrayList<>();
-        this.rewards = new ArrayList<>();
-        this.paths = new ArrayList<>();
+        this.messages = new ArrayList<Message>();
+        this.extras = new ArrayList<Extra>();
+        this.rewards = new ArrayList<Reward>();
+        this.paths = new ArrayList<Path>();
     }
 
     public Date getDeadline() {

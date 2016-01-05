@@ -1,4 +1,4 @@
-myApp.controller('projectController', ['$scope', '$log', '$http', '$routeParams', 'authService', function($scope, $log, $http, $routeParams, authService){
+myApp.controller('projectController', ['IPAddress', '$scope', '$log', '$http', '$routeParams', 'authService', function(IPAddress, $scope, $log, $http, $routeParams, authService){
 	var id = $routeParams.id;
 	$scope.loggedIn = authService.loggedIn;
 	$scope.project = {}
@@ -11,7 +11,7 @@ myApp.controller('projectController', ['$scope', '$log', '$http', '$routeParams'
 	$scope.message = {}
 
 
-	$http.post('http://localhost:8080/api/getProject', {'projectId': id}).success(function(result){
+	$http.post('http://' + IPAddress + ':8080/api/getProject', {'projectId': id}).success(function(result){
 		$scope.project = result.project;
 		$scope.project.value = 0;
 		$scope.project.isActive = function(){		
@@ -26,9 +26,9 @@ myApp.controller('projectController', ['$scope', '$log', '$http', '$routeParams'
 		$log.info(result.project);
 	});
 
-	$http.post('http://localhost:8080/api/getAdmins', {'projectId': id}).success(function(result){
+	$http.post('http://' + IPAddress + ':8080/api/getAdmins', {'projectId': id}).success(function(result){
 		$scope.admins = result.admins;
-		$http.get('http://localhost:8080/api/getUsers').success(function(result){
+		$http.get('http://' + IPAddress + ':8080/api/getUsers').success(function(result){
 			angular.forEach(result.users, function(user){
 				var bool = true;
 				angular.forEach($scope.admins, function(admin){
@@ -44,7 +44,7 @@ myApp.controller('projectController', ['$scope', '$log', '$http', '$routeParams'
 
 	$scope.pledgeProject = function(){
 		authService.updateRequestId();
-		$http.post('http://localhost:8080/api/financeProject', {'projectId': $scope.project.id, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'pathId': $scope.pledge.path, 'value': $scope.pledge.value}).success(function(result){
+		$http.post('http://' + IPAddress + ':8080/api/financeProject', {'projectId': $scope.project.id, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'pathId': $scope.pledge.path, 'value': $scope.pledge.value}).success(function(result){
 		});
 	}
 	$scope.isAdmin = function(){
@@ -62,7 +62,7 @@ myApp.controller('projectController', ['$scope', '$log', '$http', '$routeParams'
 	
 	$scope.addAdmin = function(){
 		authService.updateRequestId();
-		$http.post('http://localhost:8080/api/addAdmin', {'projectId': $scope.project.id, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'newAdminName': $scope.newAdmin.username}).success(function(result){
+		$http.post('http://' + IPAddress + ':8080/api/addAdmin', {'projectId': $scope.project.id, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'newAdminName': $scope.newAdmin.username}).success(function(result){
 			$scope.admins.push($scope.newAdmin);
 		});
 	}
@@ -70,7 +70,7 @@ myApp.controller('projectController', ['$scope', '$log', '$http', '$routeParams'
 	$scope.askQuestion = function(){
 		authService.updateRequestId();
 		$scope.message.fromUserId = authService.user.id;
-		$http.post('http://localhost:8080/api/sendMessage', {'projId': $scope.project.id, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'message': $scope.message}).success(function(result){
+		$http.post('http://' + IPAddress + ':8080/api/sendMessage', {'projId': $scope.project.id, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'message': $scope.message}).success(function(result){
 			$scope.project.messages.push()
 		});
 	}
@@ -78,7 +78,7 @@ myApp.controller('projectController', ['$scope', '$log', '$http', '$routeParams'
 	$scope.answerQuestion = function(messageId){
 		authService.updateRequestId();
 		$scope.message.response = $scope.message.draftResponse;
-		$http.post('http://localhost:8080/api/answerMessage', {'messageId': messageId, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'resposta': $scope.message.response}).success(function(result){
+		$http.post('http://' + IPAddress + ':8080/api/answerMessage', {'messageId': messageId, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'resposta': $scope.message.response}).success(function(result){
 			
 		});
 	}
@@ -109,31 +109,31 @@ myApp.controller('projectController', ['$scope', '$log', '$http', '$routeParams'
 
 	$scope.addExtraLevel = function(){
 		authService.updateRequestId();
-		$http.post('http://localhost:8080/api/createExtra', {'projectId': $scope.project.id, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'extra': $scope.extra}).success(function(result){
+		$http.post('http://' + IPAddress + ':8080/api/createExtra', {'projectId': $scope.project.id, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'extra': $scope.extra}).success(function(result){
 		});
 	}
 
 	$scope.addReward = function(){
 		authService.updateRequestId();
-		$http.post('http://localhost:8080/api/createReward', {'projectId': $scope.project.id, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'reward': $scope.reward}).success(function(result){
+		$http.post('http://' + IPAddress + ':8080/api/createReward', {'projectId': $scope.project.id, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'reward': $scope.reward}).success(function(result){
 		});
 	}
 
 	$scope.removeReward = function(rewardId){
 		authService.updateRequestId();
-		$http.post('http://localhost:8080/api/removeReward', {'rewardId': rewardId, 'requestId': authService.user.requestId, 'userId': authService.user.id}).success(function(result){
+		$http.post('http://' + IPAddress + ':8080/api/removeReward', {'rewardId': rewardId, 'requestId': authService.user.requestId, 'userId': authService.user.id}).success(function(result){
 		});
 	}
 
 	$scope.removeAdmin = function(adminId){
 		authService.updateRequestId();
-		$http.post('http://localhost:8080/api/removeAdmin', {'projectId': $scope.project.id, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'adminId': adminId}).success(function(result){
+		$http.post('http://' + IPAddress + ':8080/api/removeAdmin', {'projectId': $scope.project.id, 'requestId': authService.user.requestId, 'userId': authService.user.id, 'adminId': adminId}).success(function(result){
 		});
 	}
 
 	$scope.cancelProject = function(projectId){
 		authService.updateRequestId();
-		$http.post('http://localhost:8080/api/cancelProject', {'projectId': projectId, 'userId': authService.user.id, 'requestId': authService.user.requestId}).success(function(){
+		$http.post('http://' + IPAddress + ':8080/api/cancelProject', {'projectId': projectId, 'userId': authService.user.id, 'requestId': authService.user.requestId}).success(function(){
 		});
 	}
 }])

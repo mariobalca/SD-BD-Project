@@ -19,7 +19,7 @@ import javax.websocket.Session;
 
 public class WebSocketAnnotation {
 
-    static public HashMap<Integer, Session> wsClients = new HashMap<>();
+    static public HashMap<Integer, Session> wsClients = new HashMap<Integer, Session>();
 
     @OnOpen
     public void start(Session session, @PathParam("userId") int userId) {

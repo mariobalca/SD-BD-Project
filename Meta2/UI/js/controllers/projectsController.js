@@ -1,5 +1,5 @@
-myApp.controller('projectsController', ['$scope', '$log', '$http', '$location', function($scope, $log, $http, $location){
-	$http.get('http://localhost:8080/api/getCurrentProjects').success(function(result){
+myApp.controller('projectsController', ['IPAddress', '$scope', '$log', '$http', '$location', function(IPAddress, $scope, $log, $http, $location){
+	$http.get('http://' + IPAddress + ':8080/api/getCurrentProjects').success(function(result){
 		$scope.currentProjects = result.projects;
 		angular.forEach(result.projects, function(project){
 			angular.forEach(result.projects.paths, function(path){
@@ -8,7 +8,7 @@ myApp.controller('projectsController', ['$scope', '$log', '$http', '$location', 
 		});
 		$log.info($scope.currentProjects);
 	});
-	$http.get('http://localhost:8080/api/getOlderProjects').success(function(result){
+	$http.get('http://' + IPAddress + ':8080/api/getOlderProjects').success(function(result){
 		$scope.olderProjects = result.projects;
 		angular.forEach(result.projects, function(project){
 			angular.forEach(result.projects.paths, function(path){

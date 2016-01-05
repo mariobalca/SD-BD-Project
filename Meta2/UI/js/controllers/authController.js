@@ -1,9 +1,9 @@
-myApp.controller('authController', ['$scope', '$log', '$http', 'authService', '$location', '$cookieStore', function($scope, $log, $http, authService, $location, $cookieStore){
+myApp.controller('authController', ['IPAddress', '$scope', '$log', '$http', 'authService', '$location', '$cookieStore', function(IPAddress, $scope, $log, $http, authService, $location, $cookieStore){
 	$scope.username = '';
 	$scope.password = '';
 
 	$scope.login = function(){
-		$http.post('http://localhost:8080/api/login', {'user':{'username': $scope.username, 'password': $scope.password}}).success(function(result){			
+		$http.post('http://' + IPAddress + ':8080/api/login', {'user':{'username': $scope.username, 'password': $scope.password}}).success(function(result){			
 			if(result.response.success) {
 				authService.loggedIn = true;
 				authService.user.id = result.user.id;
@@ -19,7 +19,7 @@ myApp.controller('authController', ['$scope', '$log', '$http', 'authService', '$
 		});
 	}
 	$scope.register = function(){
-		$http.post('http://localhost:8080/api/register', {'user':{'username': $scope.username, 'password': $scope.password}}).success(function(result){			
+		$http.post('http://' + IPAddress + ':8080/api/register', {'user':{'username': $scope.username, 'password': $scope.password}}).success(function(result){			
 			if(result.response.success) {
 				authService.loggedIn = true;
 				authService.user.id = result.user.id;

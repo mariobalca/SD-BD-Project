@@ -1,15 +1,15 @@
-myApp.controller('dashboardController', ['$scope', '$log', '$http', 'authService', '$location', function($scope, $log, $http, authService, $location){
-	$http.post('http://localhost:8080/api/getAdminProjects', {'userId': authService.user.id }).success(function(result){
+myApp.controller('dashboardController', ['IPAddress', '$scope', '$log', '$http', 'authService', '$location', function(IPAddress, $scope, $log, $http, authService, $location){
+	$http.post('http://' + IPAddress + ':8080/api/getAdminProjects', {'userId': authService.user.id }).success(function(result){
 		$scope.projects = result.projects;
 	});
 
-	$http.post('http://localhost:8080/api/getUserRewards', {'userId': authService.user.id }).success(function(result){
+	$http.post('http://' + IPAddress + ':8080/api/getUserRewards', {'userId': authService.user.id }).success(function(result){
 		$scope.rewards = result.rewards;
 		$log.info($scope.rewards);
 	});
 
 	$scope.users = [];
-	$http.get('http://localhost:8080/api/getUsers').success(function(result){
+	$http.get('http://' + IPAddress + ':8080/api/getUsers').success(function(result){
 		angular.forEach(result.users, function(user){
 			$scope.users.push(user);
 		});
@@ -22,7 +22,7 @@ myApp.controller('dashboardController', ['$scope', '$log', '$http', 'authService
 	$scope.createProject = function(){
 		$log.info($scope.project);
 		authService.updateRequestId();
-		$http.post('http://localhost:8080/api/createProject', {'project': $scope.project, 'userId': authService.user.id, 'requestId': authService.user.requestId}).success(function(result){
+		$http.post('http://' + IPAddress + ':8080/api/createProject', {'project': $scope.project, 'userId': authService.user.id, 'requestId': authService.user.requestId}).success(function(result){
 			$scope.projects.push(result.project);
 		});
 	}
@@ -46,7 +46,7 @@ myApp.controller('dashboardController', ['$scope', '$log', '$http', 'authService
 
 	$scope.giveReward = function(){
 		authService.updateRequestId();
-		$http.post('http://localhost:8080/api/giveReward', {'rewardUserId': $scope.reward.id, 'userId': authService.user.id, 'requestId': authService.user.requestId, 'receiverUserName': $scope.userToGive.username}).success(function(result){
+		$http.post('http://' + IPAddress + ':8080/api/giveReward', {'rewardUserId': $scope.reward.id, 'userId': authService.user.id, 'requestId': authService.user.requestId, 'receiverUserName': $scope.userToGive.username}).success(function(result){
 			if(result.response.success){
 				angular.forEach($scope.rewards, function(item){
 					if(item.id == $scope.reward.id)

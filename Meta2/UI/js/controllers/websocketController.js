@@ -1,9 +1,9 @@
-myApp.controller('websocketController', ['$scope', '$log', '$http', 'authService', '$location', function($scope, $log, $http, authService, $location){
+myApp.controller('websocketController', ['IPAddress', '$scope', '$log', '$http', 'authService', '$location', function(IPAddress, $scope, $log, $http, authService, $location){
 	var websocket = null;
 	var notifications = false;
 
 	window.onload = function() { // URI = ws://10.16.0.165:8080/WebSocket/ws
-	    connect('ws://' + 'localhost:8080' + "/endpoint/" + authService.user.id);
+	    connect('ws://' + IPAddress + ':8080' + "/endpoint/" + authService.user.id);
 	}
 
 	function connect(host) { // connect to the host websocket

@@ -32,8 +32,8 @@ public class CreateProj extends Request{
     public CreateProj(int userId){
         super("CreateProj");
         this.userId = userId;
-        this.rewards = new ArrayList<>();
-        this.paths = new ArrayList<>();
+        this.rewards = new ArrayList<Reward>();
+        this.paths = new ArrayList<Path>();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
 
