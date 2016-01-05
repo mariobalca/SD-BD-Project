@@ -306,7 +306,7 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         return true;
     }
 
-    public boolean postinTumblr(String username,Project project) throws SQLException {
+    public boolean postinTumblr(String username,Project project) throws SQLException,RemoteException {
         ResultSet result = connection.createStatement().executeQuery("select userToken,userSecret from users where username = \"" +username+"\"");
         Token token = new Token(result.getString(1),result.getString(2));
         OAuthRequest request = new OAuthRequest(Verb.POST,"http://api.tumblr.com/v2/blog/"+username+".tumblr.com/post");
@@ -316,8 +316,21 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
         RMIServer.service.signRequest(token,request);
         org.scribe.model.Response response = request.send();
         System.out.println(response.getBody());
+        Long postId = new JSONObject(response.getBody()).getJSONObject("response").getLong("id");
+        System.out.println(postId);
+        OAuthRequest request2 = new OAuthRequest(Verb.POST,"http://api.tumblr.com/v2/blog/"+username+".tumblr.com/posts");
+        request.addHeader("Accept", "application/json");
+        request.addBodyParameter("type","text");
+        request.addBodyParameter("id", String.valueOf(project.getId()));
+        RMIServer.service.signRequest(token,request2);
+        org.scribe.model.Response response2 = request2.send();
+        System.out.println(response2.getBody());
+        String reblog_key = new JSONObject(response2.getBody()).getJSONObject("response").getString("reblog_key");
+        System.out.println("update projects set TumblrPostId = "+postId+" where id = "+ project.getId());
+        connection.createStatement().execute("update projects set TumblrPostId = "+postId+",reblog_key = \"" + reblog_key+"\" whessre id = "+ project.getId());
         return true;
     }
+
 
     public boolean createProject(Project project, int requestId, int userId) throws RemoteException, SQLException {
         System.out.println(userId);
@@ -341,12 +354,13 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
             for(Path path:project.getPaths()){
                 this.createPath(path, 0, userId, projectId);
             }
-            connection.commit();
+            project.setId(projectId);
             System.out.println("Created Proj");
             User username = getUser(userId);
             if(isTumblr(username.getUsername())) {
                 postinTumblr(username.getUsername(),project);
             }
+            connection.commit();
             return true;
         }
 
@@ -441,12 +455,30 @@ public class RMIImpl extends UnicastRemoteObject implements RMI  {
 
             this.winReward(rewardIdRS.getInt(1), 0, userId, 0);
             connection.createStatement().execute("insert into logs (UserId, RequestId, Response) values (" + userId + ", " + requestId + ", 1)");
+            if(isTumblr(getUser(userId).getUsername())){
+                likeProject(getUser(userId).getUsername(),projectId);
+            }
             connection.commit();
             return true;
         }
         else{
             result = connection.createStatement().executeQuery("select response from logs where requestId = " + requestId + " and userId = " + userId);
             return result.getBoolean(1);
+        }
+    }
+
+    public void likeProject(String username, int projectId) throws RemoteException, SQLException {
+        ResultSet result = connection.createStatement().executeQuery("select userToken,userSecret from users where username = \"" +username+"\"");
+        Token token = new Token(result.getString(1),result.getString(2));
+        ResultSet result2 = connection.createStatement().executeQuery("select TumblrPostId ,Reblog_key from projects where id = " + projectId);
+        if(result2.getString(1)!=null){
+            OAuthRequest request = new OAuthRequest(Verb.POST,"http://api.tumblr.com/v2/user/like");
+            request.addHeader("Accept", "application/json");
+            request.addBodyParameter("id", String.valueOf(result2.getLong(1)));
+            request.addBodyParameter("reblog_key",result2.getString(2));
+            RMIServer.service.signRequest(token,request);
+            org.scribe.model.Response response = request.send();
+            System.out.println(response.getBody());
         }
     }
 
